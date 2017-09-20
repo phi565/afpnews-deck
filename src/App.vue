@@ -1,17 +1,17 @@
+<!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <external></external>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+import External from './components/External'
 
 export default {
   name: 'app',
   components: {
-    Hello
+    External
   }
 }
 </script>
