@@ -1,0 +1,1 @@
+# vue-external-component
