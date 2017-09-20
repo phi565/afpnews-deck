@@ -2,8 +2,8 @@
   "name": "vue-external-component",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "",
-  "private": true,
+  "author": "clementp",
+  "main": "dist/external.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
