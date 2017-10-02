@@ -1,56 +1,86 @@
-<!-- Main component file, the one that will be exported -->
 <template>
-  <div class="external">
-    <img :src="require('@/assets/logo.png')">
-    <h1>{{ msg }}</h1>
-    <p>{{ count }}</p>
-    <nested/>
+  <div>
+    <vue-clip :options="options" :on-queue-complete="queueCompleted">
+      <template slot="clip-uploader-action" scope="params">
+        <div v-bind:class="{'is-dragging': params.dragging}" class="upload-action">
+          <div class="dz-message"><h2>Click or Drag and Drop files here upload </h2></div>
+        </div>
+      </template>
+
+      <template slot="clip-uploader-body" scope="props">
+        <main>
+          <watermark v-for="file,index in props.files" :file="file" :index="index" :key="file.name" ref="watermark"></watermark>
+        </main>
+      </template>
+    </vue-clip>
+    <button v-if="loaded" @click="download">Download</button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { NAMESPACE } from '@/config'
-import { COUNT } from '@/config/getters'
+// import { mapGetters } from 'vuex'
+// import { NAMESPACE } from '@/config'
+// import { COUNT } from '@/config/getters'
 
-import Nested from './Nested'
+import Watermark from './Watermark'
 
 export default {
   name: 'External',
 
-  components: { Nested },
+  components: { Watermark },
 
   data () {
     return {
-      msg: 'Welcome to your Vue.js external component'
+      loaded: false,
+      options: {
+        url: 'http://localhost:3000/',
+        paramName: 'files',
+        method: 'post',
+        parallelUploads: 10,
+        maxFilesize: {
+          limit: 15,
+          message: '{{ filesize }} is greater than the {{ maxFilesize }}'
+        },
+        uploadMultiple: true,
+        maxFiles: {
+          limit: 15,
+          message: 'You can only upload a max of 10 files'
+        },
+        acceptedFiles: {
+          extensions: ['image/*'],
+          message: 'You are uploading an invalid file'
+        },
+        thumbnailWidth: 1000,
+        thumbnailHeight: null,
+        thumbnailMethod: 'contain'
+      }
     }
   },
 
   computed: {
-    ...mapGetters(NAMESPACE, {
-      count: COUNT
-    })
+    // ...mapGetters(NAMESPACE, {
+    // })
+  },
+
+  methods: {
+    queueCompleted () {
+      this.loaded = true
+    },
+    download () {
+      this.$refs.watermark.forEach(watermark => watermark.download())
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.upload-action.is-dragging {
+  border: 1px dashed lightblue;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 </style>

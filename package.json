@@ -1,8 +1,8 @@
 {
-  "name": "vue-external-component",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "clementp",
+  "name": "watermark",
+  "version": "0.0.1",
+  "description": "A watermark module for Toolkit",
+  "author": "julesbonnard",
   "main": "dist/external.js",
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -11,7 +11,10 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "downloadjs": "^1.4.7",
+    "konva": "^1.6.8",
     "vue": "^2.4.2",
+    "vue-clip": "^1.0.0",
     "vuex": "^2.4.0"
   },
   "devDependencies": {

@@ -1,2 +1,2 @@
 // Some config options
-export const NAMESPACE = 'mymodule'
+export const NAMESPACE = 'watermark'
