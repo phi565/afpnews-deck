@@ -14,18 +14,25 @@
       </canvas-wrapper>
     </div>
     <div>
-      <select v-model="logoColor">
-        <option value="white">White</option>
-        <option value="black">Black</option>
-        <option value="transparent">Transparent</option>
-      </select>
-      <select v-model="textColor">
-        <option value="white">White</option>
-        <option value="black">Black</option>
-      </select>
-      <input v-model="copyrightUser">
-      <button @click="download">Download</button>
-      <button @click="removeFile">Delete</button>
+      <div class="action-group colors">
+        <select v-model="logoColor">
+          <option value="white">White</option>
+          <option value="black">Black</option>
+          <option value="transparent">Transparent</option>
+        </select>
+        <select v-model="textColor">
+          <option value="white">White</option>
+          <option value="black">Black</option>
+        </select>
+      </div>
+      <div class="action-group texts">
+        <input v-model="referenceUser">
+        <input v-model="copyrightUser">
+      </div>
+      <div class="action-group actions">
+        <button @click="removeFile">Delete</button>
+        <button @click="download">Download</button>
+      </div>
     </div>
     <ul class="errors" v-if="className === 'error'">
       <li v-for="(message, key) in errors">{{ message }}</li>
@@ -56,6 +63,7 @@ export default {
       height: 315,
       pixelRatio: 2,
       copyrightUser: null,
+      referenceUser: null,
       errors: {}
     }
   },
@@ -94,7 +102,10 @@ export default {
     reference () {
       const regex = new RegExp(/_?([A-Z0-9]{5})\./g)
       const found = regex.exec(this.file.name)
-      if (found && found[1]) return found[1]
+      if (found && found[1]) {
+        this.referenceUser = found[1]
+        return found[1]
+      }
       this.$emit('error', {
         error: 'referenceNotFound',
         message: 'The image reference was not found'
@@ -154,5 +165,49 @@ ul.errors {
 .progress {
   height: 3px;
   background-color: black;
+}
+.action-group {
+  margin-bottom: 8px;
+}
+.action-group.colors {
+  margin-top: 8px;
+}
+.action-group.colors select {
+  width: 49%;
+}
+.action-group.texts input {
+  width: 49%;
+}
+.action-group.actions {
+  text-align: right;
+}
+button, input, select {
+  font-size: 18px;
+  border: none;
+  background: none;
+  box-sizing: border-box;
+}
+button {
+  background-color: #9fb4b8;
+  width: 120px;
+  height: 48px;
+  line-height: 48px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 1rem;
+  transition: background-color 0.2s linear;
+}
+button:hover {
+  background-color: #b1c8cc;
+}
+input {
+  height: 48px;
+  border: 1px solid #9fb4b8;
+}
+select {
+  height: 48px;
+  border: 1px solid #9fb4b8;
 }
 </style>

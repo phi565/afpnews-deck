@@ -2,7 +2,7 @@
   <div>
     <img :src="require('@/assets/logo-afp-'+logoColor+'.png')" v-on:load="updateLogo">
     <img class="photo" :src="src" v-on:load="updateImage">
-    <div :id="canvasIndex"></div>
+    <div :id="canvasIndex" :class="{canvas: true, dragging: drag}"></div>
   </div>
 </template>
 
@@ -49,7 +49,8 @@ export default {
     return {
       _stage: null,
       _layer: null,
-      loaded: false
+      loaded: false,
+      drag: false
     }
   },
 
@@ -141,6 +142,10 @@ export default {
             y: pos.y
           }
         }
+      }).on('dragstart', () => {
+        this.drag = true
+      }).on('dragend', () => {
+        this.drag = false
       })
       this.loaded = true
       this.draw()
@@ -196,5 +201,11 @@ img {
 }
 img.photo {
   width: 100%;
+}
+.canvas {
+  cursor: grab;
+}
+.canvas.dragging {
+  cursor: grabbing;
 }
 </style>

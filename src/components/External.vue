@@ -3,7 +3,10 @@
     <vue-clip :options="options" :on-queue-complete="queueCompleted" :on-removed-file="removedFile" ref="vc">
       <template slot="clip-uploader-action" scope="params">
         <div v-bind:class="{'is-dragging': params.dragging}" class="upload-action">
-          <div class="dz-message"><h2>Click or Drag and Drop files here upload </h2></div>
+          <div class="dz-message">
+            <h2 v-if="!loaded">Click or Drag and Drop here to load images</h2>
+            <h2 v-else>Done ! Upload more ?</h2>
+          </div>
         </div>
       </template>
 
@@ -13,7 +16,9 @@
         </main>
       </template>
     </vue-clip>
-    <button v-if="loaded" @click="download">Download all</button>
+    <div class="actions">
+      <button v-if="loaded" @click="download">Download all</button>
+    </div>
   </div>
 </template>
 
@@ -71,8 +76,43 @@ export default {
 </script>
 
 <style scoped>
+.upload-action {
+  background-color: #e7f0f4;
+  padding: 160px 150px;
+}
+.upload-action .dz-message {
+  text-align: center;
+  background-color: #d9e4ea;
+  border: 2px dashed #9fb4b8;
+  padding: 48px 64px;
+  transition: all 0.2s linear;
+}
 .upload-action.is-dragging {
-  border: 1px dashed lightblue;
+
+}
+.upload-action.is-dragging .dz-message {
+  border: 2px dashed #d5dfe3;
+  background-color: white;
+}
+.actions {
+  text-align: center;
+  margin: 50px;
+}
+button {
+  background-color: #9fb4b8;
+  width: 420px;
+  height: 70px;
+  line-height: 70px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 1rem;
+  transition: background-color 0.2s linear;
+  border: none;
+}
+button:hover {
+  background-color: #b1c8cc;
 }
 
 main {
