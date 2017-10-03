@@ -100,6 +100,7 @@ export default {
       return this.photographer ? `${this.photographer} / ${this.copyrightSuffix}` : this.copyrightSuffix
     },
     reference () {
+      if (this.referenceUser && this.referenceUser !== '') return this.referenceUser
       const regex = new RegExp(/_?([A-Z0-9]{5})\./g)
       const found = regex.exec(this.file.name)
       if (found && found[1]) {
@@ -125,6 +126,10 @@ export default {
     photographer (photographer) {
       this.copyrightUser = this.copyright
     }
+  },
+
+  mounted () {
+    if (this.photographer !== '') this.copyrightUser = this.copyright
   },
 
   methods: {
