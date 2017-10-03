@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-clip :options="options" :on-queue-complete="queueCompleted">
+    <vue-clip :options="options" :on-queue-complete="queueCompleted" :on-removed-file="removedFile" ref="vc">
       <template slot="clip-uploader-action" scope="params">
         <div v-bind:class="{'is-dragging': params.dragging}" class="upload-action">
           <div class="dz-message"><h2>Click or Drag and Drop files here upload </h2></div>
@@ -9,19 +9,15 @@
 
       <template slot="clip-uploader-body" scope="props">
         <main>
-          <watermark v-for="file,index in props.files" :file="file" :index="index" :key="file.name" ref="watermark"></watermark>
+          <watermark v-for="file,index in props.files" :file="file" :index="index" :key="file.name" ref="watermark" v-if="file.status !== 'removed'"></watermark>
         </main>
       </template>
     </vue-clip>
-    <button v-if="loaded" @click="download">Download</button>
+    <button v-if="loaded" @click="download">Download all</button>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-// import { NAMESPACE } from '@/config'
-// import { COUNT } from '@/config/getters'
-
 import Watermark from './Watermark'
 
 export default {
@@ -57,17 +53,18 @@ export default {
     }
   },
 
-  computed: {
-    // ...mapGetters(NAMESPACE, {
-    // })
-  },
-
   methods: {
     queueCompleted () {
       this.loaded = true
     },
+    removedFile () {
+      if (this.$refs.vc.files.filter(file => file.status !== 'removed').length === 0) {
+        this.loaded = false
+      }
+    },
     download () {
-      this.$refs.watermark.forEach(watermark => watermark.download())
+      this.$refs.watermark
+        .forEach(watermark => watermark.download())
     }
   }
 }
@@ -81,6 +78,6 @@ export default {
 main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 </style>

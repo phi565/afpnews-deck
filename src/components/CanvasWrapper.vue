@@ -59,7 +59,7 @@ export default {
     },
     textAttrs () {
       return {
-        fontFamily: '"Source Sans Pro", sans-serif !default',
+        fontFamily: 'Source Sans Pro',
         fontSize: 12,
         shadowColor: 'rgba(0,0,0,0.7)',
         shadowOffsetX: 0,
@@ -117,16 +117,25 @@ export default {
     updateImage (ev) {
       const image = ev.currentTarget
       const canvasHeight = this.height
+      if (image.width < this.width * 2 || image.height < this.height * 2) {
+        this.$parent.$emit('error', {
+          error: 'imageResolutionTooLow',
+          message: 'The image resolution is too low'
+        })
+      }
+      const ratio = image.width / image.height
+      const width = image.width < this.width * 2 ? this.width : image.width / 2
+      const height = image.height < this.height * 2 ? width / ratio : image.height / 2
       this._layer.find('.Image').setAttrs({
         x: 0,
         y: 0,
         image: image,
-        width: image.width / 2,
-        height: image.height / 2,
+        width: width,
+        height: height,
         draggable: true,
         dragBoundFunc: function (pos) {
           if (pos.y > 0) pos.y = 0
-          if (pos.y < canvasHeight - image.height / 2) pos.y = canvasHeight - image.height / 2
+          if (pos.y < canvasHeight - height) pos.y = canvasHeight - height
           return {
             x: this.getAbsolutePosition().x,
             y: pos.y
@@ -140,7 +149,7 @@ export default {
     updateLogo (ev) {
       const logo = ev.currentTarget
       this._layer.find('.Logo').setAttrs({
-        x: 0,
+        x: 15,
         y: 10,
         image: logo,
         width: logo.width / 2,

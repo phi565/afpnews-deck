@@ -1,7 +1,17 @@
 <template>
   <article :class="className">
     <div class="image-container">
-      <canvas-wrapper :width="width" :height="height" :index="index" :src="file.dataUrl" :textColor="textColor" :logoColor="logoColor" :copyright="copyright" :reference="reference" ref="canvas"></canvas-wrapper>
+      <canvas-wrapper 
+        :width="width" 
+        :height="height" 
+        :index="index" 
+        :src="file.dataUrl" 
+        :textColor="textColor" 
+        :logoColor="logoColor" 
+        :copyright="copyright" 
+        :reference="reference" 
+        ref="canvas">
+      </canvas-wrapper>
     </div>
     <div>
       <select v-model="logoColor">
@@ -15,16 +25,16 @@
       </select>
       <input v-model="copyrightUser">
       <button @click="download">Download</button>
+      <button @click="removeFile">Delete</button>
     </div>
+    <ul class="errors" v-if="className === 'error'">
+      <li v-for="(message, key) in errors">{{ message }}</li>
+    </ul>
     <div class="progress" :style="{width: file.progress+'%'}" v-if="file.status !== 'success' && file.status !== 'error'"></div>
   </article>
 </template>
 
 <script>
-// import { mapMutations } from 'vuex'
-// import { NAMESPACE } from '@/config'
-// import { INCREMENT } from '@/config/mutations'
-
 import CanvasWrapper from './CanvasWrapper'
 import download from 'downloadjs'
 
@@ -45,7 +55,8 @@ export default {
       width: 500,
       height: 315,
       pixelRatio: 2,
-      copyrightUser: null
+      copyrightUser: null,
+      errors: {}
     }
   },
 
@@ -59,6 +70,10 @@ export default {
         const json = JSON.parse(this.file.xhrResponse.response)
         return json.find(d => d.name === this.file.name)
       } catch (e) {
+        this.$emit('error', {
+          error: 'metaDataInvalid',
+          message: 'Metadata are invalid'
+        })
         return false
       }
     },
@@ -66,6 +81,10 @@ export default {
       if (this.meta.iptc && this.meta.iptc.by_line && Array.isArray(this.meta.iptc.by_line)) {
         return this.meta.iptc.by_line.join(', ')
       }
+      this.$emit('error', {
+        error: 'photographerNotFound',
+        message: 'The photographer was not found'
+      })
       return ''
     },
     copyright () {
@@ -76,8 +95,19 @@ export default {
       const regex = new RegExp(/_?([A-Z0-9]{5})\./g)
       const found = regex.exec(this.file.name)
       if (found && found[1]) return found[1]
+      this.$emit('error', {
+        error: 'referenceNotFound',
+        message: 'The image reference was not found'
+      })
       return ''
     }
+  },
+
+  created () {
+    this.$on('error', error => {
+      this.errors[error.error] = error.message
+      this.file.status = 'error'
+    })
   },
 
   watch: {
@@ -87,8 +117,6 @@ export default {
   },
 
   methods: {
-    // ...mapMutations(NAMESPACE, {
-    // }),
     download () {
       const image2Save = this.$refs.canvas._stage.toDataURL({
         mimeType: 'image/jpeg',
@@ -96,6 +124,9 @@ export default {
       })
       const date = new Date().getTime()
       download(image2Save, `toolkit-watermark-${date}.jpg`, 'image/jpeg')
+    },
+    removeFile () {
+      this.$parent.removeFile(this.file)
     }
   }
 }
@@ -107,10 +138,15 @@ article {
   margin: 15px;
 }
 article.success {
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
 article.error {
-  border: 1px solid red;
+  border: 7px solid red;
+}
+ul.errors {
+  list-style-type: none;
+  text-align: left;
+  color: darkred;
 }
 .image-container {
 
