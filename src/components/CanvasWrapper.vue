@@ -118,7 +118,7 @@ export default {
     updateImage (ev) {
       const image = ev.currentTarget
       const canvasHeight = this.height
-      if (image.width < this.width * 2 || image.height < this.height * 2) {
+      if (image.width < this.width || image.height < this.height) {
         this.$parent.$emit('error', {
           error: 'imageResolutionTooLow',
           message: 'The image resolution is too low'

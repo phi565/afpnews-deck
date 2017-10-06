@@ -14,7 +14,7 @@
     "downloadjs": "^1.4.7",
     "konva": "^1.6.8",
     "vue": "^2.4.2",
-    "vue-clip": "^1.0.0",
+    "vue-clip": "git+https://github.com/alexsasharegan/vue-clip.git#develop",
     "vuex": "^2.4.0"
   },
   "devDependencies": {

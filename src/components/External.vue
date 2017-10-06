@@ -17,7 +17,8 @@
       </template>
     </vue-clip>
     <div class="actions">
-      <button v-if="loaded" @click="download">Download all</button>
+      <button v-if="loaded" @click="deleteAll">Delete all</button>
+      <button v-if="loaded" @click="downloadAll">Download all</button>
     </div>
   </div>
 </template>
@@ -30,14 +31,19 @@ export default {
 
   components: { Watermark },
 
+  props: ['iptc-parser-url'],
+
   data () {
     return {
       loaded: false,
       options: {
-        url: 'http://localhost:3000/',
+        url: this.iptcParserUrl,
         paramName: 'files',
         method: 'post',
         parallelUploads: 10,
+        headers: {
+          'accept': 'multipart/form-data'
+        },
         maxFilesize: {
           limit: 15,
           message: '{{ filesize }} is greater than the {{ maxFilesize }}'
@@ -53,7 +59,11 @@ export default {
         },
         thumbnailWidth: 1000,
         thumbnailHeight: null,
-        thumbnailMethod: 'contain'
+        thumbnailMethod: 'contain',
+        resizeWidth: 100,
+        resizeHeight: 100,
+        resizeQuality: 0.1,
+        resizeMethod: 'crop'
       }
     }
   },
@@ -67,9 +77,13 @@ export default {
         this.loaded = false
       }
     },
-    download () {
+    downloadAll () {
       this.$refs.watermark
         .forEach(watermark => watermark.download())
+    },
+    deleteAll () {
+      this.$refs.watermark
+        .forEach(watermark => this.$refs.vc.removeFile(watermark.file))
     }
   }
 }

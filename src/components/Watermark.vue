@@ -71,6 +71,7 @@ export default {
   computed: {
     className () {
       if (this.file.status === 'success' && this.meta.iptc === false) return 'error'
+      if (Object.keys(this.errors).length > 0) return 'error'
       return this.file.status
     },
     meta () {
@@ -101,7 +102,7 @@ export default {
     },
     reference () {
       if (this.referenceUser && this.referenceUser !== '') return this.referenceUser
-      const regex = new RegExp(/_?([A-Z0-9]{5})\./g)
+      const regex = new RegExp(/_?([A-Z0-9]{5})/g)
       const found = regex.exec(this.file.name)
       if (found && found[1]) {
         this.referenceUser = found[1]
@@ -118,7 +119,6 @@ export default {
   created () {
     this.$on('error', error => {
       this.errors[error.error] = error.message
-      this.file.status = 'error'
     })
   },
 

@@ -1,7 +1,7 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <external></external>
+    <external iptc-parser-url=""></external>
   </div>
 </template>
 
