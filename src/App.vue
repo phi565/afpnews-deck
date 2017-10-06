@@ -1,17 +1,17 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <external iptc-parser-url=""></external>
+    <uploader iptc-parser-url=""></uploader>
   </div>
 </template>
 
 <script>
-import External from './components/External'
+import Uploader from './components/Uploader'
 
 export default {
   name: 'app',
   components: {
-    External
+    Uploader
   }
 }
 </script>
