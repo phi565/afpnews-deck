@@ -1,4 +1,4 @@
-export { default as External } from './components/External.vue'
+export { default as Uploader } from './components/Uploader.vue'
 
 // export { default as myModule } from './store/mymodule.js'
 
