@@ -3,11 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-import VueClip from 'vue-clip'
+// import VueClip from 'vue-clip'
 
 Vue.config.productionTip = false
 
-Vue.use(VueClip)
+// Vue.use(VueClip)
 
 /* eslint-disable no-new */
 new Vue({
