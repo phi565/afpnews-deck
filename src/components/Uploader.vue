@@ -25,12 +25,11 @@
 
 <script>
 import Watermark from './Watermark'
-import Clip from 'vue-clip'
 
 export default {
   name: 'Uploader',
 
-  components: { Watermark, 'vue-clip': Clip },
+  components: { Watermark },
 
   props: ['iptc-parser-url'],
 
