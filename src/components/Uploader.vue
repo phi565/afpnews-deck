@@ -25,7 +25,7 @@
 
 <script>
 import Watermark from './Watermark'
-import Clip from '../../../../vue-clip'
+import Clip from 'vue-clip'
 
 export default {
   name: 'Uploader',
