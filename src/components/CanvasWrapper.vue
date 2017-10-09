@@ -10,7 +10,7 @@
 import Konva from 'konva'
 
 export default {
-  name: 'canvas-wrapper',
+  name: 'Canvas-Wrapper',
 
   props: {
     'index': {

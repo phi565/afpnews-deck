@@ -27,7 +27,7 @@
 import Watermark from './Watermark'
 
 export default {
-  name: 'External',
+  name: 'Uploader',
 
   components: { Watermark },
 
