@@ -1,6 +1,6 @@
 {
   "name": "toolkit-watermark",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A watermark module for Toolkit",
   "author": "julesbonnard",
   "main": "dist/external.js",
