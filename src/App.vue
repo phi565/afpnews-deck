@@ -1,7 +1,7 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <uploader iptc-parser-url=""></uploader>
+    <uploader iptc-parser-url="http://localhost"></uploader>
   </div>
 </template>
 

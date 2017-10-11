@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "downloadjs": "^1.4.7",
-    "konva-node": "^0.5.1",
+    "konva": "^1.7.2",
     "vue": "^2.4.2",
     "vue-clip": "^1.0.0",
     "vuex": "^2.4.0"

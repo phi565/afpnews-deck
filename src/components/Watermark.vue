@@ -42,6 +42,7 @@
 </template>
 
 <script>
+// TODO : look if it would be possible to work in ssr with downloadjs
 import CanvasWrapper from './CanvasWrapper'
 import download from 'downloadjs'
 

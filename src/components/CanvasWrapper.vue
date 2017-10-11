@@ -7,7 +7,10 @@
 </template>
 
 <script>
+// TODO : look if it would be possible to work in ssr with konva-node
 import Konva from 'konva/src/Core'
+import 'konva/src/Animation'
+import 'konva/src/DragAndDrop'
 import 'konva/src/shapes/Rect'
 import 'konva/src/shapes/Image'
 import 'konva/src/shapes/Text'
@@ -85,7 +88,7 @@ export default {
       height: this.height
     })
 
-    this._layer = new Konva.FastLayer()
+    this._layer = new Konva.Layer()
 
     this._layer.add(new Konva.Image({name: 'Image'}))
     this._layer.add(new Konva.Image({name: 'Logo'}))
