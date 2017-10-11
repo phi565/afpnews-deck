@@ -7,7 +7,10 @@
 </template>
 
 <script>
-import Konva from 'konva'
+import Konva from 'konva/src/Core'
+import 'konva/src/shapes/Rect'
+import 'konva/src/shapes/Image'
+import 'konva/src/shapes/Text'
 
 export default {
   name: 'Canvas-Wrapper',
@@ -82,7 +85,7 @@ export default {
       height: this.height
     })
 
-    this._layer = new Konva.Layer()
+    this._layer = new Konva.FastLayer()
 
     this._layer.add(new Konva.Image({name: 'Image'}))
     this._layer.add(new Konva.Image({name: 'Logo'}))
