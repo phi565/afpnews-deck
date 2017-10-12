@@ -23,7 +23,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "external.js",
+    filename: "watermark-image.js",
     libraryTarget: "umd"
   },
   plugins: [
@@ -35,7 +35,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       comments: false
     }),
     new ExtractTextPlugin({
-      filename:"external.min.css",
+      filename:"styles.min.css",
       allChunks: true,
       fallback:"style-loader"
     }),

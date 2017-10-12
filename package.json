@@ -3,7 +3,7 @@
   "version": "0.1.10",
   "description": "A watermark module for Toolkit",
   "author": "julesbonnard",
-  "main": "dist/external.js",
+  "main": "dist/watermark-image.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
