@@ -46,6 +46,13 @@
 import CanvasWrapper from './CanvasWrapper'
 import download from 'downloadjs'
 
+const toTitleCase = str => str
+  .replace(/\w\S*/g, txt => txt
+    .charAt(0)
+    .toUpperCase() + txt.substr(1)
+    .toLowerCase()
+  )
+
 export default {
   name: 'Watermark',
 
@@ -89,7 +96,7 @@ export default {
     },
     photographer () {
       if (this.meta.iptc && this.meta.iptc.by_line && Array.isArray(this.meta.iptc.by_line)) {
-        return this.meta.iptc.by_line.join(', ')
+        return this.meta.iptc.by_line.map(toTitleCase).join(', ')
       }
       this.$emit('error', {
         error: 'photographerNotFound',
