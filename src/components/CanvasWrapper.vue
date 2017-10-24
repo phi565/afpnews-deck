@@ -46,10 +46,9 @@ export default {
     'copyright': {
       type: String
     },
-    'orientation': {
-      type: String,
-      default: 'horizontal',
-      enum: ['vertical', 'horizontal']
+    'crop': {
+      type: Boolean,
+      default: true
     },
     'reference': {
       type: String
@@ -84,7 +83,7 @@ export default {
       }
     },
     draggable () {
-      return this.orientation === 'horizontal'
+      return this.crop
     },
     photoRatio () {
       return this.photoWidth / this.photoHeight
@@ -93,9 +92,9 @@ export default {
       return this.width
     },
     canvasHeight () {
-      if (this.orientation === 'horizontal') {
+      if (this.crop) {
         return this.height
-      } else if (this.orientation === 'vertical') {
+      } else {
         return this.canvasWidth / this.photoRatio
       }
     }
@@ -138,9 +137,6 @@ export default {
       this.updateReference()
       this.draw()
     },
-    orientation () {
-      this.getPhotoDimensions()
-    },
     canvasHeight (canvasHeight) {
       this._stage.setAttrs({
         height: canvasHeight
@@ -150,7 +146,7 @@ export default {
       this.updateCopyright()
     },
     photoWidth (photoWidth) {
-      if (photoWidth < this.canvasWidth) {
+      if (photoWidth < this.canvasWidth * 2) {
         this.$emit('error', {
           type: 'imageResolutionTooLow',
           message: 'The image resolution is too low'
@@ -158,7 +154,7 @@ export default {
       }
     },
     photoHeight (photoHeight) {
-      if (photoHeight < this.canvasHeight) {
+      if (photoHeight < this.canvasHeight * 2) {
         this.$emit('error', {
           type: 'imageResolutionTooLow',
           message: 'The image resolution is too low'
@@ -183,17 +179,18 @@ export default {
 
       const photo = this.$refs.photo
       const canvasHeight = this.canvasHeight
+      const photoCalculatedHeight = this.canvasWidth / this.photoRatio
 
       this._layer.find('.Image').setAttrs({
         x: 0,
         y: 0,
         image: photo,
         width: this.canvasWidth,
-        height: this.canvasWidth / this.photoRatio,
+        height: photoCalculatedHeight,
         draggable: this.draggable,
         dragBoundFunc: function (pos) {
           if (pos.y > 0) pos.y = 0
-          if (pos.y < -canvasHeight) pos.y = -canvasHeight
+          if (pos.y < canvasHeight - photoCalculatedHeight) pos.y = canvasHeight - photoCalculatedHeight
           return {
             x: this.getAbsolutePosition().x,
             y: pos.y

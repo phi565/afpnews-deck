@@ -10,7 +10,7 @@
         :logoColor="logoColor" 
         :copyright="copyright" 
         :reference="reference" 
-        :orientation="orientation" 
+        :crop="crop" 
         v-on:error="errorHandler" 
         ref="canvas">
       </canvas-wrapper>
@@ -28,11 +28,12 @@
         </select>
       </div>
       <div class="action-group texts">
-        <input v-model="referenceUser">
-        <input v-model="copyrightUser">
+        <input type="text" v-model="referenceUser">
+        <input type="text" v-model="copyrightUser">
       </div>
       <div class="action-group actions">
-        <button @click="toggleOrientation">Switch</button>
+        <input type="checkbox" id="crop" v-model="crop">
+        <label for="crop">Crop</label>
         <button @click="removeFile">Delete</button>
         <button @click="download">Download</button>
       </div>
@@ -75,7 +76,7 @@ export default {
       pixelRatio: 2,
       copyrightUser: null,
       referenceUser: null,
-      orientation: 'horizontal',
+      crop: true,
       errors: {}
     }
   },
@@ -140,13 +141,6 @@ export default {
     },
     removeFile () {
       this.$parent.removeFile(this.file)
-    },
-    toggleOrientation () {
-      if (this.orientation === 'horizontal') {
-        this.orientation = 'vertical'
-      } else if (this.orientation === 'vertical') {
-        this.orientation = 'horizontal'
-      }
     },
     errorHandler (error) {
       this.$set(this.errors, error.type, error.message)
@@ -214,7 +208,7 @@ button {
 button:hover {
   background-color: #b1c8cc;
 }
-input {
+input[type="text"] {
   height: 48px;
   border: 1px solid #9fb4b8;
 }
