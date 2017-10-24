@@ -1,8 +1,8 @@
 <template>
   <div>
-    <img :src="require('@/assets/logo-afp-'+logoColor+'.png')" v-on:load="updateLogo">
-    <img class="photo" :src="src" v-on:load="updateImage">
-    <div :id="canvasIndex" :class="{canvas: true, dragging: drag}"></div>
+    <img :src="require('@/assets/logo-afp-'+logoColor+'.png')" ref="logo" v-on:load="updateLogo">
+    <img id="photo" ref="photo" :src="src" v-on:load="updatePhoto">
+    <div :id="canvasIndex" :class="{draggable: draggable, dragging: drag}"></div>
   </div>
 </template>
 
@@ -46,6 +46,11 @@ export default {
     'copyright': {
       type: String
     },
+    'orientation': {
+      type: String,
+      default: 'horizontal',
+      enum: ['vertical', 'horizontal']
+    },
     'reference': {
       type: String
     }
@@ -56,7 +61,10 @@ export default {
       _stage: null,
       _layer: null,
       loaded: false,
-      drag: false
+      drag: false,
+      photoWidth: null,
+      photoHeight: null,
+      errors: {}
     }
   },
 
@@ -73,6 +81,22 @@ export default {
         shadowOffsetY: 0,
         shadowBlur: 10,
         fill: this.textColor
+      }
+    },
+    draggable () {
+      return this.orientation === 'horizontal'
+    },
+    photoRatio () {
+      return this.photoWidth / this.photoHeight
+    },
+    canvasWidth () {
+      return this.width
+    },
+    canvasHeight () {
+      if (this.orientation === 'horizontal') {
+        return this.height
+      } else if (this.orientation === 'vertical') {
+        return this.canvasWidth / this.photoRatio
       }
     }
   },
@@ -102,7 +126,7 @@ export default {
   },
 
   watch: {
-    textColor (textColor) {
+    textColor () {
       this.updateTextColor()
       this.draw()
     },
@@ -113,6 +137,33 @@ export default {
     reference () {
       this.updateReference()
       this.draw()
+    },
+    orientation () {
+      this.getPhotoDimensions()
+    },
+    canvasHeight (canvasHeight) {
+      this._stage.setAttrs({
+        height: canvasHeight
+      })
+      this.updatePhoto()
+      this.updateReference()
+      this.updateCopyright()
+    },
+    photoWidth (photoWidth) {
+      if (photoWidth < this.canvasWidth) {
+        this.$emit('error', {
+          type: 'imageResolutionTooLow',
+          message: 'The image resolution is too low'
+        })
+      }
+    },
+    photoHeight (photoHeight) {
+      if (photoHeight < this.canvasHeight) {
+        this.$emit('error', {
+          type: 'imageResolutionTooLow',
+          message: 'The image resolution is too low'
+        })
+      }
     }
   },
 
@@ -121,28 +172,28 @@ export default {
       if (!this.loaded) return false
       this._layer.draw()
     },
-    updateImage (ev) {
-      const image = ev.currentTarget
-      const canvasHeight = this.height
-      if (image.width < this.width || image.height < this.height) {
-        this.$parent.$emit('error', {
-          error: 'imageResolutionTooLow',
-          message: 'The image resolution is too low'
-        })
-      }
-      const ratio = image.width / image.height
-      const width = image.width < this.width * 2 ? this.width : image.width / 2
-      const height = image.height < this.height * 2 ? width / ratio : image.height / 2
+    getPhotoDimensions () {
+      const photo = this.$refs.photo
+
+      this.photoWidth = photo.width
+      this.photoHeight = photo.height
+    },
+    updatePhoto () {
+      this.getPhotoDimensions()
+
+      const photo = this.$refs.photo
+      const canvasHeight = this.canvasHeight
+
       this._layer.find('.Image').setAttrs({
         x: 0,
         y: 0,
-        image: image,
-        width: width,
-        height: height,
-        draggable: true,
+        image: photo,
+        width: this.canvasWidth,
+        height: this.canvasWidth / this.photoRatio,
+        draggable: this.draggable,
         dragBoundFunc: function (pos) {
           if (pos.y > 0) pos.y = 0
-          if (pos.y < canvasHeight - height) pos.y = canvasHeight - height
+          if (pos.y < -canvasHeight) pos.y = -canvasHeight
           return {
             x: this.getAbsolutePosition().x,
             y: pos.y
@@ -157,8 +208,8 @@ export default {
       this.draw()
     },
 
-    updateLogo (ev) {
-      const logo = ev.currentTarget
+    updateLogo () {
+      const logo = this.$refs.logo
       this._layer.find('.Logo').setAttrs({
         x: 15,
         y: 10,
@@ -183,7 +234,7 @@ export default {
       text.text(this.copyright)
       text.setAttrs({
         x: this.width - text.width() - 20,
-        y: this.height - text.height() - 20
+        y: this.canvasHeight - text.height() - 20
       })
     },
 
@@ -194,7 +245,7 @@ export default {
       text.text(this.reference)
       text.setAttrs({
         x: 20,
-        y: this.height - text.height() - 20
+        y: this.canvasHeight - text.height() - 20
       })
     }
   }
@@ -205,13 +256,13 @@ export default {
 img {
   display: none;
 }
-img.photo {
+img#photo {
   width: 100%;
 }
-.canvas {
+.draggable {
   cursor: grab;
 }
-.canvas.dragging {
+.draggable.dragging {
   cursor: grabbing;
 }
 </style>

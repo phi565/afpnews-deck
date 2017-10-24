@@ -10,6 +10,8 @@
         :logoColor="logoColor" 
         :copyright="copyright" 
         :reference="reference" 
+        :orientation="orientation" 
+        v-on:error="errorHandler" 
         ref="canvas">
       </canvas-wrapper>
     </div>
@@ -30,6 +32,7 @@
         <input v-model="copyrightUser">
       </div>
       <div class="action-group actions">
+        <button @click="toggleOrientation">Switch</button>
         <button @click="removeFile">Delete</button>
         <button @click="download">Download</button>
       </div>
@@ -72,6 +75,7 @@ export default {
       pixelRatio: 2,
       copyrightUser: null,
       referenceUser: null,
+      orientation: 'horizontal',
       errors: {}
     }
   },
@@ -87,10 +91,7 @@ export default {
         const json = JSON.parse(this.file.xhrResponse.response)
         return json.find(d => d.name === this.file.name)
       } catch (e) {
-        this.$emit('error', {
-          error: 'metaDataInvalid',
-          message: 'Metadata are invalid'
-        })
+        this.$set(this.errors, 'metaDataInvalid', 'Metadata are invalid')
         return false
       }
     },
@@ -98,10 +99,7 @@ export default {
       if (this.meta.iptc && this.meta.iptc.by_line && Array.isArray(this.meta.iptc.by_line)) {
         return this.meta.iptc.by_line.map(toTitleCase).join(', ')
       }
-      this.$emit('error', {
-        error: 'photographerNotFound',
-        message: 'The photographer was not found'
-      })
+      this.$set(this.errors, 'photographerNotFound', 'The photographer was not found')
       return ''
     },
     copyright () {
@@ -116,18 +114,9 @@ export default {
         this.referenceUser = found[1]
         return found[1]
       }
-      this.$emit('error', {
-        error: 'referenceNotFound',
-        message: 'The image reference was not found'
-      })
+      this.$set(this.errors, 'referenceNotFound', 'The image reference was not found')
       return ''
     }
-  },
-
-  created () {
-    this.$on('error', error => {
-      this.errors[error.error] = error.message
-    })
   },
 
   watch: {
@@ -151,6 +140,16 @@ export default {
     },
     removeFile () {
       this.$parent.removeFile(this.file)
+    },
+    toggleOrientation () {
+      if (this.orientation === 'horizontal') {
+        this.orientation = 'vertical'
+      } else if (this.orientation === 'vertical') {
+        this.orientation = 'horizontal'
+      }
+    },
+    errorHandler (error) {
+      this.$set(this.errors, error.type, error.message)
     }
   }
 }
