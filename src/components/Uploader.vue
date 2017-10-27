@@ -130,8 +130,26 @@ button:hover {
 }
 
 main {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  column-count: 1;
+  width: 545px;
+  margin: auto;
+}
+
+@media screen and (min-width: 1150px) {
+  main {
+    width: 1100px;
+    column-count: 2;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  main {
+    width: 1700px;
+    column-count: 3;
+  }
+}
+
+article {
+  display: inline-block;
 }
 </style>

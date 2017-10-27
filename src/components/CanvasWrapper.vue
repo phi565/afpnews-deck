@@ -147,17 +147,25 @@ export default {
     },
     photoWidth (photoWidth) {
       if (photoWidth < this.canvasWidth * 2) {
-        this.$emit('error', {
+        this.$emit('addError', {
           type: 'imageResolutionTooLow',
           message: 'The image resolution is too low'
+        })
+      } else {
+        this.$emit('deleteError', {
+          type: 'imageResolutionTooLow'
         })
       }
     },
     photoHeight (photoHeight) {
       if (photoHeight < this.canvasHeight * 2) {
-        this.$emit('error', {
+        this.$emit('addError', {
           type: 'imageResolutionTooLow',
           message: 'The image resolution is too low'
+        })
+      } else {
+        this.$emit('deleteError', {
+          type: 'imageResolutionTooLow'
         })
       }
     }

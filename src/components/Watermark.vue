@@ -11,7 +11,8 @@
         :copyright="copyright" 
         :reference="reference" 
         :crop="crop" 
-        v-on:error="errorHandler" 
+        v-on:addError="addErrorHandler" 
+        v-on:deleteError="deleteErrorHandler" 
         ref="canvas">
       </canvas-wrapper>
     </div>
@@ -32,8 +33,8 @@
         <input type="text" v-model="copyrightUser">
       </div>
       <div class="action-group actions">
-        <input type="checkbox" id="crop" v-model="crop">
-        <label for="crop">Crop</label>
+        <input type="checkbox" :id="'crop'+index" v-model="crop">
+        <label :for="'crop'+index">Crop</label>
         <button @click="removeFile">Delete</button>
         <button @click="download">Download</button>
       </div>
@@ -90,18 +91,20 @@ export default {
     meta () {
       try {
         const json = JSON.parse(this.file.xhrResponse.response)
+        this.$delete(this.errors, 'metaDataInvalid')
         return json.find(d => d.name === this.file.name)
       } catch (e) {
-        this.$set(this.errors, 'metaDataInvalid', 'Metadata are invalid')
         return false
       }
     },
     photographer () {
       if (this.meta.iptc && this.meta.iptc.by_line && Array.isArray(this.meta.iptc.by_line)) {
+        this.$delete(this.errors, 'photographerNotFound')
         return this.meta.iptc.by_line.map(toTitleCase).join(', ')
+      } else {
+        this.$set(this.errors, 'photographerNotFound', 'The photographer was not found')
+        return ''
       }
-      this.$set(this.errors, 'photographerNotFound', 'The photographer was not found')
-      return ''
     },
     copyright () {
       if (this.copyrightUser && this.copyrightUser !== '') return this.copyrightUser
@@ -113,6 +116,7 @@ export default {
       const found = regex.exec(this.file.name)
       if (found && found[1]) {
         this.referenceUser = found[1]
+        this.$delete(this.errors, 'referenceNotFound')
         return found[1]
       }
       this.$set(this.errors, 'referenceNotFound', 'The image reference was not found')
@@ -142,8 +146,11 @@ export default {
     removeFile () {
       this.$parent.removeFile(this.file)
     },
-    errorHandler (error) {
+    addErrorHandler (error) {
       this.$set(this.errors, error.type, error.message)
+    },
+    deleteErrorHandler (error) {
+      this.$delete(this.errors, error.type)
     }
   }
 }
