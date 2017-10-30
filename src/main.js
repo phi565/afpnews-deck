@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import store from './store'
 import VueClip from 'vue-clip'
 
 Vue.config.productionTip = false
@@ -13,6 +12,5 @@ Vue.use(VueClip)
 new Vue({
   el: '#app',
   template: '<App/>',
-  store,
   components: { App }
 })
