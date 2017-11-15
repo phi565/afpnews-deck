@@ -1,17 +1,17 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <uploader iptc-parser-url="http://localhost"></uploader>
+    <tester></tester>
   </div>
 </template>
 
 <script>
-import Uploader from './components/Uploader'
+import Tester from './components/Tester'
 
 export default {
   name: 'app',
   components: {
-    Uploader
+    Tester
   }
 }
 </script>

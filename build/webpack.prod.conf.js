@@ -23,7 +23,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "watermark-image.js",
+    filename: "interactive-tester.js",
     libraryTarget: "umd"
   },
   plugins: [
