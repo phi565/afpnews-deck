@@ -16,11 +16,7 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+<style lang="scss">
+$assets_path: '~@afp/toolkit-styles/assets/';
+@import "~@afp/toolkit-styles/scss/main.scss";
 </style>

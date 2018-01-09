@@ -1,24 +1,27 @@
 <template lang="html">
-  <div class="dimensions">
+  <div id="dimensions">
     <button 
       type="button" 
-      :class="{active: d.value === currentDimensions}" 
-      v-for="d in availableDimensions" 
-      @click.prevent="currentDimensions = d.value" :disabled="!d.available">
+      :class="{active: d.value === current && unit === 'px'}" 
+      v-for="d in existingDimensions" 
+      @click.prevent="setPixelSize(d.value)" v-if="d.available">
         {{ d.value }}
     </button>
     <button 
       type="button" 
-      :class="{active: currentDimensions === '100%'}" 
-      @click.prevent="currentDimensions = '100%'">
-      100%
+      :class="{active: current === 100 && unit === '%'}" 
+      @click.prevent="setPercentageSize(100)">
+      Auto
     </button>
     <label for="">
       <input 
         name="manual" 
-        type="text" 
-        v-model.number.lazy="currentDimensions">
-        px
+        type="number" 
+        v-model.number.lazy="current">
+        <select name="unit" v-model="unit">
+          <option value="px">px</option>
+          <option value="%">%</option>
+        </select>
     </label>
   </div>
 </template>
@@ -31,11 +34,12 @@ export default {
     return {
       dimensions: [300, 500, 600],
       clientWidth: 600,
-      currentDimensions: 600
+      current: 600,
+      unit: 'px'
     }
   },
   computed: {
-    availableDimensions () {
+    existingDimensions () {
       return this.dimensions
         .map(dim => {
           return {
@@ -43,6 +47,14 @@ export default {
             available: dim <= this.clientWidth
           }
         })
+    },
+    availableDimensions () {
+      return this.existingDimensions
+        .filter(dim => dim.available)
+    },
+
+    currentDimensions () {
+      return this.current + this.unit
     }
   },
   watch: {
@@ -50,24 +62,41 @@ export default {
       const availableDimensions = this.availableDimensions
         .filter(dim => dim.available)
         .map(dim => dim.value)
-      const newDimension = Math.max(...availableDimensions)
-      this.currentDimension = newDimension >= 500 ? newDimension : '100%'
+      const newDimensions = Math.max(...availableDimensions)
+      if (newDimensions >= 500) {
+        this.setPixelSize(newDimensions)
+      } else {
+        this.setPercentageSize(100)
+      }
     },
     currentDimensions (newDimensions) {
+      console.log(newDimensions)
       this.$emit('newDimensions', newDimensions)
     }
   },
   mounted () {
     this.setSize()
     window.onresize = this.setSize
+    this.$emit('newDimensions', this.currentDimensions)
   },
   methods: {
     setSize () {
       this.clientWidth = this.$el.clientWidth
+    },
+    setPixelSize (value) {
+      this.current = value
+      this.unit = 'px'
+    },
+    setPercentageSize (value) {
+      this.current = value
+      this.unit = '%'
     }
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+  input {
+    max-width: 100px;
+  }
 </style>

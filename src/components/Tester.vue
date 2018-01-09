@@ -1,8 +1,12 @@
 <template>
   <div>
-    <input v-model="url">
-    <input type="checkbox" v-model="fakeText"> Fake Text
-    <input type="checkbox" v-model="border"> Border
+    <div id="url">
+      <input v-model="url">
+    </div>
+    <div id="opts">
+      <label for="fake-test"><input type="checkbox" v-model="fakeText" id="fake-test"> Fake Text</label>
+      <label for="border"><input type="checkbox" v-model="border" id="border"> Border</label>
+    </div>
     <dimensions-selector v-on:newDimensions="setNewDimensions" />
     <visualizer :dimensions="dimensions" :url="url" :border="border" :fakeText="fakeText" />
   </div>
@@ -30,7 +34,7 @@ export default {
     const href = location.href
     const urlRegex = /(\?|&)url=([a-z0-9/_:.#-]*)/i
     const urlParameter = urlRegex.exec(href)
-    this.url = urlParameter[2]
+    if (urlParameter) this.url = urlParameter[2]
   },
 
   methods: {
@@ -41,6 +45,33 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  $form-width: 600px;
+  $margin-bottom: 32px;
 
+  #url, #opts, #dimensions {
+    max-width: $form-width;
+    margin: auto;
+    display: flex;
+    margin-top: $margin-bottom;
+    margin-bottom: $margin-bottom;
+  }
+
+  #url {
+    justify-content: center;
+    align-items: center;
+
+    input {
+      width: 90%;
+      height: 55px;
+    }
+  }
+
+  #opts {
+    justify-content: space-around;
+  }
+
+  #dimensions {
+    justify-content: space-around;
+  }
 </style>
