@@ -44,7 +44,7 @@ export default {
   mounted () {
     const url = parse(location.href, true)
     this.toolUrl = url.protocol + url.host + url.pathname
-    this.url = url.query.url + (url.hash || '') || 'https://graphics.afpforum.com/builds/20171027-ecarts_temperature/#fr'
+    this.url = url.query.url ? url.query.url + (url.hash || '') : 'https://graphics.afpforum.com/builds/20171027-ecarts_temperature/#fr'
   },
 
   methods: {

@@ -1,5 +1,5 @@
 {
-  "name": "@afp/interactive-tester",
+  "name": "@afp/toolkit-interactive-tester",
   "version": "0.0.0",
   "description": "An interactive tester module for Toolkit",
   "author": "julesbonnard",
