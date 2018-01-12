@@ -1,1 +1,1 @@
-export { default as Uploader } from './components/Uploader.vue'
+export { default as Tester } from './components/Tester.vue'

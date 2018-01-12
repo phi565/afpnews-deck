@@ -70,7 +70,6 @@ export default {
       }
     },
     currentDimensions (newDimensions) {
-      console.log(newDimensions)
       this.$emit('newDimensions', newDimensions)
     }
   },

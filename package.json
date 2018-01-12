@@ -1,5 +1,5 @@
 {
-  "name": "toolkit-interactive-tester",
+  "name": "@afp/interactive-tester",
   "version": "0.0.0",
   "description": "An interactive tester module for Toolkit",
   "author": "julesbonnard",
@@ -50,6 +50,7 @@
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
     "shelljs": "^0.7.8",
+    "url": "^0.11.0",
     "url-loader": "^0.6.2",
     "vue": "^2.5.13",
     "vue-loader": "^13.7.0",

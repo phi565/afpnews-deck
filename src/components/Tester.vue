@@ -9,12 +9,16 @@
     </div>
     <dimensions-selector v-on:newDimensions="setNewDimensions" />
     <visualizer :dimensions="dimensions" :url="url" :border="border" :fakeText="fakeText" />
+    <div id="favorite-link">
+      Shortcut (add this link to your favorites) : <a :href="etBym">Et Bym !</a>
+    </div>
   </div>
 </template>
 
 <script>
 import Visualizer from './Visualizer'
 import DimensionsSelector from './DimensionsSelector'
+import { parse } from 'url'
 
 export default {
   name: 'Tester',
@@ -23,18 +27,24 @@ export default {
 
   data () {
     return {
-      url: 'https://graphics.afpforum.com/builds/20171027-ecarts_temperature/#fr',
+      url: '',
       dimensions: 600,
       fakeText: false,
-      border: false
+      border: false,
+      toolUrl: ''
+    }
+  },
+
+  computed: {
+    etBym () {
+      return `javascript: var url = window.location.href;var pymTester = "${this.toolUrl}?url=";window.open(pymTester+url);`
     }
   },
 
   mounted () {
-    const href = location.href
-    const urlRegex = /(\?|&)url=([a-z0-9/_:.#-]*)/i
-    const urlParameter = urlRegex.exec(href)
-    if (urlParameter) this.url = urlParameter[2]
+    const url = parse(location.href, true)
+    this.toolUrl = url.protocol + url.host + url.pathname
+    this.url = url.query.url + (url.hash || '') || 'https://graphics.afpforum.com/builds/20171027-ecarts_temperature/#fr'
   },
 
   methods: {
@@ -49,12 +59,19 @@ export default {
   $form-width: 600px;
   $margin-bottom: 32px;
 
-  #url, #opts, #dimensions {
+  #url, #favorite-link, #opts, #dimensions {
     max-width: $form-width;
     margin: auto;
     display: flex;
     margin-top: $margin-bottom;
     margin-bottom: $margin-bottom;
+  }
+
+  #favorite-link {
+    justify-content: center;
+    a {
+      font-weight: bold;
+    }
   }
 
   #url {

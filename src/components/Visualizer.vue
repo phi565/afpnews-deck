@@ -48,11 +48,11 @@ export default {
 
 <style lang="scss" scoped>
   .interactive-layout {
-    background-color: #ccc;
     padding-top: 32px;
     padding-bottom: 32px;
 
     #interactive {
+      background-color: #ccc;
       margin: auto;
       transition: width 150ms linear;
     }
@@ -60,9 +60,10 @@ export default {
     p {
       padding-left: 12px;
       padding-right: 12px;
-      max-width: 800px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+      font-size: 20px;
     }
   }
 </style>
