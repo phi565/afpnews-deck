@@ -1,6 +1,6 @@
 {
   "name": "@afp/toolkit-interactive-tester",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An interactive tester module for Toolkit",
   "author": "julesbonnard",
   "main": "dist/interactive-tester.js",
