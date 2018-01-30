@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-inquirer :questions="questions" v-on:answer="answer"></vue-inquirer>
+    <vue-inquirer :questions="questions" v-on:submit="setAnswers"></vue-inquirer>
   </div>
 </template>
 
@@ -14,6 +14,7 @@ export default {
 
   data () {
     return {
+      answers: null,
       questions: [
         {
           type: 'list',
@@ -117,8 +118,9 @@ export default {
     }
   },
   methods: {
-    answer (answers) {
-      console.log(answers)
+    setAnswers (answers) {
+      this.answers = answers
+      console.log(this.answers)
     }
   }
 }
