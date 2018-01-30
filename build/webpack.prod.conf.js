@@ -23,7 +23,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "interactive-tester.js",
+    filename: "moulinex.js",
     libraryTarget: "umd"
   },
   plugins: [

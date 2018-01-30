@@ -1,17 +1,17 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <tester></tester>
+    <moulinex></moulinex>
   </div>
 </template>
 
 <script>
-import Tester from './components/Tester'
+import Moulinex from './components/Moulinex'
 
 export default {
   name: 'app',
   components: {
-    Tester
+    Moulinex
   }
 }
 </script>

@@ -1,6 +1,6 @@
-# vue-external-component
+# Toolkit Moulinex
 
-> A Vue.js project for Nuxt embeding
+> A tool to format data into print graphics
 
 ## Build Setup
 

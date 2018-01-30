@@ -1,1 +1,1 @@
-export { default as Tester } from './components/Tester.vue'
+export { default as Moulinex } from './components/Moulinex.vue'
