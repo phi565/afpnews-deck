@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = JSON.parse(JSON.stringify(val))}" v-on:change="() => {this.answers = null}"></vue-inquirer>
+    <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = val}"></vue-inquirer>
     <svg-composer v-if="answers" :spec="answers"></svg-composer>
     <download-svg v-if="answers"></download-svg>
   </div>
