@@ -1,9 +1,8 @@
 <template>
   <div>
-    {{ spec }}
     <loading v-if="!isLoaded"></loading>
     <div>
-      <olympic-games-medals v-show="isLoaded" v-on:loaded="val => { this.isLoaded = true }" :event="1075" :lang="'fr'" ref="foo"></olympic-games-medals>
+      <olympic-games-medals v-if="spec.template === 'olympic-games-medals'" v-show="isLoaded" v-on:loaded="val => { this.isLoaded = true }" :event="spec.year" :lang="spec.lang" :key="`${spec.year}-${spec.lang}`"></olympic-games-medals>
     </div>
   </div>
 </template>

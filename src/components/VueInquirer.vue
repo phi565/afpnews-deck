@@ -75,6 +75,7 @@ export default {
 
   methods: {
     nextQuestion () {
+      this.$emit('change')
       // Check if there is a validation error, then filter questions array for the next one
       this.$nextTick(() => {
         if (this.hasErrors) {

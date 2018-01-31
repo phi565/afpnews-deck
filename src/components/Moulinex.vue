@@ -1,19 +1,20 @@
 <template>
   <div>
-    <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = val}"></vue-inquirer>
-    <!-- <svg-composer v-if="answers" :spec="answers"></svg-composer> -->
-    <svg-composer :spec="{}"></svg-composer>
+    <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = JSON.parse(JSON.stringify(val))}" v-on:change="() => {this.answers = null}"></vue-inquirer>
+    <svg-composer v-if="answers" :spec="answers"></svg-composer>
+    <download-svg v-if="answers"></download-svg>
   </div>
 </template>
 
 <script>
 import VueInquirer from '@/components/VueInquirer'
 import SvgComposer from '@/components/SvgComposer'
+import DownloadSvg from '@/components/DownloadSvg'
 
 export default {
   name: 'Moulinex',
 
-  components: { VueInquirer, SvgComposer },
+  components: { VueInquirer, SvgComposer, DownloadSvg },
 
   data () {
     return {
@@ -44,7 +45,16 @@ export default {
           name: 'year',
           message: 'Choose a year',
           default: 2018,
-          choices: [2018, 2016],
+          choices: [
+            {
+              name: 2018,
+              value: 1076
+            },
+            {
+              name: 2016,
+              value: 1075
+            }
+          ],
           when: answers => answers.template === 'olympic-games-medals'
         },
         {
