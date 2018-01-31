@@ -1,16 +1,19 @@
 <template>
   <div>
-    <vue-inquirer :questions="questions" v-on:submit="setAnswers"></vue-inquirer>
+    <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = val}"></vue-inquirer>
+    <!-- <svg-composer v-if="answers" :spec="answers"></svg-composer> -->
+    <svg-composer :spec="{}"></svg-composer>
   </div>
 </template>
 
 <script>
 import VueInquirer from '@/components/VueInquirer'
+import SvgComposer from '@/components/SvgComposer'
 
 export default {
   name: 'Moulinex',
 
-  components: { VueInquirer },
+  components: { VueInquirer, SvgComposer },
 
   data () {
     return {
@@ -115,12 +118,6 @@ export default {
           ]
         }
       ]
-    }
-  },
-  methods: {
-    setAnswers (answers) {
-      this.answers = answers
-      console.log(this.answers)
     }
   }
 }
