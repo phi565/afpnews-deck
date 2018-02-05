@@ -1,20 +1,27 @@
 <template>
   <div>
     <vue-inquirer :questions="questions" v-on:submit="val => {this.answers = val}"></vue-inquirer>
-    <svg-composer v-if="answers" :spec="answers"></svg-composer>
-    <download-svg v-if="answers"></download-svg>
+    <p><img v-if="answers" :src="svgUrl"></p>
   </div>
 </template>
 
 <script>
 import VueInquirer from '@/components/VueInquirer'
-import SvgComposer from '@/components/SvgComposer'
-import DownloadSvg from '@/components/DownloadSvg'
+import { format } from 'url'
+
+const tableLang = {
+  'fr': 1,
+  'en': 2,
+  'es': 3,
+  'de': 1,
+  'ar': 1,
+  'pt': 1
+}
 
 export default {
   name: 'Moulinex',
 
-  components: { VueInquirer, SvgComposer, DownloadSvg },
+  components: { VueInquirer },
 
   data () {
     return {
@@ -46,278 +53,20 @@ export default {
         },
         {
           type: 'list',
-          name: 'year',
-          message: 'Choose a year',
-          default: 2018,
+          name: 'season',
+          message: 'Choose a season',
+          default: 'true',
           choices: [
             {
-              name: '2016 - Paralympiques',
-              value: 1129
+              name: 'summer',
+              value: 'true'
             },
             {
-              name: 2016,
-              value: 1075
-            },
-            {
-              name: '2014 - Winter - Paralympiques',
-              value: 877
-            },
-            {
-              name: '2014 - Winter',
-              value: 800
-            },
-            {
-              name: '2012 - Paralympiques',
-              value: 750
-            },
-            {
-              name: 2012,
-              value: 718
-            },
-            {
-              name: '2010 - Winter',
-              value: 556
-            },
-            {
-              name: 2008,
-              value: 438
-            },
-            {
-              name: '2006 - Winter',
-              value: 247
-            },
-            {
-              name: 2004,
-              value: 219
-            },
-            {
-              name: '2002 - Winter',
-              value: 158
-            },
-            {
-              name: 2000,
-              value: 48
-            },
-            {
-              name: '1998 - Winter',
-              value: 47
-            },
-            {
-              name: 1996,
-              value: 46
-            },
-            {
-              name: '1994 - Winter',
-              value: 45
-            },
-            {
-              name: '1992 - Winter',
-              value: 44
-            },
-            {
-              name: 1992,
-              value: 43
-            },
-            {
-              name: '1988 - Winter',
-              value: 42
-            },
-            {
-              name: 1988,
-              value: 41
-            },
-            {
-              name: '1984 - Winter',
-              value: 40
-            },
-            {
-              name: 1984,
-              value: 39
-            },
-            {
-              name: '1980 - Winter',
-              value: 38
-            },
-            {
-              name: 1980,
-              value: 37
-            },
-            {
-              name: '1976 - Winter',
-              value: 36
-            },
-            {
-              name: 1976,
-              value: 35
-            },
-            {
-              name: '1972 - Winter',
-              value: 34
-            },
-            {
-              name: 1972,
-              value: 33
-            },
-            {
-              name: '1968 - Winter',
-              value: 32
-            },
-            {
-              name: 1968,
-              value: 31
-            },
-            {
-              name: '1964 - Winter',
-              value: 30
-            },
-            {
-              name: 1964,
-              value: 29
-            },
-            {
-              name: '1960 - Winter',
-              value: 28
-            },
-            {
-              name: 1960,
-              value: 27
-            },
-            {
-              name: '1956 - Winter',
-              value: 26
-            },
-            {
-              name: 1956,
-              value: 25
-            },
-            {
-              name: '1952 - Winter',
-              value: 24
-            },
-            {
-              name: 1952,
-              value: 23
-            },
-            {
-              name: '1948 - Winter',
-              value: 22
-            },
-            {
-              name: 1948,
-              value: 21
-            },
-            {
-              name: 1944,
-              value: 20
-            },
-            {
-              name: 1940,
-              value: 19
-            },
-            {
-              name: '1936 - Winter',
-              value: 18
-            },
-            {
-              name: 1936,
-              value: 17
-            },
-            {
-              name: '1932 - Winter',
-              value: 16
-            },
-            {
-              name: 1932,
-              value: 15
-            },
-            {
-              name: '1928 - Winter',
-              value: 14
-            },
-            {
-              name: 1928,
-              value: 13
-            },
-            {
-              name: '1924 - Winter',
-              value: 12
-            },
-            {
-              name: 1924,
-              value: 11
-            },
-            {
-              name: 1920,
-              value: 10
-            },
-            {
-              name: 1916,
-              value: 9
-            },
-            {
-              name: 1912,
-              value: 8
-            },
-            {
-              name: 1908,
-              value: 7
-            },
-            {
-              name: 1906,
-              value: 6
-            },
-            {
-              name: 1904,
-              value: 5
-            },
-            {
-              name: 1900,
-              value: 4
-            },
-            {
-              name: 1896,
-              value: 3
+              name: 'winter',
+              value: 'false'
             }
           ],
           when: answers => answers.template === 'olympic-games-medals'
-        },
-        {
-          type: 'list',
-          name: 'league',
-          message: 'Choose a league',
-          default: '',
-          choices: [
-            {
-              name: 'Premier league',
-              value: 'premier-league'
-            },
-            {
-              name: 'Ligue 1',
-              value: 'ligue-1'
-            }
-          ],
-          when: answers => answers.template === 'soccer-league-ranking'
-        },
-        {
-          type: 'list',
-          name: 'league',
-          message: 'Choose a league',
-          default: 'top-14',
-          choices: [
-            {
-              name: 'Top 14',
-              value: 'top-14'
-            }
-          ],
-          when: answers => answers.template === 'rubgy-league-ranking'
-        },
-        {
-          type: 'list',
-          name: 'year',
-          message: 'Choose a year',
-          default: 2018,
-          choices: [2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010],
-          when: answers => answers.template === 'soccer-league-ranking' || answers.template === 'rubgy-league-ranking'
         },
         {
           type: 'list',
@@ -350,8 +99,82 @@ export default {
               value: 'ar'
             }
           ]
+        },
+        {
+          type: 'list',
+          name: 'event',
+          message: 'Choose an event',
+          asyncChoices: async ({ lang, season }) => {
+            const response = await fetch(`http://sbds:80/bdsapi/api/osgamescompets/${tableLang[lang]}/${season}`)
+            const olympicGames = await response.json()
+            return olympicGames.Competitions.map(game => ({ name: game.Name, value: game.Id })).reverse()
+          },
+          when: answers => answers.template === 'olympic-games-medals'
+        },
+        {
+          type: 'list',
+          name: 'event',
+          message: 'Choose an event',
+          asyncChoices: async ({ lang }) => {
+            const response = await fetch(`http://sbds:80/bdsapi/api/xcevenementsbydiscipline/${tableLang[lang]}/16`)
+            const events = await response.json()
+            return events.Evenements.map(event => ({ name: event.Label, value: event.Id })).reverse()
+          },
+          // default: 6851,
+          // choices: [
+          //   {
+          //     name: 'France : Ligue 1 (2017/2018)',
+          //     value: 6851
+          //   },
+          //   {
+          //     name: 'France : National (2017/2018)',
+          //     value: 6862
+          //   }
+          // ],
+          when: answers => answers.template === 'soccer-ligue1-ranking'
+        },
+        {
+          type: 'list',
+          name: 'phase',
+          message: 'Choose a phase',
+          asyncChoices: async ({ lang, event }) => {
+            const response = await fetch(`http://sbds:80/bdsapi/api/xcphases/${tableLang[lang]}/${event}`)
+            const phases = await response.json()
+            return phases.Phases.map(phase => ({ name: phase.PhaseCompet, value: phase.PhaseId })).reverse()
+          },
+          when: answers => answers.template === 'soccer-ligue1-ranking'
+        },
+        {
+          type: 'list',
+          name: 'group',
+          message: 'Choose a group',
+          asyncChoices: async ({ lang, event, phase }) => {
+            const response = await fetch(`http://sbds:80/bdsapi/api/xcphases/${tableLang[lang]}/${event}`)
+            const phases = await response.json()
+            const groupes = phases.Phases.find(phaseObj => phaseObj.PhaseId === parseInt(phase)).Groupes
+
+            return groupes.map((group, i) => {
+              return {
+                name: group.GroupeLabel || i.toString(),
+                value: group.GroupeId
+              }
+            })
+          },
+          when: answers => answers.template === 'soccer-ligue1-ranking'
         }
       ]
+    }
+  },
+
+  computed: {
+    svgUrl () {
+      return format({
+        protocol: 'http',
+        hostname: 'localhost',
+        port: 3001,
+        pathname: 'image.svg',
+        query: this.answers
+      })
     }
   }
 }
