@@ -1,6 +1,6 @@
 # Vue Inquirer
 
-> A tool ask question and format answers
+> A tool to ask questions and format answers
 
 ## Build Setup
 
