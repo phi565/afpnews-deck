@@ -2,57 +2,62 @@
   <div>
     <form v-on:submit.prevent="">
       <div class="question" v-for="(question, i) in currentQuestions" :key="question.name">
-        <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="goQuestion(i)">
+        <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="goQuestion(i)" @change="goQuestion(i)">
         <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="goQuestion(i)">
           <option disabled value=''>{{ question.message }}</option>
           <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice }}</option>
         </select>
-        <button :disabled="errors[question.name] ? 'disabled' : false" @click="goQuestion(i + 1)">Valider</button>
+        <button v-show="current === i" :disabled="errors[question.name] ? 'disabled' : false" @click="goQuestion(i + 1)">✓</button>
+        <p class="error" v-if="errors[question.name]">{{ errors[question.name] }}</p>
       </div>
-      <button type="submit" v-if="!hasErrors && !missSomeAnswers && current === relevantQuestions.length" @click="submit">Générer</button>
-      {{ answers }}
+      <button id="submit" type="submit" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Générer</button>
     </form>
+    <pre id="debug" v-if="debug">{{ answers | pretty }}</pre>
   </div>
 </template>
 
 <script>
+import inquirer from '@/utils/inquirer'
+
 export default {
   name: 'vue-inquirer',
 
+  filters: {
+    pretty (val) {
+      return JSON.stringify(val, null, 2)
+    }
+  },
+
   props: {
-    questions: { // Should be an array containing an inquirer definition (https://github.com/SBoudrias/Inquirer.js/)
+    url: { // Must be a VueInquirer server (respond to POST)
+      type: String,
+      required: false
+    },
+    initialQuestions: { // Must be a VueInquirer questions array
       type: Array,
-      required: true
+      required: false
+    },
+    debug: {
+      type: Boolean,
+      required: false
     }
   },
 
   data () {
     return {
       current: null, // Index of the current question inside the filtered question array
-      answers: {}, // Contains the answers hash
-      errors: {} // Contains validation errors
+      questions: [],
+      answers: {},
+      errors: {}
     }
   },
 
   computed: {
-    relevantQuestions () {
-      // Check if question is displayable
+    currentQuestions () {
       return this.questions
-        .filter(question => {
-          if (!question.when || typeof question.when !== 'function') return true
-          return question.when(this.answers)
+        .filter((question, i) => {
+          return i <= this.current
         })
-    },
-    currentQuestions: {
-      get () {
-        return this.relevantQuestions
-          .filter((question, i) => {
-            return i <= this.current
-          })
-      },
-      set (questions) {
-        this.questions = Object.assign(this.questions, questions)
-      }
     },
     hasErrors () {
       let errors = false
@@ -62,7 +67,7 @@ export default {
       return errors
     },
     missSomeAnswers () {
-      return this.relevantQuestions.some(question => {
+      return this.questions.some(question => {
         return this.answers[question.name] === undefined
       })
     }
@@ -72,46 +77,41 @@ export default {
     this.goQuestion(0)
   },
 
-  watch: {
-    answers: {
-      handler () {
-        for (const questionName in this.answers) {
-          const question = this.currentQuestions.find(d => d.name === questionName)
-          if (question) {
-            this.filterAnswer(question)
-            this.validateAnswer(question)
-          }
-        }
-      },
-      deep: true,
-      immediate: false
-    },
-    currentQuestions (questions) {
-      for (const answer in this.answers) {
-        if (!questions.find(d => d.name === answer)) {
-          delete this.answers[answer]
-          delete this.errors[answer]
-        }
-      }
-    }
-  },
-
   methods: {
-    goQuestion (i) {
-      // Check if there is a validation error, then filter questions array for the next one
-      if (this.hasErrors) {
-        return false
-      }
-      this.current = i
+    async goQuestion (i) {
+      this.$emit('reset')
 
-      this.prepareQuestions()
-        .then(questions => {
-          this.currentQuestions = questions
-          questions.forEach(question => {
-            this.initializeQuestionError(question)
-            this.initializeQuestionAnswer(question)
-          })
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(this.answers)
+      }
+
+      try {
+        let data
+
+        // If questions async
+        if (this.url) {
+          const response = await fetch(this.url, options)
+          data = await response.json()
+        } else if (this.initialQuestions) {
+          // If questions sync
+          data = await inquirer(this.answers, this.initialQuestions)
+        } else {
+          console.error('No questions data')
+        }
+
+        this.questions = data.questions
+        this.errors = data.errors
+        this.answers = data.answers
+
+        this.current = i
+
+        this.currentQuestions.forEach(question => {
+          this.initializeQuestionAnswer(question)
         })
+      } catch (e) {
+        console.error(e)
+      }
     },
     async prepareQuestions () {
       const promises = this.currentQuestions
@@ -129,32 +129,12 @@ export default {
       const questions = await Promise.all(promises)
       return questions
     },
-    initializeQuestionError (question) {
-      // Set error to null in errors hash
-      if (this.answers[question.name] === undefined) {
-        this.$set(this.errors, question.name, null)
-      }
-    },
     initializeQuestionAnswer (question) {
       // Set up default answer in answers hash
       if (this.answers[question.name] === undefined) {
-        let defaultAnswer = typeof question.default === 'function' ? question.default() : question.default
+        let defaultAnswer = question.default
         if (question.multiple && !Array.isArray(defaultAnswer)) defaultAnswer = []
         this.$set(this.answers, question.name, defaultAnswer)
-      }
-    },
-    filterAnswer (question) {
-      if (question.filter && typeof question.filter === 'function') {
-        this.answers[question.name] = question.filter(this.answers[question.name])
-      }
-    },
-    validateAnswer (question) {
-      if (question.type === 'list') {
-        this.errors[question.name] = !question.choices.some(d => d.value === this.answers[question.name] || d === this.answers[question.name])
-      } else {
-        if (question.validate && typeof question.validate === 'function') {
-          this.errors[question.name] = !question.validate(this.answers[question.name], this.answers)
-        }
       }
     },
     submit () {
@@ -165,6 +145,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+form {
+  padding: 5px;
+
+  .question {
+    margin-bottom: 12px;
+
+    input, select {
+      width: 50%;
+    }
+  }
+
+  #submit {
+    width: 50%;
+  }
+}
+#debug {
+  background-color: yellow;
+  margin-top: 20px;
+  padding: 20px;
+}
 .danger {
   border: 1px solid red;
 }

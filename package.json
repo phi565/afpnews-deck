@@ -1,9 +1,9 @@
 {
-  "name": "@afp/moulinex",
+  "name": "@afp/vue-inquirer",
   "version": "0.0.1",
   "description": "A tool to format data into print graphics",
   "author": "julesbonnard",
-  "main": "dist/moulinex.js",
+  "main": "dist/vue-inquirer.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",

@@ -23,7 +23,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "moulinex.js",
+    filename: "vue-inquirer.js",
     libraryTarget: "umd"
   },
   plugins: [
