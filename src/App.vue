@@ -1,7 +1,7 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <vue-inquirer :url="null" v-on:submit="val => {log(val)}" :initialQuestions="questions" :debug="true"></vue-inquirer>
+    <vue-inquirer :url="'http://localhost:3001'" v-on:submit="val => {log(val)}" :initialQuestions="questions" :debug="true"></vue-inquirer>
   </div>
 </template>
 
