@@ -7,7 +7,7 @@
           <option disabled value=''>{{ question.message }}</option>
           <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice }}</option>
         </select>
-        <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()"><span v-if="!isLoading">✓</span><span class="loading" v-else><i class="UI-icon UI-loading"></i> Loading</span></button>
+        <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()" :class="{ processing: isLoading }"><span v-if="!isLoading">✓</span><span v-else>Loading</span></button>
         <p class="error" v-if="errors[question.name]">Your answer is not correct</p>
       </div>
       <button id="submit" type="submit" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Generate</button>
@@ -184,19 +184,5 @@ form {
 }
 .success {
   outline: 1px solid green;
-}
-.loading {
-  position: relative;
-  padding-left: 20px;
-  .UI-icon.UI-loading {
-    left: 0px;
-    position: absolute;
-    animation:spin 4s linear infinite;
-  }
-}
-@keyframes spin {
-  100% {
-    transform:rotate(360deg);
-  }
 }
 </style>
