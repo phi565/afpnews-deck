@@ -1,6 +1,6 @@
-# Toolkit Moulinex
+# Vue Inquirer
 
-> A tool to format data into print graphics
+> A tool to ask questions and format answers
 
 ## Build Setup
 
