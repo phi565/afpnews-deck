@@ -1,6 +1,6 @@
 {
   "name": "@afp/vue-inquirer",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A tool to format data into print graphics",
   "author": "julesbonnard",
   "main": "dist/vue-inquirer.js",
