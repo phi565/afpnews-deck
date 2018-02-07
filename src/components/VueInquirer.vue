@@ -138,6 +138,7 @@ export default {
         this.isLoading = false
         return data
       } catch (e) {
+        this.$emit('error')
         console.error(e)
         this.isLoading = false
         return Promise.reject(e)
