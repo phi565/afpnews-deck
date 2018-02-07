@@ -177,6 +177,13 @@ form {
       input, select {
         flex: 2;
         width: 100%;
+
+        &.danger {
+          outline: 1px solid $danger_color;
+        }
+        &.success {
+          outline: 1px solid $success_color;
+        }
       }
       button {
         flex-basis: 50px;
@@ -198,11 +205,5 @@ form {
   background-color: yellow;
   margin-top: 20px;
   padding: 20px;
-}
-.danger {
-  border: 1px solid $danger_color;
-}
-.success {
-  outline: 1px solid $success_color;
 }
 </style>
