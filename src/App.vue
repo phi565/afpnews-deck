@@ -53,7 +53,7 @@ export default {
         {
           type: 'list',
           name: 'asyncChoices',
-          message: 'Choose an choice',
+          message: 'Choose a choice',
           asyncChoices: async () => {
             await delay(100)
             return ['choice1', 'choice2']
@@ -63,7 +63,7 @@ export default {
         {
           type: 'list',
           name: 'asyncChoices2',
-          message: 'Choose an choice',
+          message: 'Choose a choice',
           asyncChoices: async ({ asyncChoices }) => {
             if (!asyncChoices) return []
             await delay(5000)
@@ -85,4 +85,8 @@ export default {
 <style lang="scss">
 $assets_path: '~@afp/toolkit-styles/assets/';
 @import "~@afp/toolkit-styles/scss/main.scss";
+form {
+  max-width: 500px;
+  margin: auto;
+}
 </style>

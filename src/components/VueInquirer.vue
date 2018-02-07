@@ -2,15 +2,16 @@
   <div>
     <form v-on:submit.prevent="">
       <div class="question" v-for="(question, i) in currentQuestions" :key="question.name">
+        <h3 v-if="question.message">{{ question.message }}</h3>
         <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="validate(i)" @change="validate(i)">
         <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="validate(i)">
           <option disabled value=''>{{ question.message }}</option>
-          <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice }}</option>
+          <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice | ellipsis }}</option>
         </select>
         <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()" :class="{ processing: isLoading }"><span v-if="!isLoading">✓</span><span v-else>Loading</span></button>
         <p class="error" v-if="errors[question.name]">Your answer is not correct</p>
       </div>
-      <button id="submit" type="submit" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Generate</button>
+      <button type="submit" class="success" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Generate</button>
     </form>
     <pre id="debug" v-if="debug">{{ answers | pretty }}</pre>
   </div>
@@ -25,6 +26,10 @@ export default {
   filters: {
     pretty (val) {
       return JSON.stringify(val, null, 2)
+    },
+    ellipsis (val) {
+      if (val.length < 40) return val
+      return `${val.substr(0, 40)}…`
     }
   },
 
@@ -160,19 +165,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@afp/toolkit-styles/scss/variables.scss";
 form {
   padding: 5px;
 
   .question {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin-bottom: 12px;
 
+    h3 {
+      width: 100%;
+    }
+
     input, select {
-      width: 50%;
+      flex: 1;
+    }
+    button {
+      margin-left: 10px;
+      min-width: 50px;
+    }
+    p.error {
+      width: 100%;
+      color: $danger_color;
     }
   }
 
-  #submit {
-    width: 50%;
+  button[type="submit"] {
+    margin-top: 32px;
+    width: 100%;
   }
 }
 #debug {
@@ -181,9 +203,9 @@ form {
   padding: 20px;
 }
 .danger {
-  border: 1px solid red;
+  border: 1px solid $danger_color;
 }
 .success {
-  outline: 1px solid green;
+  outline: 1px solid $success_color;
 }
 </style>
