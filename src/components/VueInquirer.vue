@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import fetch from 'cross-fetch'
+import fetch from 'isomorphic-fetch'
 import inquirer from '@/utils/inquirer'
 
 export default {
