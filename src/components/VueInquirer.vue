@@ -3,12 +3,14 @@
     <form v-on:submit.prevent="">
       <div class="question" v-for="(question, i) in currentQuestions" :key="question.name">
         <h3 v-if="question.message">{{ question.message }}</h3>
-        <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="validate(i)" @change="validate(i)">
-        <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="validate(i)">
-          <option disabled value=''>{{ question.message }}</option>
-          <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice | ellipsis }}</option>
-        </select>
-        <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()" :class="{ processing: isLoading }"><span v-if="!isLoading">✓</span><span v-else>Loading</span></button>
+        <div class="form-group">
+          <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="validate(i)" @change="validate(i)">
+          <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="validate(i)">
+            <option disabled value=''>{{ question.message }}</option>
+            <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice }}</option>
+          </select>
+          <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()" :class="{ processing: isLoading }"><span v-if="!isLoading">✓</span><span v-else>Loading</span></button>
+        </div>
         <p class="error" v-if="errors[question.name]">Your answer is not correct</p>
       </div>
       <button type="submit" class="success" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Generate</button>
@@ -26,10 +28,6 @@ export default {
   filters: {
     pretty (val) {
       return JSON.stringify(val, null, 2)
-    },
-    ellipsis (val) {
-      if (val.length < 40) return val
-      return `${val.substr(0, 40)}…`
     }
   },
 
@@ -170,24 +168,23 @@ form {
   padding: 5px;
 
   .question {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     margin-bottom: 12px;
 
-    h3 {
-      width: 100%;
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+
+      input, select {
+        flex: 2;
+        width: 100%;
+      }
+      button {
+        flex-basis: 50px;
+        margin-left: 10px;
+      }
     }
 
-    input, select {
-      flex: 1;
-    }
-    button {
-      margin-left: 10px;
-      min-width: 50px;
-    }
     p.error {
-      width: 100%;
       color: $danger_color;
     }
   }
