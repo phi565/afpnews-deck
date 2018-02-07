@@ -1,7 +1,7 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <vue-inquirer :url="null" v-on:submit="val => {log(val)}" :initialQuestions="questions" :debug="true"></vue-inquirer>
+    <vue-inquirer :url="'http://localhost:3001'" v-on:submit="val => {log(val)}" :initialQuestions="questions" :debug="true"></vue-inquirer>
   </div>
 </template>
 
@@ -43,13 +43,33 @@ export default {
           when: answers => answers.template === 'template-1'
         },
         {
+          type: 'input',
+          name: 'nameWithoutFilters',
+          message: 'Type the name of your project',
+          default: 'my-project',
+          validate: input => input.match(/^[A-Z-]+$/),
+          when: answers => answers.template === 'template-1'
+        },
+        {
           type: 'list',
-          name: 'async-choices',
+          name: 'asyncChoices',
           message: 'Choose an choice',
-          asyncChoices: async ({ template }) => {
+          asyncChoices: async () => {
             await delay(100)
             return ['choice1', 'choice2']
-          }
+          },
+          when: answers => answers.template === 'template-2'
+        },
+        {
+          type: 'list',
+          name: 'asyncChoices2',
+          message: 'Choose an choice',
+          asyncChoices: async ({ asyncChoices }) => {
+            if (!asyncChoices) return []
+            await delay(5000)
+            return ['choice1', 'choice2']
+          },
+          when: answers => answers.template === 'template-2'
         }
       ]
     }

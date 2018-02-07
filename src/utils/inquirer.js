@@ -1,4 +1,4 @@
-export default async (answers, initialQuestions) => {
+export default async ({ answers, validate, filter, asyncChoices }, initialQuestions) => {
   const promises = initialQuestions
 
     // Select only relevant questions
@@ -10,8 +10,8 @@ export default async (answers, initialQuestions) => {
     })
 
     // Fetch async choices
-    .map(async question => {
-      if (typeof question.asyncChoices === 'function') {
+    .map(async (question, i) => {
+      if (asyncChoices === i && typeof question.asyncChoices === 'function') {
         try {
           question.choices = await question.asyncChoices(answers)
         } catch (e) {
@@ -30,17 +30,17 @@ export default async (answers, initialQuestions) => {
 
     if (question) {
       // Filter answer
-      if (typeof question.filter === 'function') {
+      if (filter && typeof question.filter === 'function') {
         answers[questionName] = question.filter(answers[questionName])
       }
 
       const answer = answers[questionName]
 
       // Validate answer
-      if (question.type === 'list') {
-        errors[questionName] = !question.choices.some(d => d.value === answer || d === answer)
-      } else {
-        if (typeof question.validate === 'function') {
+      if (validate) {
+        if (question.type === 'list' && Array.isArray(question.choices)) {
+          errors[questionName] = !question.choices.some(d => d.value === answer || d === answer)
+        } else if (question.type !== 'list' && typeof question.validate === 'function') {
           errors[questionName] = !question.validate(answer, answers)
         }
       }

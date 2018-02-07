@@ -2,15 +2,15 @@
   <div>
     <form v-on:submit.prevent="">
       <div class="question" v-for="(question, i) in currentQuestions" :key="question.name">
-        <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="goQuestion(i)" @change="goQuestion(i)">
-        <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="goQuestion(i)">
+        <input v-if="question.type === 'input'" :type="question.type === 'password' ? 'password' : 'text'" :placeholder="question.message" v-model="answers[question.name]" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @keyup="validate(i)" @change="validate(i)">
+        <select v-else-if="question.type === 'list'" v-model="answers[question.name]" :multiple="question.multiple || false" :class="{ danger: errors[question.name] === true, success: errors[question.name] === false }" @change="validate(i)">
           <option disabled value=''>{{ question.message }}</option>
           <option v-for="choice in question.choices" :key="choice.value || choice" :value="choice.value || choice">{{ choice.name || choice }}</option>
         </select>
-        <button v-show="current === i" :disabled="errors[question.name] ? 'disabled' : false" @click="goQuestion(i + 1)">✓</button>
-        <p class="error" v-if="errors[question.name]">{{ errors[question.name] }}</p>
+        <button v-show="current === i" :disabled="errors[question.name] || isLoading || (question.required !== false && answers[question.name] === undefined) ? 'disabled' : false" @click="next()"><span v-if="!isLoading">✓</span><span class="loading" v-else><i class="UI-icon UI-loading"></i> Loading</span></button>
+        <p class="error" v-if="errors[question.name]">Your answer is not correct</p>
       </div>
-      <button id="submit" type="submit" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Générer</button>
+      <button id="submit" type="submit" v-if="!hasErrors && !missSomeAnswers && current === questions.length" @click="submit">Generate</button>
     </form>
     <pre id="debug" v-if="debug">{{ answers | pretty }}</pre>
   </div>
@@ -45,10 +45,11 @@ export default {
 
   data () {
     return {
-      current: null, // Index of the current question inside the filtered question array
+      current: -1, // Index of the current question inside the filtered question array
       questions: [],
       answers: {},
-      errors: {}
+      errors: {},
+      isLoading: false
     }
   },
 
@@ -74,60 +75,73 @@ export default {
   },
 
   created () {
-    this.goQuestion(0)
+    this.next()
   },
 
   methods: {
-    async goQuestion (i) {
-      this.$emit('reset')
+    async validate (i) {
+      this.$emit('validate')
+      this.current = i
 
-      const options = {
-        method: 'POST',
-        body: JSON.stringify(this.answers)
-      }
+      const data = await this.askInquirer({
+        validate: true,
+        filter: true,
+        asyncChoices: false
+      })
 
+      this.errors = data.errors
+      this.answers = data.answers
+    },
+    async next () {
+      this.$emit('next')
+
+      const data = await this.askInquirer({
+        validate: true,
+        filter: true,
+        asyncChoices: this.current + 1
+      })
+
+      this.questions = data.questions
+      this.errors = data.errors
+      this.answers = data.answers
+
+      this.currentQuestions.forEach(question => {
+        this.initializeQuestionAnswer(question)
+      })
+
+      this.current++
+    },
+    async askInquirer (options) {
       try {
+        this.isLoading = true
         let data
 
         // If questions async
         if (this.url) {
-          const response = await fetch(this.url, options)
+          const response = await fetch(this.url, {
+            method: 'POST',
+            body: JSON.stringify({
+              answers: this.answers,
+              ...options
+            })
+          })
           data = await response.json()
         } else if (this.initialQuestions) {
           // If questions sync
-          data = await inquirer(this.answers, this.initialQuestions)
+          data = await inquirer({
+            answers: this.answers,
+            ...options
+          }, this.initialQuestions)
         } else {
           console.error('No questions data')
         }
-
-        this.questions = data.questions
-        this.errors = data.errors
-        this.answers = data.answers
-
-        this.current = i
-
-        this.currentQuestions.forEach(question => {
-          this.initializeQuestionAnswer(question)
-        })
+        this.isLoading = false
+        return data
       } catch (e) {
         console.error(e)
+        this.isLoading = false
+        return Promise.reject(e)
       }
-    },
-    async prepareQuestions () {
-      const promises = this.currentQuestions
-        .map(async question => {
-          if (question.asyncChoices) {
-            try {
-              question.choices = await question.asyncChoices(this.answers)
-            } catch (e) {
-              console.error(e)
-            }
-          }
-          return question
-        })
-
-      const questions = await Promise.all(promises)
-      return questions
     },
     initializeQuestionAnswer (question) {
       // Set up default answer in answers hash
@@ -170,5 +184,19 @@ form {
 }
 .success {
   outline: 1px solid green;
+}
+.loading {
+  position: relative;
+  padding-left: 20px;
+  .UI-icon.UI-loading {
+    left: 0px;
+    position: absolute;
+    animation:spin 4s linear infinite;
+  }
+}
+@keyframes spin {
+  100% {
+    transform:rotate(360deg);
+  }
 }
 </style>
