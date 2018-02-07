@@ -17,10 +17,7 @@
 </template>
 
 <script>
-import fetchPonyfill from 'fetch-ponyfill'
 import inquirer from '@/utils/inquirer'
-
-const { fetch } = fetchPonyfill()
 
 export default {
   name: 'vue-inquirer',
