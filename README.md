@@ -1,6 +1,6 @@
-# Vue Inquirer
+# AFP Deck
 
-> A tool to ask questions and format answers
+> A tool to read AFP stories in decks
 
 ## Build Setup
 

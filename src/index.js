@@ -1,2 +1,2 @@
-export { default as Inquirer } from './utils/inquirer.js'
-export { default as VueInquirer } from './components/VueInquirer.vue'
+export { default as afpSDK } from './utils/afpSDK.js'
+export { default as AfpDeck } from './components/AfpDeck.vue'

@@ -23,7 +23,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "vue-inquirer.js",
+    filename: "afp-deck.js",
     libraryTarget: "umd"
   },
   plugins: [

@@ -1,83 +1,20 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <vue-inquirer :url="null" v-on:submit="val => {log(val)}" :initialQuestions="questions" :debug="true"></vue-inquirer>
+    <afp-deck></afp-deck>
   </div>
 </template>
 
 <script>
-import VueInquirer from './components/VueInquirer'
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+import AfpDeck from './components/AfpDeck'
 
 export default {
   name: 'app',
   components: {
-    VueInquirer
+    AfpDeck
   },
   data () {
-    return {
-      questions: [
-        {
-          type: 'list',
-          name: 'template',
-          message: 'Choose a template',
-          default: '',
-          choices: [
-            {
-              name: 'Template 1',
-              value: 'template-1'
-            },
-            {
-              name: 'Template 2',
-              value: 'template-2'
-            }
-          ]
-        },
-        {
-          type: 'input',
-          name: 'name',
-          message: 'Type the name of your project',
-          default: 'my-project',
-          filter: input => input.toUpperCase(),
-          validate: input => input.match(/^[A-Z-]+$/),
-          when: answers => answers.template === 'template-1'
-        },
-        {
-          type: 'input',
-          name: 'nameWithoutFilters',
-          message: 'Type the name of your project',
-          default: 'my-project',
-          validate: input => input.match(/^[A-Z-]+$/),
-          when: answers => answers.template === 'template-1'
-        },
-        {
-          type: 'list',
-          name: 'asyncChoices',
-          message: 'Choose a choice',
-          asyncChoices: async () => {
-            await delay(100)
-            return ['choice1', 'choice2']
-          },
-          when: answers => answers.template === 'template-2'
-        },
-        {
-          type: 'list',
-          name: 'asyncChoices2',
-          message: 'Choose a choice',
-          asyncChoices: async ({ asyncChoices }) => {
-            if (!asyncChoices) return []
-            await delay(5000)
-            return ['choice1', 'choice2']
-          },
-          when: answers => answers.template === 'template-2'
-        }
-      ]
-    }
-  },
-  methods: {
-    log (val) {
-      console.log(val)
-    }
+    return {}
   }
 }
 </script>
@@ -85,8 +22,4 @@ export default {
 <style lang="scss">
 $assets_path: '~@afp/toolkit-styles/assets/';
 @import "~@afp/toolkit-styles/scss/main.scss";
-form {
-  max-width: 500px;
-  margin: auto;
-}
 </style>
