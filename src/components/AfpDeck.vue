@@ -20,7 +20,7 @@
     <modal v-if="currentDocument" @close="currentDocument = null">
       <h3 slot="header">{{ currentDocument.title }}</h3>
       <article slot="body">
-        <p v-for="p in currentDocument.body">{{ p }}</p>
+        <p v-for="p in currentDocument.body" v-html="p" v-linkified></p>
       </article>
       <p slot="footer">{{ currentDocument.footer }}</p>
     </modal>
@@ -28,11 +28,15 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import bus from '@/utils/bus'
 import AfpNews from '@/utils/AfpNews'
 import SideBar from '@/components/SideBar'
 import Column from '@/components/Column'
 import Modal from '@/components/Modal'
+import VueLinkify from 'vue-linkify'
+
+Vue.directive('linkified', VueLinkify)
 
 const afpNews = new AfpNews({
   apiKey: ''

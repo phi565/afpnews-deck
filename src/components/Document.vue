@@ -2,7 +2,8 @@
   <article :class="{
     flash: doc.urgency === 1,
     alerte: doc.urgency === 2,
-    urgent: doc.urgency === 3
+    urgent: doc.urgency === 3,
+    viewed
   }" @click="readArticle">
     <p class="published">{{ published }}</p>
     <h1>{{ headLine }}</h1>
@@ -22,6 +23,11 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      viewed: false
+    }
+  },
   computed: {
     headLine () {
       return Array.isArray(this.doc.title) ? this.doc.title.join(' - ') : this.doc.title
@@ -32,8 +38,9 @@ export default {
   },
   methods: {
     readArticle () {
+      this.viewed = true
       bus.$emit('setCurrentDocument', {
-        id: this.uno,
+        id: this.doc.uno,
         title: this.headLine,
         body: this.doc.news,
         footer: this.published
@@ -67,6 +74,10 @@ article {
   }
   &.urgent {
     background-color: $blue_light;
+  }
+
+  &.viewed {
+    opacity: 0.5;
   }
 
   h1 {

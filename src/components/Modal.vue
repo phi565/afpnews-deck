@@ -2,10 +2,10 @@
   <transition name="modal">
     <div class="modal-mask" @click="$emit('close')">
       <div class="modal-container" @click.stop="">
+        <button class="close" @click="$emit('close')">
+          <i class="UI-icon UI-close-alt"></i>
+        </button>
         <div class="modal-header">
-          <button class="close" @click="$emit('close')">
-            <i class="UI-icon UI-close-alt"></i>
-          </button>
           <slot name="header">
             default header
           </slot>
@@ -52,6 +52,7 @@ export default {
   }
 
   .modal-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-width: 300px;
@@ -67,7 +68,6 @@ export default {
 
   .modal-header h3 {
     margin-top: 0;
-    color: #42b983;
   }
 
   .modal-body {
@@ -78,7 +78,19 @@ export default {
   }
 
   .close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
     float: right;
+    background-color: transparent;
+    color: #231f20;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: transparent;
+      border: 1px solid #231f20;
+    }
   }
 
   /*
