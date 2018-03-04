@@ -3,7 +3,7 @@
   	<header>
       <h1 contenteditable @blur="updateName" @keypress.enter="cancelNewLines">{{ name }}</h1>
       <button :class="{ processing }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
-      <button @click="$emit('update:paramsOpen', !paramsOpen)"><i class="UI-icon UI-settings-alt"></i></button>
+      <button @click="$emit('update:paramsOpen', !paramsOpen)" :class="{ success: paramsOpen }"><i class="UI-icon UI-settings-alt"></i></button>
       <button @click="$emit('close')"><i class="UI-icon UI-close-alt"></i></button>
     </header>
     <form @submit.prevent="refresh" @keyup.enter="refresh" v-if="paramsOpen">

@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@afp/toolkit-styles": "^1.2.0",
+    "afpnews-api": "^1.0.3",
     "autoprefixer": "^7.2.5",
     "axios": "^0.17.1",
     "babel-core": "^6.26.0",
@@ -39,7 +40,6 @@
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
-    "form-data": "^2.3.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.17.4",
