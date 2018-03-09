@@ -2,11 +2,19 @@
   <section class="column">
   	<header>
       <h1 contenteditable @blur="updateName" @keypress.enter="cancelNewLines">{{ name }}</h1>
-      <button :class="{ processing }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
-      <button @click="$emit('update:paramsOpen', !paramsOpen)" :class="{ success: paramsOpen }"><i class="UI-icon UI-settings-alt"></i></button>
-      <button @click="$emit('close')"><i class="UI-icon UI-close-alt"></i></button>
+      <button :class="{ processing, danger: error }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
+      <button @click="$emit('update:paramsOpen', !paramsOpen)" :class="{ success: paramsOpen }"><i class="UI-icon UI-settings"></i></button>
     </header>
-    <form @submit.prevent="refresh" @keyup.enter="refresh" v-if="paramsOpen">
+    <form
+      @submit.stop.prevent=""
+      @keydown.enter.stop.prevent="refresh"
+      v-if="paramsOpen"
+    >
+      <div class="actions">
+        <button @click="$emit('move', 'left')"><i class="UI-icon UI-slide-left"></i></button>
+        <button @click="$emit('move', 'right')"><i class="UI-icon UI-slide-right"></i></button>
+        <button @click="$emit('close')" class="danger"><i class="UI-icon UI-close-alt"></i></button>
+      </div>
       <select name="lang" v-model="lang">
         <option disabled selected>Choose a lang</option>
         <option v-for="lang in languages" :key="lang.value" :value="lang.value">{{ lang.label }}</option>
@@ -15,22 +23,10 @@
         <option disabled selected>Choose an urgency</option>
         <option v-for="urgency in urgencies" :key="urgency.value" :value="urgency.value">{{ urgency.label }}</option>
       </select>
-      <select name="dateFrom" v-model="dateFrom">
-        <option disabled selected>Choose a date range</option>
-        <option v-for="dateFrom in dateRanges" :key="dateFrom.value" :value="dateFrom.value">{{ dateFrom.label }}</option>
-      </select>
-      <input type="text" name="search" v-model="searchTerms" placeholder="Search..." autofocus>
+      <input class="search" type="text" name="search" v-model="searchTerms" placeholder="Search..." autofocus>
     </form>
-  	<!-- <transition-group
-      name="list"
-      tag="main"
-      :css="false"
-      @before-enter="beforeEnter"
-      @enter="enter"
-      @leave="leave"
-    > -->
     <main>
-      <document class="list-complete-item" v-for="(doc, i) in documents" :key="doc.uno" :doc="doc" :data-index="i"></document>
+      <document class="list-complete-item" v-for="(doc, i) in documents" :key="doc.uno" :doc="doc"></document>
       <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading" key="infiniteLoading">
         <div slot="no-results">
           <h2 class="error">No news.</h2>
@@ -42,13 +38,11 @@
         </div>
       </infinite-loading>
     </main>
-    <!-- </transition-group> -->
   </section>
 </template>
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-// import Velocity from 'velocity-animate'
 import Document from '@/components/Document'
 
 export default {
@@ -72,6 +66,10 @@ export default {
       required: true
     },
     processing: {
+      type: Boolean,
+      required: true
+    },
+    error: {
       type: Boolean,
       required: true
     },
@@ -156,8 +154,8 @@ export default {
           value: 'now-12M'
         },
         {
-          label: 'Since 1990',
-          value: '1990-01-01'
+          label: 'Since 2012',
+          value: '2012-01-01'
         }
       ]
     }
@@ -201,7 +199,7 @@ export default {
   watch: {
     processing (newVal, oldVal) {
       if (newVal === false) {
-        if (this.documentsCount === 0) {
+        if (this.documents.length === this.documentsCount || this.documents.length === 0) {
           this.$refs.infiniteLoading.stateChanger.complete()
         } else {
           this.$refs.infiniteLoading.stateChanger.loaded()
@@ -246,31 +244,6 @@ export default {
       }
       $state.complete()
     }
-    // ,
-    // beforeEnter (el) {
-    //   el.style.opacity = 0
-    //   el.style.height = 0
-    // },
-    // enter (el, done) {
-    //   const delay = el.dataset.index * 150
-    //   setTimeout(() => {
-    //     Velocity(
-    //       el,
-    //       { opacity: 1, height: 150, 'min-height': 150 },
-    //       { complete: done }
-    //     )
-    //   }, delay)
-    // },
-    // leave (el, done) {
-    //   const delay = el.dataset.index * 150
-    //   setTimeout(() => {
-    //     Velocity(
-    //       el,
-    //       { opacity: 0, height: 0, 'min-height': 0 },
-    //       { complete: done }
-    //     )
-    //   }, delay)
-    // }
   }
 }
 </script>
@@ -310,8 +283,20 @@ export default {
   form {
     display: flex;
     flex-wrap: wrap;
-    min-height: 100px;
-    select, input {
+    min-height: 130px;
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      padding: 4px;
+      button {
+        margin-left: 4px;
+      }
+    }
+    .search {
+      width: 100%;
+    }
+    select {
       width: 50%;
     }
   }

@@ -4,17 +4,20 @@
     <div id="columns">
       <column
         v-for="(column, i) in columns"
-        :key="i"
+        :key="`${i}-${column.name}`"
         :documents="column.documents"
         :documentsCount="column.documentsCount"
         :processing="column.processing"
+        :error="column.error"
         @close="$emit('closeColumn', i)"
+        @move="val => { $emit('moveColumn', i, val) }"
         @refresh="$emit('refreshColumn', i)"
         @reset="$emit('resetColumn', i)"
         @loadMore="$emit('loadMoreDocuments', i)"
         :params.sync="column.params"
-        @update:params="val => { $emit('columnParamsChanged') }"
+        @update:params="$emit('columnParamsChanged')"
         :name.sync="column.name"
+        @update:name="$emit('columnNameChanged')"
         :paramsOpen.sync="column.paramsOpen">
       </column>
     </div>

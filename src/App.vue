@@ -4,19 +4,30 @@
     <afp-deck
       :columns="columns"
       @addColumn="addColumn"
+      @moveColumn="moveColumn"
       @closeColumn="closeColumn"
       @refreshColumn="refreshColumn"
       @resetColumn="resetColumn"
       @loadMoreDocuments="loadMoreDocuments"
       :autoRefresh.sync="autoRefresh"
-      @columnParamsChanged="saveColumns"
+      @columnParamsChanged="columnsParamsChanged"
+      @columnNameChanged="columnsNameChanged"
     ></afp-deck>
   </div>
 </template>
 
 <script>
-import AfpNews from 'afpnews-api/dist/afpnews.browser'
+import AfpNews from 'afpnews-api'
 import AfpDeck from './components/AfpDeck'
+
+const defaultSearchParams = {
+  dateFrom: '2012-01-01',
+  dateTo: 'now',
+  urgency: null,
+  lang: 'fr',
+  size: 10,
+  searchTerms: ''
+}
 
 export default {
   name: 'app',
@@ -46,9 +57,12 @@ export default {
   },
   methods: {
     async init () {
-      const apiKey = localStorage.getItem('afpnews-apikey') || prompt('Please enter your apiKey', null)
-      localStorage.setItem('afpnews-apikey', apiKey)
-      this._afpNews = new AfpNews({ apiKey })
+      const clientId = localStorage.getItem('afpnews-clientid') || prompt('Please enter your client Id', null)
+      localStorage.setItem('afpnews-clientid', clientId)
+      const clientSecret = localStorage.getItem('afpnews-clientsecret') || prompt('Please enter your client Secret', null)
+      localStorage.setItem('afpnews-clientsecret', clientSecret)
+
+      this._afpNews = new AfpNews({ baseUrl: 'https://api.afpforum.com', clientId, clientSecret })
 
       const token = localStorage.getItem('afpnews-token')
 
@@ -66,64 +80,91 @@ export default {
 
       this.initColumns()
     },
-    async refreshColumn (indexCol, columnParams) {
-      let params = columnParams || this.columns[indexCol].params
+    async refreshColumn (indexCol, more) {
+      let params = JSON.parse(JSON.stringify(this.columns[indexCol].params))
+
+      if (more === 'before') {
+        const lastDocument = this.columns[indexCol].documents.slice(-1).pop()
+        if (lastDocument) {
+          let lastDate = new Date(lastDocument.published)
+          lastDate.setSeconds(lastDate.getSeconds() - 1)
+          params = Object.assign(params, { dateTo: lastDate.toISOString(), dateFrom: '2012-01-01' })
+        }
+      } else if (more === 'after') {
+        const firstDocument = this.columns[indexCol].documents[0]
+        if (firstDocument) {
+          let firstDate = new Date(firstDocument.published)
+          firstDate.setSeconds(firstDate.getSeconds() + 1)
+          params = Object.assign(params, { dateFrom: firstDate.toISOString(), dateTo: 'now' })
+        }
+      }
 
       this.columns[indexCol].processing = true
 
       try {
         const { documents, count } = await this._afpNews.search(params)
         localStorage.setItem('afpnews-token', JSON.stringify(this._afpNews.token))
+
         const existingDocuments = this.columns[indexCol].documents
-        const newDocuments = documents.filter(newDoc => {
-          return existingDocuments.find(existingDoc => existingDoc.uno === newDoc.uno) === undefined
-        })
-        const mergeDocuments = existingDocuments.concat(newDocuments).sort((a, b) => {
-          return new Date(b.published) - new Date(a.published)
-        })
-        this.columns[indexCol].documents = mergeDocuments
-        this.columns[indexCol].documentsCount = count
+
+        if (more === 'before') {
+          this.columns[indexCol].documents = existingDocuments.concat(documents)
+        } else if (more === 'after') {
+          this.columns[indexCol].documents = documents.concat(existingDocuments)
+        } else {
+          this.columns[indexCol].documents = documents
+          this.columns[indexCol].documentsCount = count
+        }
+
+        this.columns[indexCol].error = false
       } catch (e) {
         console.error(e)
+        this.columns[indexCol].error = true
         this.columns[indexCol].documents = []
       }
 
       this.columns[indexCol].processing = false
     },
-    addColumn (name = 'Default', params = Object.assign({}, this._afpNews.defaultSearchParams), paramsOpen = true) {
+    addColumn (name = 'Default', params = {}, paramsOpen = true) {
+      params = Object.assign(JSON.parse(JSON.stringify(defaultSearchParams)), params)
+
       this.columns.push({
         name,
         params,
         documents: [],
         documentsCount: 0,
         processing: false,
+        error: false,
         paramsOpen
       })
       this.saveColumns()
     },
+    moveColumn (indexCol, dir) {
+      const to = dir === 'left' ? indexCol - 1 : indexCol + 1
+      const element = this.columns[indexCol]
+      this.columns.splice(indexCol, 1)
+      this.columns.splice(to, 0, element)
+      this.saveColumns()
+    },
     closeColumn (index) {
+      const confirmation = confirm('Do you really want to delete the column ?')
+      if (!confirmation) return false
       this.columns.splice(index, 1)
       this.saveColumns()
     },
     async loadMoreDocuments (indexCol) {
-      await this.refreshColumn(indexCol)
-      this.columns[indexCol].params.size = this.columns[indexCol].params.size + 20
+      await this.refreshColumn(indexCol, 'before')
     },
     resetColumn (indexCol) {
-      this.columns[indexCol].params.size = 10
       this.columns[indexCol].documents = []
+      this.columns[indexCol].count = 0
     },
     startAutoRefresh () {
       this.autoRefreshTimer = setInterval(() => {
         Promise.all(
           this.columns
             .filter(column => !column.paramsOpen)
-            .map(column => {
-              column.params.dateFrom = 'now-1h'
-              column.params.size = 10
-              return column
-            })
-            .map((column, i) => this.refreshColumn(i, column.params))
+            .map((column, i) => this.refreshColumn(i, 'after'))
         )
       }, this.autoRefreshDelay)
     },
@@ -139,11 +180,19 @@ export default {
       })
       localStorage.setItem('afpnews-columns', JSON.stringify(savedColumns))
     },
+    columnsParamsChanged (indexCol) {
+      // this.columns[indexCol].documents = []
+      // this.columns[indexCol].count = 0
+      this.saveColumns()
+    },
+    columnsNameChanged (indexCol) {
+      this.saveColumns()
+    },
     initColumns () {
       if (localStorage.getItem('afpnews-columns')) {
         const savedColumns = JSON.parse(localStorage.getItem('afpnews-columns'))
-        savedColumns.forEach(column => {
-          this.addColumn(column.name, column.params, false)
+        savedColumns.forEach(({ name, params }) => {
+          this.addColumn(name, params, false)
         })
       } else {
         this.addColumn(undefined, undefined, false)

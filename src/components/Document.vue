@@ -68,12 +68,14 @@ article {
 
   &.flash {
     background-color: $red_dark;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
   }
   &.alerte {
     background-color: $yellow-butter-5;
   }
   &.urgent {
-    background-color: $blue_light;
+    background-color: lighten($yellow-butter-5, 20%);
   }
 
   &.viewed {

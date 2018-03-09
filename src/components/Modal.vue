@@ -41,13 +41,15 @@ export default {
     position: fixed;
     z-index: 9998;
     top: 0;
-    left: 0;
+    overflow: hidden;
+    // left: 0px;
+    left: 50px;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .5);
+    // background-color: rgba(0, 0, 0, .5);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    // justify-content: center;
+    // align-items: center;
     transition: opacity .3s ease;
   }
 
@@ -58,7 +60,8 @@ export default {
     min-width: 300px;
     width: 70vw;
     max-width: 600px;
-    max-height: 90%;
+    // max-height: 90%;
+    height: 100%;
     padding: 20px 30px;
     background-color: #fff;
     border-radius: 2px;
@@ -103,16 +106,17 @@ export default {
    */
 
   .modal-enter {
-    opacity: 0;
+    // opacity: 0;
   }
 
   .modal-leave-active {
-    opacity: 0;
+    // opacity: 0;
   }
 
   .modal-enter .modal-container,
   .modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    // -webkit-transform: scale(1.1);
+    // transform: scale(1.1);
+    transform: translateX(-100%);
   }
 </style>
