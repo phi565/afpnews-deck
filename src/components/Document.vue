@@ -121,6 +121,7 @@ article {
     background-size: 100% auto;
     background-position: center center;
     margin: 12px 0px;
+    border-radius: 5px;
   }
 
   p.lead {

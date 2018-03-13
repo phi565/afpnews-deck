@@ -24,7 +24,7 @@
     <modal v-if="currentDocument" @close="currentDocument = null">
       <h3 slot="header">{{ currentDocument.title }}</h3>
       <article slot="body">
-        <video width="100%" height="auto" controls v-if="currentDocument.video">
+        <video width="100%" height="auto" controls v-if="currentDocument.video" autoplay muted>
           <source :src="currentDocument.video.href" type="video/mp4">
           Your browser does not support the video tag.
         </video>

@@ -36,7 +36,7 @@ export default {
       const clientSecret = localStorage.getItem('afpnews-clientsecret') || prompt('Please enter your client Secret', null)
       localStorage.setItem('afpnews-clientsecret', clientSecret)
 
-      this.api = new AfpNews({ baseUrl: 'https://api.afpforum.com', clientId, clientSecret })
+      this.api = new AfpNews({ baseUrl: 'https://api.afp.com', clientId, clientSecret })
 
       const token = localStorage.getItem('afpnews-token')
 
