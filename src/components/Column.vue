@@ -15,15 +15,19 @@
         <button @click="$emit('move', 'right')"><i class="UI-icon UI-slide-right"></i></button>
         <button @click="$emit('close')" class="danger"><i class="UI-icon UI-close-alt"></i></button>
       </div>
+      <select name="product" v-model="product">
+        <option disabled selected>Choose a product</option>
+        <option v-for="product in products" :key="product.value.join('|')" :value="product.value">{{ product.label }}</option>
+      </select>
       <select name="lang" v-model="lang">
         <option disabled selected>Choose a lang</option>
-        <option v-for="lang in languages" :key="lang.value" :value="lang.value">{{ lang.label }}</option>
+        <option v-for="lang in languages" :key="lang.value.join('|')" :value="lang.value">{{ lang.label }}</option>
       </select>
       <select name="urgency" v-model="urgency">
         <option disabled selected>Choose an urgency</option>
-        <option v-for="urgency in urgencies" :key="urgency.value" :value="urgency.value">{{ urgency.label }}</option>
+        <option v-for="urgency in urgencies" :key="urgency.value.join('|')" :value="urgency.value">{{ urgency.label }}</option>
       </select>
-      <input class="search" type="text" name="search" v-model="searchTerms" placeholder="Search..." autofocus>
+      <input class="search" type="text" name="search" v-model="queryString" placeholder="Search..." autofocus>
     </form>
     <main>
       <document class="list-complete-item" v-for="(doc, i) in documents" :key="doc.uno" :doc="doc"></document>
@@ -80,60 +84,74 @@ export default {
   },
   data () {
     return {
+      products: [
+        {
+          label: 'All products',
+          value: ['news', 'multimedia', 'photo']
+        },
+        {
+          label: 'Multimedia',
+          value: ['multimedia']
+        },
+        {
+          label: 'News',
+          value: ['news']
+        },
+        {
+          label: 'Photos',
+          value: ['photo']
+        }
+      ],
       languages: [
         {
           label: 'All languages',
-          value: null
+          value: ['fr', 'en', 'es', 'de', 'pt', 'ar']
         },
         {
           label: 'English',
-          value: 'en'
+          value: ['en']
         },
         {
           label: 'French',
-          value: 'fr'
+          value: ['fr']
         },
         {
           label: 'German',
-          value: 'de'
+          value: ['de']
         },
         {
           label: 'Spanish',
-          value: 'es'
+          value: ['es']
         },
         {
           label: 'Portuguese',
-          value: 'pt'
+          value: ['pt']
         },
         {
           label: 'Arabic',
-          value: 'ar'
+          value: ['ar']
         }
       ],
       urgencies: [
         {
-          label: 'All urgencies',
-          value: null
-        },
-        {
           label: 'Flashs',
-          value: 1
+          value: [1]
         },
         {
           label: 'Alertes',
-          value: 2
+          value: [1, 2]
         },
         {
           label: 'Urgents',
-          value: 3
+          value: [1, 2, 3]
         },
         {
           label: 'Dépêches',
-          value: 4
+          value: [1, 2, 3, 4]
         },
         {
-          label: 'Autres',
-          value: 5
+          label: 'All urgencies',
+          value: [1, 2, 3, 4, 5]
         }
       ],
       dateRanges: [
@@ -161,20 +179,28 @@ export default {
     }
   },
   computed: {
+    product: {
+      get () {
+        return this.params.products
+      },
+      set (products) {
+        this.updateParams({ products }, true, true)
+      }
+    },
     lang: {
       get () {
-        return this.params.lang
+        return this.params.langs
       },
-      set (lang) {
-        this.updateParams({ lang }, true, true)
+      set (langs) {
+        this.updateParams({ langs }, true, true)
       }
     },
     urgency: {
       get () {
-        return this.params.urgency
+        return this.params.urgencies
       },
-      set (urgency) {
-        this.updateParams({ urgency }, true, true)
+      set (urgencies) {
+        this.updateParams({ urgencies }, true, true)
       }
     },
     dateFrom: {
@@ -187,12 +213,12 @@ export default {
         this.updateParams({ dateFrom }, oldDateFromIndex > newDateFromIndex, true)
       }
     },
-    searchTerms: {
+    queryString: {
       get () {
-        return this.params.searchTerms
+        return this.params.queryString
       },
-      set (searchTerms) {
-        this.updateParams({ searchTerms })
+      set (queryString) {
+        this.updateParams({ queryString })
       }
     }
   },
@@ -293,10 +319,10 @@ export default {
         margin-left: 4px;
       }
     }
-    .search {
-      width: 100%;
-    }
-    select {
+    // .search {
+    //   width: 100%;
+    // }
+    select, input {
       width: 50%;
     }
   }

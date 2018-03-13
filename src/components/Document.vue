@@ -6,7 +6,9 @@
     viewed
   }" @click="readArticle">
     <p class="published">{{ published }}</p>
-    <h1>{{ headLine }}</h1>
+    <h1 v-if="doc.product !== 'photo'">{{ headLine }}</h1>
+    <div class="img-container" v-if="imageSd" :style="{ 'background-image': `url(${imageSd.href})`  }"></div>
+    <div class="img-container" v-else-if="imageHd" :style="{ 'background-image': `url(${imageHd.href})`  }"></div>
     <p class="lead" v-if="doc.urgency > 2">{{ doc.news[0] }}</p>
   </article>
 </template>
@@ -34,6 +36,23 @@ export default {
     },
     published () {
       return moment(this.doc.published).calendar()
+    },
+    media () {
+      if (!this.doc.bagItem || this.doc.bagItem.length === 0) return false
+      if (!this.doc.bagItem[0].medias) return false
+      return this.doc.bagItem[0].medias
+    },
+    imageSd () {
+      if (!this.media) return false
+      return this.media.find(d => d.role === 'Preview')
+    },
+    imageHd () {
+      if (!this.media) return false
+      return this.media.find(d => d.role === 'HighDef')
+    },
+    video () {
+      if (!this.media) return false
+      return this.media.find(d => d.type === 'Video')
     }
   },
   methods: {
@@ -42,6 +61,8 @@ export default {
       bus.$emit('setCurrentDocument', {
         id: this.doc.uno,
         title: this.headLine,
+        imageHd: this.imageHd,
+        video: this.video,
         body: this.doc.news,
         footer: this.published
       })
@@ -54,7 +75,7 @@ export default {
 @import "~@afp/toolkit-styles/scss/variables.scss";
 article {
   min-height: 90px;
-  max-height: 200px;
+  max-height: 500px;
   max-width: 100%;
   border-top: 1px solid #E1E8ED;
   border-bottom: 1px solid #E1E8ED;
@@ -92,6 +113,14 @@ article {
     font-size: 0.7rem;
     margin-bottom: 0px;
     margin-top: 5px;
+  }
+
+  .img-container {
+    width: 100%;
+    height: 150px;
+    background-size: 100% auto;
+    background-position: center center;
+    margin: 12px 0px;
   }
 
   p.lead {

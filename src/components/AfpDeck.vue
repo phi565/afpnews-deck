@@ -24,6 +24,11 @@
     <modal v-if="currentDocument" @close="currentDocument = null">
       <h3 slot="header">{{ currentDocument.title }}</h3>
       <article slot="body">
+        <video width="100%" height="auto" controls v-if="currentDocument.video">
+          <source :src="currentDocument.video.href" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img v-else-if="currentDocument.imageHd" :src="currentDocument.imageHd.href" />
         <p v-for="p in currentDocument.body" v-html="p" v-linkified></p>
       </article>
       <p slot="footer">{{ currentDocument.footer }}</p>
@@ -41,15 +46,6 @@ import Modal from '@/components/Modal'
 import VueLinkify from 'vue-linkify'
 
 Vue.directive('linkified', VueLinkify)
-
-const defaultSearchParams = {
-  dateFrom: '2012-01-01',
-  dateTo: 'now',
-  urgency: null,
-  lang: 'fr',
-  size: 10,
-  searchTerms: ''
-}
 
 export default {
   name: 'afp-deck',
@@ -91,7 +87,7 @@ export default {
   },
   methods: {
     addColumn (name = 'Default', params = {}, paramsOpen = true) {
-      params = Object.assign(JSON.parse(JSON.stringify(defaultSearchParams)), params)
+      params = Object.assign({}, this.api.defaultSearchParams, params)
 
       this.columns.push({
         name,
@@ -138,6 +134,8 @@ export default {
           firstDate.setSeconds(firstDate.getSeconds() + 1)
           params = Object.assign(params, { dateFrom: firstDate.toISOString(), dateTo: 'now' })
         }
+      } else {
+        params = Object.assign(params, { dateFrom: '2012-01-01' })
       }
 
       this.columns[indexCol].processing = true
@@ -208,6 +206,13 @@ export default {
     display: flex;
     overflow-x: scroll;
     height: 100%;
+  }
+
+  article {
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
 </style>
