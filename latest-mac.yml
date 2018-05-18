@@ -1,0 +1,10 @@
+version: 0.1.6
+files:
+  - url: afpnews-deck-0.1.6-mac.zip
+    sha512: mn0XE3FNVylvgjNmJ5QFpCmw99JNF8H8WU9C5H6RSa7uIunTpkHyvtUTABSvBMwhc/OqCM+YJFc9HdwsqvwL9Q==
+  - url: afpNewsDeck-0.1.6-osx.dmg
+    sha512: JZ8LO/WV0WTANlHVXFF3QZuvWbKc8bvYXcO+lWb5KA9sFc09TNPictkG2l43iMKxqGfzls72lSuiu7mJt7oWcw==
+    size: 98139182
+path: afpnews-deck-0.1.6-mac.zip
+sha512: mn0XE3FNVylvgjNmJ5QFpCmw99JNF8H8WU9C5H6RSa7uIunTpkHyvtUTABSvBMwhc/OqCM+YJFc9HdwsqvwL9Q==
+releaseDate: '2018-05-18T20:57:06.846Z'

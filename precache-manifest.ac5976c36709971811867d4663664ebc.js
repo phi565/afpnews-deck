@@ -4,14 +4,14 @@ self.__precacheManifest = [
     "url": "apple-touch-icon-120x120.png"
   },
   {
-    "url": "web.e9877b17c1635937651d.css"
+    "url": "web.c47edcbf99976e628436.css"
   },
   {
-    "revision": "23578be5c84c8e95b133fda8311c06a6",
-    "url": "apple-touch-icon-144x144.png"
+    "revision": "35d3b27087a73d2b0c7ac2da3ef02fcd",
+    "url": "apple-touch-icon-152x152.png"
   },
   {
-    "url": "module.e9877b17c1635937651d.css"
+    "url": "module.c47edcbf99976e628436.css"
   },
   {
     "revision": "4ee002e6e011bc250f137f5ce53c5405",
@@ -78,64 +78,52 @@ self.__precacheManifest = [
     "url": "mstile-144x144.png"
   },
   {
-    "revision": "83f9b962d1ae7fc94645d86a78a42d0e",
-    "url": "icons/png/24x24.png"
+    "revision": "51561278e29c113672f96ad5cef7258d",
+    "url": "icons/png/128x128.png"
   },
   {
     "revision": "7a705aa75217b4f1eff91291ce08af56",
     "url": "icons/win/icon.ico"
   },
   {
-    "revision": "f755112fa035d8d36835d029060676ac",
-    "url": "logo-afp.png"
+    "revision": "b467eb173ea02f45ee324e716c6a607b",
+    "url": "index.html"
   },
   {
     "revision": "487315c16ff9ad1b6a50712dac837f00",
     "url": "logo-afp.svg"
   },
   {
-    "revision": "a0dde926361d2158e36a8ac63f512cf5",
-    "url": "index.html"
-  },
-  {
-    "revision": "43991f43db4839dbaeb704619aea0fb2",
-    "url": "icons/png/64x64.png"
-  },
-  {
-    "revision": "466e32e378caffaad5d1b29bf3a3d72d",
-    "url": "apple-touch-icon-72x72.png"
-  },
-  {
-    "revision": "ea061d45feb4883c3a9664eec02e7b9f",
-    "url": "favicon-32x32.png"
-  },
-  {
-    "revision": "3e5e54fa9af64c73ccaabb08a8d00ab8",
-    "url": "favicon.ico"
-  },
-  {
-    "revision": "51561278e29c113672f96ad5cef7258d",
-    "url": "icons/png/128x128.png"
-  },
-  {
-    "revision": "aa6a4d06f46947a91db32be315c2f087",
-    "url": "icons/png/16x16.png"
-  },
-  {
-    "revision": "76098508e1b293c97dcb8a9081cd7558",
-    "url": "icons/mac/icon.icns"
+    "revision": "f755112fa035d8d36835d029060676ac",
+    "url": "logo-afp.png"
   },
   {
     "revision": "60556325ef75272e07ab6470bc516b22",
     "url": "icons/png/32x32.png"
   },
   {
-    "revision": "3b1e8a8228a714a6a29c8def77172b38",
-    "url": "icons/png/48x48.png"
-  },
-  {
     "revision": "38ac50f7f506329230c4b9e2ebb01e2a",
     "url": "favicon-16x16.png"
+  },
+  {
+    "revision": "ea061d45feb4883c3a9664eec02e7b9f",
+    "url": "favicon-32x32.png"
+  },
+  {
+    "revision": "aa6a4d06f46947a91db32be315c2f087",
+    "url": "icons/png/16x16.png"
+  },
+  {
+    "revision": "83f9b962d1ae7fc94645d86a78a42d0e",
+    "url": "icons/png/24x24.png"
+  },
+  {
+    "revision": "76098508e1b293c97dcb8a9081cd7558",
+    "url": "icons/mac/icon.icns"
+  },
+  {
+    "revision": "c48628834fba2544d2eb0e5046d78e38",
+    "url": "icons/png/512x512.png"
   },
   {
     "revision": "545d54fe08d76e0affbb74094b32abda",
@@ -146,27 +134,39 @@ self.__precacheManifest = [
     "url": "icons/png/256x256.png"
   },
   {
-    "revision": "c48628834fba2544d2eb0e5046d78e38",
-    "url": "icons/png/512x512.png"
+    "revision": "3e5e54fa9af64c73ccaabb08a8d00ab8",
+    "url": "favicon.ico"
+  },
+  {
+    "revision": "3b1e8a8228a714a6a29c8def77172b38",
+    "url": "icons/png/48x48.png"
+  },
+  {
+    "revision": "43991f43db4839dbaeb704619aea0fb2",
+    "url": "icons/png/64x64.png"
+  },
+  {
+    "revision": "466e32e378caffaad5d1b29bf3a3d72d",
+    "url": "apple-touch-icon-72x72.png"
   },
   {
     "revision": "82ee774307941465825bfd61f2eb217c",
     "url": "apple-touch-icon-57x57.png"
   },
   {
-    "revision": "35d3b27087a73d2b0c7ac2da3ef02fcd",
-    "url": "apple-touch-icon-152x152.png"
+    "revision": "23578be5c84c8e95b133fda8311c06a6",
+    "url": "apple-touch-icon-144x144.png"
   },
   {
     "revision": "d859b7e3bacedbf002afb3bf27221dce",
     "url": "apple-touch-icon-114x114.png"
   },
   {
-    "revision": "ea799217e4896a1d7d93",
+    "revision": "cf281a250facb085a32d",
     "url": "afpnews-deck.web.js"
   },
   {
-    "revision": "c3b2c71b296964a5c152",
+    "revision": "695457d3ce00af0e6a90",
     "url": "afpnews-deck.module.js"
   }
 ];
