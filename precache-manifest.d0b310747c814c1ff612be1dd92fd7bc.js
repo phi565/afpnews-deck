@@ -4,14 +4,14 @@ self.__precacheManifest = [
     "url": "apple-touch-icon-144x144.png"
   },
   {
-    "url": "web.0f9b208f5089c5ff780a.css"
+    "url": "web.e353e84fbb0256b6a324.css"
   },
   {
     "revision": "35d3b27087a73d2b0c7ac2da3ef02fcd",
     "url": "apple-touch-icon-152x152.png"
   },
   {
-    "url": "module.0f9b208f5089c5ff780a.css"
+    "url": "module.e353e84fbb0256b6a324.css"
   },
   {
     "revision": "4ee002e6e011bc250f137f5ce53c5405",
@@ -78,32 +78,32 @@ self.__precacheManifest = [
     "url": "mstile-144x144.png"
   },
   {
-    "revision": "83f9b962d1ae7fc94645d86a78a42d0e",
-    "url": "icons/png/24x24.png"
+    "revision": "aa6a4d06f46947a91db32be315c2f087",
+    "url": "icons/png/16x16.png"
   },
   {
-    "revision": "7a705aa75217b4f1eff91291ce08af56",
-    "url": "icons/win/icon.ico"
+    "revision": "d859b7e3bacedbf002afb3bf27221dce",
+    "url": "apple-touch-icon-114x114.png"
   },
   {
-    "revision": "f755112fa035d8d36835d029060676ac",
-    "url": "logo-afp.png"
+    "revision": "06b87fc47170a95f1d76613c46eaf6cc",
+    "url": "index.html"
   },
   {
     "revision": "487315c16ff9ad1b6a50712dac837f00",
     "url": "logo-afp.svg"
   },
   {
-    "revision": "0f9288d419d14fe3c9a3781b06747e74",
-    "url": "index.html"
+    "revision": "82ee774307941465825bfd61f2eb217c",
+    "url": "apple-touch-icon-57x57.png"
   },
   {
-    "revision": "60556325ef75272e07ab6470bc516b22",
-    "url": "icons/png/32x32.png"
+    "revision": "466e32e378caffaad5d1b29bf3a3d72d",
+    "url": "apple-touch-icon-72x72.png"
   },
   {
-    "revision": "d859b7e3bacedbf002afb3bf27221dce",
-    "url": "apple-touch-icon-114x114.png"
+    "revision": "38ac50f7f506329230c4b9e2ebb01e2a",
+    "url": "favicon-16x16.png"
   },
   {
     "revision": "ea061d45feb4883c3a9664eec02e7b9f",
@@ -114,12 +114,12 @@ self.__precacheManifest = [
     "url": "favicon.ico"
   },
   {
-    "revision": "38ac50f7f506329230c4b9e2ebb01e2a",
-    "url": "favicon-16x16.png"
+    "revision": "76098508e1b293c97dcb8a9081cd7558",
+    "url": "icons/mac/icon.icns"
   },
   {
-    "revision": "aa6a4d06f46947a91db32be315c2f087",
-    "url": "icons/png/16x16.png"
+    "revision": "545d54fe08d76e0affbb74094b32abda",
+    "url": "icons/png/1024x1024.png"
   },
   {
     "revision": "51561278e29c113672f96ad5cef7258d",
@@ -130,43 +130,43 @@ self.__precacheManifest = [
     "url": "apple-touch-icon-120x120.png"
   },
   {
+    "revision": "83f9b962d1ae7fc94645d86a78a42d0e",
+    "url": "icons/png/24x24.png"
+  },
+  {
     "revision": "87453a231452dc75a97de9002de2d2f6",
     "url": "icons/png/256x256.png"
   },
   {
-    "revision": "82ee774307941465825bfd61f2eb217c",
-    "url": "apple-touch-icon-57x57.png"
+    "revision": "60556325ef75272e07ab6470bc516b22",
+    "url": "icons/png/32x32.png"
   },
   {
     "revision": "3b1e8a8228a714a6a29c8def77172b38",
     "url": "icons/png/48x48.png"
   },
   {
-    "revision": "545d54fe08d76e0affbb74094b32abda",
-    "url": "icons/png/1024x1024.png"
+    "revision": "c48628834fba2544d2eb0e5046d78e38",
+    "url": "icons/png/512x512.png"
   },
   {
     "revision": "43991f43db4839dbaeb704619aea0fb2",
     "url": "icons/png/64x64.png"
   },
   {
-    "revision": "c48628834fba2544d2eb0e5046d78e38",
-    "url": "icons/png/512x512.png"
+    "revision": "7a705aa75217b4f1eff91291ce08af56",
+    "url": "icons/win/icon.ico"
   },
   {
-    "revision": "76098508e1b293c97dcb8a9081cd7558",
-    "url": "icons/mac/icon.icns"
+    "revision": "f755112fa035d8d36835d029060676ac",
+    "url": "logo-afp.png"
   },
   {
-    "revision": "466e32e378caffaad5d1b29bf3a3d72d",
-    "url": "apple-touch-icon-72x72.png"
-  },
-  {
-    "revision": "092804865cb4b3e66a10",
+    "revision": "94a5853530253cc90c2e",
     "url": "afpnews-deck.web.js"
   },
   {
-    "revision": "04d91e3242797b0ac974",
+    "revision": "8fc9b8cf45d81274afe7",
     "url": "afpnews-deck.module.js"
   },
   {
