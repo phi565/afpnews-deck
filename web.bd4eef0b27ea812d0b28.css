@@ -2050,6 +2050,9 @@ BREAKPOINTS
 /*********************
 VARIABLES
 *********************/
+html, body {
+  height: 100%;
+}
 #app {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2058,7 +2061,7 @@ VARIABLES
       -ms-flex-align: stretch;
           align-items: stretch;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 @media (max-width: 640px) {
