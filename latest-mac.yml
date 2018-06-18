@@ -1,10 +1,10 @@
-version: 0.2.3-alpha
+version: 0.3.0-alpha
 files:
-  - url: afpnews-deck-0.2.3-alpha-mac.zip
-    sha512: h8EGxOeyhxQ87hvMCTrbzlNqmyazzUaHUNc3z036Ux6a4vHjrtbE1vy3XFUsr1EtYHDPGPOMn9rRdjK3VHuh7w==
-  - url: afpNewsDeck-0.2.3-alpha-osx.dmg
-    sha512: kp2afVZI4pjxn+tj4oA7AWq+a1JQIEhT/Mr/cQWb2+3oJH0TlQvHLlXQdym/+gwlxPc+yOV1BDZa5W4inVFmpg==
-    size: 98171844
-path: afpnews-deck-0.2.3-alpha-mac.zip
-sha512: h8EGxOeyhxQ87hvMCTrbzlNqmyazzUaHUNc3z036Ux6a4vHjrtbE1vy3XFUsr1EtYHDPGPOMn9rRdjK3VHuh7w==
-releaseDate: '2018-05-24T10:11:25.756Z'
+  - url: afpnews-deck-0.3.0-alpha-mac.zip
+    sha512: SeWKlkKI5dpQ2utVtrLjQq882Dy5PYu3zfoufZTt0FBSGPyIHM0NQP+G/F7rkL51DqetowgNhAmHmUkaUM8dnA==
+  - url: afpNewsDeck-0.3.0-alpha-osx.dmg
+    sha512: WzOOctoKkz49/eUw6bx/bjKxkpQZ0kMWg/c2zAe4aY8ogGizCdT7fe0hyUP3lHNcEPuUpBaePNwLDB9IZj39hA==
+    size: 98029059
+path: afpnews-deck-0.3.0-alpha-mac.zip
+sha512: SeWKlkKI5dpQ2utVtrLjQq882Dy5PYu3zfoufZTt0FBSGPyIHM0NQP+G/F7rkL51DqetowgNhAmHmUkaUM8dnA==
+releaseDate: '2018-06-18T17:47:45.265Z'
