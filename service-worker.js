@@ -1,4 +1,4 @@
-importScripts("precache-manifest.659bea8ec38df862ca0637d54f20f407.js", "workbox-v3.2.0/workbox-sw.js");
+importScripts("precache-manifest.8912890bf2977c24d5c934b6d3a40855.js", "workbox-v3.2.0/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.2.0"});
 workbox.skipWaiting()
 workbox.clientsClaim()
