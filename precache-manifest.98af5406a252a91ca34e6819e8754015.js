@@ -8,7 +8,7 @@ self.__precacheManifest = [
     "url": "mstile-144x144.png"
   },
   {
-    "url": "web.997563fa585f7fd3b29e.css"
+    "url": "web.bda294f90a04332a9f96.css"
   },
   {
     "revision": "4ee002e6e011bc250f137f5ce53c5405",
@@ -75,7 +75,7 @@ self.__precacheManifest = [
     "url": "icons/png/1024x1024.png"
   },
   {
-    "revision": "778bc27b89b90039148f1be65fbe6dc1",
+    "revision": "0a8b0f94c644f6c72df69947925af6f4",
     "url": "index.html"
   },
   {
@@ -159,7 +159,7 @@ self.__precacheManifest = [
     "url": "apple-touch-icon-114x114.png"
   },
   {
-    "revision": "3f0d6f00981c9f8b2062",
+    "revision": "91d18f1ef2fec3f16a73",
     "url": "afpnews-deck.web.js"
   },
   {
