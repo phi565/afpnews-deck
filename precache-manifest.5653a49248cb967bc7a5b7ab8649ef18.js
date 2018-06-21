@@ -1,14 +1,22 @@
 self.__precacheManifest = [
   {
-    "revision": "23578be5c84c8e95b133fda8311c06a6",
-    "url": "apple-touch-icon-144x144.png"
+    "revision": "57981e13b377403b906bfe0eee33dd97",
+    "url": "apple-touch-icon-120x120.png"
   },
   {
     "revision": "23578be5c84c8e95b133fda8311c06a6",
     "url": "mstile-144x144.png"
   },
   {
-    "url": "web.bda294f90a04332a9f96.css"
+    "url": "web.8cdcdc8cb35214132a8c.css"
+  },
+  {
+    "revision": "b7030b6d85524f1e2497e7b7f5572076",
+    "url": "static/fonts/ui-essential-normal-full.b7030b6.woff2"
+  },
+  {
+    "revision": "22a45ece31487721c99f98aedef08fd4",
+    "url": "static/fonts/ui-essential-normal-full.22a45ec.woff"
   },
   {
     "revision": "4ee002e6e011bc250f137f5ce53c5405",
@@ -63,36 +71,35 @@ self.__precacheManifest = [
     "url": "static/fonts/ui-essential-normal-full.6e0c661.eot"
   },
   {
-    "revision": "22a45ece31487721c99f98aedef08fd4",
-    "url": "static/fonts/ui-essential-normal-full.22a45ec.woff"
-  },
-  {
-    "revision": "b7030b6d85524f1e2497e7b7f5572076",
-    "url": "static/fonts/ui-essential-normal-full.b7030b6.woff2"
-  },
-  {
     "revision": "545d54fe08d76e0affbb74094b32abda",
     "url": "icons/png/1024x1024.png"
   },
   {
-    "revision": "0a8b0f94c644f6c72df69947925af6f4",
+    "url": "afpnews-deck.vendors~web.8cdcdc8cb35214132a8c.js"
+  },
+  {
+    "revision": "7c0b12e1f6f2985deb3f0f263e7949ff",
     "url": "index.html"
+  },
+  {
+    "revision": "d859b7e3bacedbf002afb3bf27221dce",
+    "url": "apple-touch-icon-114x114.png"
   },
   {
     "revision": "487315c16ff9ad1b6a50712dac837f00",
     "url": "logo-afp.svg"
   },
   {
-    "revision": "f755112fa035d8d36835d029060676ac",
-    "url": "logo-afp.png"
-  },
-  {
-    "revision": "aa6a4d06f46947a91db32be315c2f087",
-    "url": "icons/png/16x16.png"
+    "revision": "23578be5c84c8e95b133fda8311c06a6",
+    "url": "apple-touch-icon-144x144.png"
   },
   {
     "revision": "35d3b27087a73d2b0c7ac2da3ef02fcd",
     "url": "apple-touch-icon-152x152.png"
+  },
+  {
+    "revision": "82ee774307941465825bfd61f2eb217c",
+    "url": "apple-touch-icon-57x57.png"
   },
   {
     "revision": "466e32e378caffaad5d1b29bf3a3d72d",
@@ -115,20 +122,19 @@ self.__precacheManifest = [
     "url": "favicon.ico"
   },
   {
-    "revision": "76098508e1b293c97dcb8a9081cd7558",
-    "url": "icons/mac/icon.icns"
+    "url": "afpnews-deck.web.8cdcdc8cb35214132a8c.js"
   },
   {
-    "revision": "43991f43db4839dbaeb704619aea0fb2",
-    "url": "icons/png/64x64.png"
+    "revision": "76098508e1b293c97dcb8a9081cd7558",
+    "url": "icons/mac/icon.icns"
   },
   {
     "revision": "51561278e29c113672f96ad5cef7258d",
     "url": "icons/png/128x128.png"
   },
   {
-    "revision": "82ee774307941465825bfd61f2eb217c",
-    "url": "apple-touch-icon-57x57.png"
+    "revision": "aa6a4d06f46947a91db32be315c2f087",
+    "url": "icons/png/16x16.png"
   },
   {
     "revision": "83f9b962d1ae7fc94645d86a78a42d0e",
@@ -151,20 +157,18 @@ self.__precacheManifest = [
     "url": "icons/png/512x512.png"
   },
   {
-    "revision": "57981e13b377403b906bfe0eee33dd97",
-    "url": "apple-touch-icon-120x120.png"
+    "revision": "43991f43db4839dbaeb704619aea0fb2",
+    "url": "icons/png/64x64.png"
   },
   {
-    "revision": "d859b7e3bacedbf002afb3bf27221dce",
-    "url": "apple-touch-icon-114x114.png"
+    "revision": "f755112fa035d8d36835d029060676ac",
+    "url": "logo-afp.png"
   },
   {
-    "revision": "91d18f1ef2fec3f16a73",
-    "url": "afpnews-deck.web.js"
+    "url": "afpnews-deck.vendors~babel.8cdcdc8cb35214132a8c.js"
   },
   {
-    "revision": "43ec7b4986ccd72088ce",
-    "url": "afpnews-deck.vendors~web.js"
+    "url": "afpnews-deck.babel.8cdcdc8cb35214132a8c.js"
   },
   {
     "revision": "8c1255eedf01c90a7d18a87d4e0c557d",
