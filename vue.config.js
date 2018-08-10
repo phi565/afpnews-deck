@@ -6,7 +6,6 @@ module.exports = {
   lintOnSave: undefined,
 
   pwa: {
-    workboxPluginMode: 'InjectManifest',
     name: 'AFP Deck'
   },
 
