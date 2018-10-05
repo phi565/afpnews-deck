@@ -15,7 +15,7 @@ importScripts("workbox-v3.6.2/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.2"});
 
 importScripts(
-  "precache-manifest.b8191665f137324107a0d5a6939be0a8.js"
+  "precache-manifest.25a904077a1708f5a06438a39bbdfef0.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "afpnews-deck"});
@@ -30,3 +30,5 @@ workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(/https:\/\/api.afp.com\/objects\//, workbox.strategies.staleWhileRevalidate({ "cacheName":"afpnews-assets", plugins: [new workbox.expiration.Plugin({"maxEntries":50,"maxAgeSeconds":86400,"purgeOnQuotaError":false})] }), 'GET');
+
+workbox.googleAnalytics.initialize({});
