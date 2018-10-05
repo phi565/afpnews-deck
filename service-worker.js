@@ -1,4 +1,4 @@
-importScripts("precache-manifest.d0697334e7d400fb637d5110a7eb3300.js", "workbox-v3.6.2/workbox-sw.js");
+importScripts("precache-manifest.9762f141c3e482a76e2e2868486a0f86.js", "workbox-v3.6.2/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.2"});
 workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'});
 
@@ -18,7 +18,18 @@ workbox.routing.registerRoute(
 
 workbox.googleAnalytics.initialize();
 
-addEventListener('message', messageEvent => {
-  if (messageEvent.data === 'skipWaiting') return workbox.skipWaiting();
+self.addEventListener('message', event => {
+  if (!event.data){
+    return;
+  }
+
+  switch (event.data) {
+    case 'skipWaiting':
+      self.skipWaiting();
+      break;
+    default:
+      // NOOP
+      break;
+  }
 });
 
