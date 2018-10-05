@@ -1,4 +1,4 @@
-importScripts("precache-manifest.efa93ac2681c92ffc52855fdecdd67ad.js", "workbox-v3.6.2/workbox-sw.js");
+importScripts("precache-manifest.8de2a8c7725ef57659fe733dd2d61c1f.js", "workbox-v3.6.2/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.2"});
 workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'});
 
@@ -9,7 +9,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 50,
-        maxAgeSeconds: 86400,
+        maxAgeSeconds: 24 * 60 * 60,
         purgeOnQuotaError: true
       })
     ]
