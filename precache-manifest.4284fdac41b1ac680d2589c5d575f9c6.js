@@ -4,28 +4,28 @@ self.__precacheManifest = [
     "url": "js/viewer-legacy.b922545a.js"
   },
   {
-    "revision": "67ffe8448ad56df83aae3ca7359224f8",
+    "revision": "edd1ee447bbc4e11eaccfbeba43729ea",
     "url": "index.html"
   },
   {
-    "revision": "4b37215a7ba084ccd1c2",
-    "url": "js/about-legacy.56217019.js"
+    "revision": "3357ce69fcbe50473e56",
+    "url": "js/about-legacy.9fb505e1.js"
   },
   {
-    "revision": "212496a365c4123b5025",
-    "url": "js/app-legacy.ee2d92e8.js"
+    "revision": "52f6725784a6dd04c251",
+    "url": "js/app-legacy.c4a79530.js"
   },
   {
     "revision": "75057927b99cfd7e3e9e",
     "url": "js/tour-legacy.54158436.js"
   },
   {
-    "revision": "404bb599590e9a34c091",
-    "url": "js/browser-warning-legacy.67ae6981.js"
+    "revision": "d340769c6c2bd5112128",
+    "url": "js/browser-warning-legacy.5c762fbd.js"
   },
   {
-    "revision": "1eaa78b5af9cc3aeee4d",
-    "url": "js/login-legacy.c893f973.js"
+    "revision": "3e27841bf276b31ce3f6",
+    "url": "js/login-legacy.28a42f2a.js"
   },
   {
     "revision": "6cabd2e1f03b97bea39b",
@@ -35,7 +35,7 @@ self.__precacheManifest = [
     "url": "fonts/36315f6b56fdd22263c89438bc164a24.36315f6b.eot"
   },
   {
-    "revision": "1eaa78b5af9cc3aeee4d",
+    "revision": "3e27841bf276b31ce3f6",
     "url": "css/login.893941da.css"
   },
   {
@@ -84,15 +84,15 @@ self.__precacheManifest = [
     "url": "css/chunk-vendors.4669bd84.css"
   },
   {
-    "revision": "404bb599590e9a34c091",
+    "revision": "d340769c6c2bd5112128",
     "url": "css/browser-warning.715da67d.css"
   },
   {
-    "revision": "212496a365c4123b5025",
+    "revision": "52f6725784a6dd04c251",
     "url": "css/app.292a62f9.css"
   },
   {
-    "revision": "4b37215a7ba084ccd1c2",
+    "revision": "3357ce69fcbe50473e56",
     "url": "css/about.74a677bd.css"
   }
 ];
