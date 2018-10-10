@@ -1,4 +1,4 @@
-importScripts("precache-manifest.007ba5995f4be186244a3c333a96c62e.js", "workbox-v3.6.2/workbox-sw.js");
+importScripts("precache-manifest.7d053bd7e7cdfbea8440f9d5f5667648.js", "workbox-v3.6.2/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.2"});
 workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'});
 
@@ -11,6 +11,9 @@ workbox.routing.registerRoute(
         maxEntries: 50,
         maxAgeSeconds: 24 * 60 * 60,
         purgeOnQuotaError: true
+      }),
+      new workbox.backgroundSync.Plugin('afpnews-assets-queue', {
+        maxRetentionTime: 30 // Retry for max of 30 minutes
       })
     ]
   }), 'GET'
