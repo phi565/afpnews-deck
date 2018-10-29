@@ -106,7 +106,24 @@
         {{ $t('loading') }}
       </div>
     </transition>
-    <recyclist
+    <dynamic-scroller
+      :items="documents"
+      :min-item-height="100"
+      type-field="product"
+      key-field="uno"
+      class="documents">
+      <template slot-scope="{ item, index, active }">
+        <dynamic-scroller-item
+          :item="item"
+          :active="active"
+          :data-index="index">
+          <card
+            :doc-id="item.uno"
+            :index-col="columnId" />
+        </dynamic-scroller-item>
+      </template>
+    </dynamic-scroller>
+    <!-- <recyclist
       ref="recyclist"
       :list="documents"
       :offset="200"
@@ -132,23 +149,31 @@
           :index-col="columnId" />
       </template>
       <div slot="nomore">{{ $t('column.no-result') }}</div>
-    </recyclist>
+    </recyclist> -->
   </section>
 </template>
 
 <script>
-import Recyclist from '@/components/Recyclist'
+// import Recyclist from '@/components/Recyclist'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import Datepicker from 'vuejs-datepicker'
 import { en, fr } from 'vuejs-datepicker/dist/locale'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist, Datepicker },
+  components: {
+    Card,
+    // Recyclist,
+    DynamicScroller,
+    DynamicScrollerItem,
+    Datepicker
+  },
   mixins: [ clickaway ],
   props: {
     columnId: {
@@ -171,7 +196,7 @@ export default {
       return datePickerTranslations[this.$i18n.locale] || datePickerTranslations[this.$i18n.fallbackLocale]
     },
     documents () {
-      return this.column.documentsIds
+      return this.column.documentsIds.map(id => this.$store.getters.getDocumentById(id))
     },
     params () {
       return this.column.params
@@ -394,7 +419,7 @@ export default {
     },
     reset () {
       this.resetColumn({ indexCol: this.columnId })
-      this.$refs.recyclist.init()
+      // this.$refs.recyclist.init()
     },
     loadBefore () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
