@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "0.7.0-alpha",
+  "version": "1.0.0-beta",
   "description": "My dream reader for AFP feeds",
   "homepage": "https://github.com/julesbonnard/afpnews-deck",
   "repository": {
@@ -33,6 +33,7 @@
     "intro.js": "^2.9.3",
     "localforage": "^1.7.2",
     "modernizr": "^3.6.0",
+    "normalize.css": "^8.0.0",
     "register-service-worker": "^1.5.2",
     "url": "^0.11.0",
     "uuid": "^3.3.2",
@@ -53,9 +54,9 @@
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
     "@vue/cli-plugin-babel": "^3.0.4",
-    "@vue/cli-plugin-eslint": "^3.0.4",
+    "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-plugin-pwa": "^3.0.4",
-    "@vue/cli-service": "^3.0.4",
+    "@vue/cli-service": "^3.1.4",
     "@vue/eslint-config-standard": "^4.0.0",
     "json-loader": "^0.5.7",
     "modernizr-loader": "^1.0.1",

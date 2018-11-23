@@ -18,12 +18,16 @@
         class="actions">
         <button
           v-if="shareApi"
+          aria-label="Share the document"
+          class="btn btn-icon"
           @click="share">
-          <i class="UI-icon UI-share" />
+          <i class="UI-icon UI-share icon-small" />
         </button>
         <button
+          aria-label="Close the document"
+          class="btn btn-icon"
           @click="close">
-          <i class="UI-icon UI-close-alt" />
+          <i class="UI-icon UI-close-alt icon-small" />
         </button>
       </div>
     </component>
@@ -35,6 +39,15 @@ import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { parse as queryParser } from 'lucene-query-parser'
+
+function recursiveSearchTerms (cur) {
+  if (cur.term) return [cur.term]
+  if (cur.left && cur.right) return [...recursiveSearchTerms(cur.left), ...recursiveSearchTerms(cur.right)]
+  if (cur.left) return [...recursiveSearchTerms(cur.left)]
+  if (cur.right) return [...recursiveSearchTerms(cur.right)]
+  return []
+}
 
 export default {
   name: 'Viewer',
@@ -85,8 +98,7 @@ export default {
       if (this.indexCol === null) {
         return []
       }
-      const searchTerms = this.column.params.query.match(/[^\s"]+/giu)
-      return Array.isArray(searchTerms) ? searchTerms : []
+      return [...recursiveSearchTerms(queryParser(this.column.params.query))]
     },
     docExists () {
       return !!this.doc
@@ -248,9 +260,6 @@ export default {
       top: 8px;
       right: 8px;
       z-index: 101;
-      button {
-        margin-left: 5px;
-      }
     }
   }
 

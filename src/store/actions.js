@@ -8,14 +8,17 @@ export default {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  async logout ({ commit }) {
+  logout ({ commit, dispatch }) {
     commit('resetClientCredentials')
     commit('unsetToken')
     commit('clearDocuments')
+    dispatch('refreshAllColumns')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
       await afpNews.authenticate({ username, password })
+      commit('clearDocuments')
+      dispatch('refreshAllColumns', { more: 'before' })
     } catch (error) {
       console.error(error && error.message)
       return Promise.reject(error)
@@ -26,6 +29,8 @@ export default {
       dispatch('wait/start', `documents.search`, { root: true })
 
       const { documents } = await afpNews.search(params)
+
+      commit('addDocuments', documents)
 
       return documents
     } catch (error) {
@@ -63,17 +68,17 @@ export default {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
             case 'before':
-              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).slice(-1).pop()
+              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).filter(d => typeof d === 'string').slice(-1).pop()
               const lastDocument = getters.getDocumentById(lastDocumentId)
-              let lastDate = new Date(lastDocument.published)
+              const lastDate = new Date(lastDocument.published)
               lastDate.setSeconds(lastDate.getSeconds() - 1)
               params = Object.assign(params, { dateTo: lastDate.toISOString() })
               break
             case 'after':
-              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol)[0]
+              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol).filter(d => typeof d === 'string')[0]
               const firstDocument = getters.getDocumentById(firstDocumentId)
-              let firstDate = new Date(firstDocument.published)
-              firstDate.setSeconds(firstDate.getSeconds())
+              const firstDate = new Date(firstDocument.published)
+              firstDate.setSeconds(firstDate.getSeconds() + 1)
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
               break
             default:
@@ -85,21 +90,26 @@ export default {
         return dispatch('refreshColumn', { indexCol, more })
       }
 
-      const { documents } = await afpNews.search(params)
+      const { documents, count } = await afpNews.search(params)
 
-      if (!documents || documents.length === 0) {
-        // throw new Error('No more documents')
-        return false
-      }
+      if (!documents || documents.length === 0) return false
 
       commit('addDocuments', documents)
 
+      const documentsIds = documents.map(doc => doc.uno)
+
       switch (more) {
         case 'before':
-          commit('appendDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
+          commit('appendDocumentsIdsToCol', { indexCol, documentsIds })
           break
         case 'after':
-          commit('prependDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
+          if (count > documents.length) {
+            documentsIds.push({
+              type: 'documents-gap',
+              count: count - documents.length
+            })
+          }
+          commit('prependDocumentsIdsToCol', { indexCol, documentsIds })
           break
         default:
       }
@@ -121,15 +131,15 @@ export default {
         // Something happened in setting up the request that triggered an Error
         // console.error(error.message)
       }
-      return false
+      return
     } finally {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
-  refreshAllColumns ({ state, dispatch }) {
+  refreshAllColumns ({ state, dispatch }, { more = 'after' } = {}) {
     return Promise.all(
       state.columns
-        .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
+        .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
   async getDocument ({ commit, dispatch }, docId) {
     const result = await afpNews.get(docId)

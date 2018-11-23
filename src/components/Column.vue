@@ -1,99 +1,108 @@
 <template>
   <section class="column">
-    <header
-      v-on-clickaway="clickAway">
-      <input
-        v-model.lazy="query"
-        :placeholder="$t('column.search')"
-        class="search"
-        data-intro="search"
-        type="text"
-        name="query"
-        aria-label="query"
-        autocomplete="off"
-        @focus="paramsOpen = true">
-      <button
-        v-show="query.length > 0 && paramsOpen === true"
-        name="clear-search"
-        class="clear-search"
-        @click="query = ''">
-        <i class="UI-icon UI-delete" />
-      </button>
-      <form
+    <header>
+      <div
         v-if="paramsOpen || $route.name === 'tour'"
+        class="actions">
+        <button
+          name="move-left"
+          aria-label="Move column to left"
+          class="btn btn-icon"
+          @click="move('left')">
+          <i class="UI-icon UI-navigate-left" />
+        </button>
+        <button
+          name="move-right"
+          class="btn btn-icon margin-right-auto"
+          aria-label="Move column to right"
+          @click="move('right')">
+          <i class="UI-icon UI-navigate-right" />
+        </button>
+        <button
+          name="close-params"
+          class="btn btn-icon"
+          aria-label="Close column params"
+          @click="closeParams">
+          <i class="UI-icon UI-collapse icon-small" />
+        </button>
+      </div>
+      <div class="form-group inpt-icon">
+        <input
+          ref="search"
+          v-model.lazy="query"
+          :placeholder="$t('column.search')"
+          :aria-label="$t('column.search')"
+          :type="paramsOpen === true ? 'search' : 'text'"
+          class="search inpt inpt-large"
+          autocomplete="off"
+          name="query"
+          @focus="paramsOpen = true">
+        <button
+          v-show="paramsOpen === false"
+          name="expand"
+          class="btn btn-icon"
+          aria-label="Open column params"
+          @click="paramsOpen = true">
+          <i class="UI-icon UI-expand icon-small" />
+        </button>
+      </div>
+      <transition-group
+        name="curtain"
         tabindex="-1"
-        @submit.stop.prevent=""
-        @keydown.enter.stop.prevent="reset">
-        <div class="actions">
-          <button
-            name="move-left"
-            @click="move('left')">
-            <i class="UI-icon UI-slide-left" />
-          </button>
-          <button
-            name="move-right"
-            class="margin-right-auto"
-            @click="move('right')">
-            <i class="UI-icon UI-slide-right" />
-          </button>
-          <button
-            :class="{ processing: $wait.is(`column.refreshing.${column.id}`), danger: column.error }"
-            name="refresh"
-            class="margin-left-auto"
-            @click="reset">
-            <i class="UI-icon UI-refresh" />
-          </button>
-          <button
-            name="close"
-            class="danger"
-            @click="close">
-            <i class="UI-icon UI-close-alt" />
-          </button>
-        </div>
+        tag="div"
+        class="form">
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="product"
           v-model="product"
           name="product"
-          data-intro="products">
-          <option
-            disabled
-            selected>{{ $t('column.product') }}</option>
+          aria-label="Select a product"
+          class="slct slct-large">
           <option
             v-for="product in products"
             :key="product.value.join('|')"
-            :value="product.value">
+            :value="product.value"
+            :disabled="product.disabled">
             {{ product.label }}
           </option>
         </select>
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
+          v-show="languages.length > 1 || $route.name === 'tour'"
+          key="lang"
           v-model="lang"
           name="lang"
-          data-intro="languages">
-          <option
-            disabled
-            selected>{{ $t('column.lang') }}</option>
+          class="slct slct-large"
+          aria-label="Select a language">
           <option
             v-for="lang in languages"
             :key="lang.value.join('|')"
-            :value="lang.value">
+            :value="lang.value"
+            :disabled="lang.disabled">
             {{ lang.label }}
           </option>
         </select>
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
+          v-show="urgencies.length > 1 || $route.name === 'tour'"
+          key="urgency"
           v-model="urgency"
           name="urgency"
-          data-intro="urgencies">
-          <option
-            disabled
-            selected>{{ $t('column.urgency') }}</option>
+          class="slct slct-large"
+          aria-label="Select an urgency">
           <option
             v-for="urgency in urgencies"
             :key="urgency.value.join('|')"
-            :value="urgency.value">
+            :value="urgency.value"
+            :disabled="urgency.disabled">
             {{ urgency.label }}
           </option>
         </select>
         <datepicker
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="datepicker"
           v-model="dateTo"
+          :inline="false"
           :monday-first="true"
           :clear-button="true"
           :typeable="true"
@@ -101,25 +110,36 @@
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
-          data-intro="date-picker" />
-      </form>
+          aria-label="Select a date"
+          name="date-picker" />
+        <button
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="close"
+          name="close"
+          class="btn btn-large danger"
+          aria-label="Delete the column"
+          @click="close">
+          {{ $t('column.delete') }}
+        </button>
+      </transition-group>
+      <div
+        :class="{
+          waiting: $wait.is(`column.refreshing.${column.id}`)
+        }"
+        class="loading-indicator">
+        <div class="bar-horizontal" />
+      </div>
     </header>
-    <div
-      :class="{
-        waiting: $wait.is(`column.refreshing.${column.id}`)
-      }"
-      class="loading-indicator">
-      {{ $t('loading') }}
-    </div>
     <recyclist
       ref="recyclist"
       :list="documents"
       :size="10"
       :offset="200"
-      :fetch-bottom="loadBefore"
-      :fetch-top="loadAfter"
       :is-loading="$wait.is(`column.refreshing.${column.id}`)"
-      class="documents">
+      :no-more="noMore"
+      class="documents"
+      @load-top="loadAfter"
+      @load-bottom="loadBefore">
       <template
         slot="tombstone"
         slot-scope="props">
@@ -135,10 +155,22 @@
       </template>
       <template
         slot="item"
-        slot-scope="props">
+        slot-scope="{ data }">
+        <div
+          v-if="data && data.type === 'documents-gap'"
+          class="documents-gap">
+          <p>
+            {{ $t('column.documents-gap', { count: data.count }) }}
+            <router-link
+              to="/"
+              @click.native="reset">
+              {{ $t('column.refresh') }}
+            </router-link>
+          </p>
+        </div>
         <card
-          v-if="typeof props.data === 'string'"
-          :doc-id="props.data"
+          v-else-if="typeof data === 'string'"
+          :doc-id="data"
           :index-col="columnId" />
       </template>
       <div slot="nomore">{{ $t('column.no-result') }}</div>
@@ -151,16 +183,16 @@ import Recyclist from '@/components/Recyclist'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
 import Datepicker from 'vuejs-datepicker'
 import { en, fr } from 'vuejs-datepicker/dist/locale'
+import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 
 const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
   components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
-  mixins: [ clickaway ],
+  mixins: [ autoRefreshTimer ],
   props: {
     columnId: {
       type: Number,
@@ -169,13 +201,15 @@ export default {
   },
   data () {
     return {
-      paramsOpen: false
+      paramsOpen: false,
+      noMore: false
     }
   },
   computed: {
     ...mapGetters([
       'getColumnByIndex',
-      'getDocumentsIdsByColumnId'
+      'getDocumentsIdsByColumnId',
+      'isAuthenticated'
     ]),
     datePickerTranslate () {
       return datePickerTranslations[this.$i18n.locale] || datePickerTranslations[this.$i18n.fallbackLocale]
@@ -218,79 +252,96 @@ export default {
       return [
         {
           label: this.$t('products.all'),
-          value: []
+          value: [],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.news'),
-          value: ['news']
+          value: ['news'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.multimedia'),
-          value: ['multimedia']
+          value: ['multimedia'],
+          disabled: false
         },
         {
           label: this.$t('products.photo'),
-          value: ['photo']
+          value: ['photo'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.video'),
-          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st']
+          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.infographie'),
-          value: ['infographie']
+          value: ['infographie'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.videographie'),
-          value: ['videographie']
+          value: ['videographie'],
+          disabled: !this.isAuthenticated
         }
       ]
     },
     languages () {
-      if (this.product.length === 0 && this.product[0] === 'photo') {
+      if (this.product.length === 1 && this.product[0] === 'photo') {
         return [
           {
             label: this.$t('languages.en'),
-            value: ['en']
+            value: ['en'],
+            disabled: false
           }
         ]
       }
       return [
         {
           label: this.$t('languages.all'),
-          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn']
+          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn'],
+          disabled: false
         },
         {
           label: this.$t('languages.en'),
-          value: ['en']
+          value: ['en'],
+          disabled: false
         },
         {
           label: this.$t('languages.fr'),
-          value: ['fr']
+          value: ['fr'],
+          disabled: false
         },
         {
           label: this.$t('languages.de'),
-          value: ['de']
+          value: ['de'],
+          disabled: false
         },
         {
           label: this.$t('languages.es'),
-          value: ['es']
+          value: ['es'],
+          disabled: false
         },
         {
           label: this.$t('languages.pt'),
-          value: ['pt']
+          value: ['pt'],
+          disabled: false
         },
         {
           label: this.$t('languages.ar'),
-          value: ['ar']
+          value: ['ar'],
+          disabled: false
         },
         {
           label: this.$t('languages.zh-tw'),
-          value: ['zh-tw']
+          value: ['zh-tw'],
+          disabled: false
         },
         {
           label: this.$t('languages.zh-cn'),
-          value: ['zh-cn']
+          value: ['zh-cn'],
+          disabled: false
         }
       ]
     },
@@ -298,63 +349,55 @@ export default {
       if (this.product.length > 1) {
         return [
           {
-            label: this.$tc('urgencies.flash', 2),
-            value: [1]
-          },
-          {
-            label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2]
-          },
-          {
-            label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3]
-          },
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4]
-          },
-          {
             label: this.$t('urgencies.all'),
-            value: [1, 2, 3, 4, 5]
+            value: [1, 2, 3, 4, 5],
+            disabled: !this.isAuthenticated
           }
         ]
       }
       if (this.product[0] === 'photo') {
         return [
           {
-            label: this.$tc('urgencies.topshots', 2),
-            value: [1]
+            label: this.$t('urgencies.all-photos'),
+            value: [1, 2, 3, 4, 5],
+            disabled: !this.isAuthenticated
           },
           {
-            label: this.$t('urgencies.all-photos'),
-            value: [1, 2, 3, 4, 5]
+            label: this.$tc('urgencies.topshots', 2),
+            value: [1],
+            disabled: !this.isAuthenticated
           }
         ]
       }
       if (this.product[0] === 'news') {
         return [
           {
+            label: this.$tc('urgencies.depeches', 2),
+            value: [1, 2, 3, 4],
+            disabled: !this.isAuthenticated
+          },
+          {
             label: this.$tc('urgencies.flash', 2),
-            value: [1]
+            value: [1],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2]
+            value: [1, 2],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3]
-          },
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4]
+            value: [1, 2, 3],
+            disabled: !this.isAuthenticated
           }
         ]
       }
       return [
         {
           label: this.$t('urgencies.all'),
-          value: [1, 2, 3, 4, 5]
+          value: [1, 2, 3, 4, 5],
+          disabled: !this.isAuthenticated
         }
       ]
     },
@@ -384,17 +427,27 @@ export default {
       }
     }
   },
+  watch: {
+    async paramsOpen (val) {
+      if (val === true) {
+        await this.$nextTick()
+        this.$refs.search.focus()
+      }
+    }
+  },
   methods: {
     ...mapMutations([
       'updateColumnParams',
       'resetColumn',
       'moveColumn',
-      'closeColumn'
+      'closeColumn',
+      'openColumnSettings',
+      'closeColumnSettings'
     ]),
     ...mapActions([
       'refreshColumn'
     ]),
-    clickAway () {
+    closeParams () {
       this.paramsOpen = false
     },
     updateParams (newParams) {
@@ -403,11 +456,15 @@ export default {
       this.reset()
     },
     reset () {
+      this.noMore = false
       this.resetColumn({ indexCol: this.columnId })
-      this.$refs.recyclist.init()
+      this.$refs.recyclist.reset()
     },
-    loadBefore () {
-      return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+    async loadBefore () {
+      const moreDocuments = await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+      if (moreDocuments === false) {
+        this.noMore = true
+      }
     },
     loadAfter () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
@@ -426,7 +483,6 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 .column {
-  background-color: white;
   min-width: $column-size;
   width: $column-size;
   margin-right: 5px;
@@ -434,16 +490,6 @@ export default {
   flex-direction: column;
 
   button {
-    &:not(.danger) {
-      background-color: transparent;
-      color: #575e62;
-    }
-    &.success {
-      background: none;
-      background-color: #575e62;
-      color: white;
-    }
-
     &.margin-left-auto {
       margin-left: auto;
     }
@@ -453,69 +499,63 @@ export default {
   }
 
   header {
-    z-index: 3;
-    display: flex;
-    flex-wrap: wrap;
     position: relative;
+    padding: 0px 17px 0px 12px;
+    margin-top: 4px;
 
-    input.search {
-      width: 100%;
-      height: $sidebar-size;
-      padding: 5px 12px;
-      flex: 1;
-      font-size: 1.3rem;
-      @include breakpoint(mobile) {
-        font-size: 1rem;
-      }
-      outline: none;
-      border: none;
-      background-color: lighten($background-color, 5);
+    .actions {
+      display: flex;
     }
-    button.clear-search {
-      background-color: transparent;
-      position: absolute;
-      right: 0px;
-      line-height: $sidebar-size;
-      padding: 0px;
-      padding: 0px 14px 0px 6px;
-      background-color: lighten($background-color, 5);
+
+    .form-group {
+      z-index: 3;
+
+      input.search {
+        padding-right: 16px;
+      }
     }
   }
 
-  form {
-    z-index: 3;
-    display: flex;
-    flex-wrap: wrap;
-    outline: none;
-    .actions {
-      display: flex;
-      justify-content: flex-end;
+  .form {
+    /deep/ .vdp-datepicker {
+      @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
       width: 100%;
-      padding: 4px;
-    }
-    .search {
-      width: 100%;
-    }
-    select, input {
-      background-color: white;
-      width: 50%;
-      border: none;
-      border-top: 1px solid $background-color;
+      margin-bottom: 24px;
+      input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        height: 48px;
+        border-radius: 4px;
+        padding: 5px 12px;
+      }
+      .vdp-datepicker__clear-button {
+        position: absolute;
+        font-size: 16px;
+        top: 14px;
+        right: 10px;
+      }
     }
   }
 
   .loading-indicator {
-    z-index: 2;
-    background-color: $secondary-color;
-    color: white;
-    font-size: 12px;
-    padding: 12px 0px;
-    text-align: center;
-    margin-top: -37px;
-    transition: transform 100ms ease-in-out;
-    transform: translateY(0%);
+    width: 100%;
+    height: 4px;
+    overflow: hidden;
+    .bar-horizontal {
+      width: 0;
+      height: 100%;
+      background-color: $secondary-color;
+    }
     &.waiting {
-      transform: translateY(100%);
+      .bar-horizontal {
+        animation-name: spinner;
+        animation-duration: 750ms;
+        animation-timing-function: ease-in-out;
+        animation-play-state: running;
+        animation-direction: alternate-reverse;
+        animation-iteration-count: infinite;
+      }
     }
   }
 
@@ -526,12 +566,30 @@ export default {
 
   .documents {
     flex: 1;
+    padding: 4px 12px 12px 12px;
 
     .tombstone {
       padding: 12px;
       user-select: none;
     }
+
+    .documents-gap {
+      padding: 12px;
+      text-align: center;
+    }
   }
+}
+
+.curtain-enter {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.curtain-enter-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+.curtain-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
 }
 
 @keyframes move {
@@ -542,22 +600,18 @@ export default {
     background-position: 28px 0;
   }
 }
-</style>
 
-<style lang="scss">
-@import "~vue-content-placeholders/dist/vue-content-placeholders.css";
-@import "@/assets/scss/variables.scss";
-.vdp-datepicker {
-  width: 50%;
-  input {
-    width: 100%;
-    border: none;
-    border-top: 1px solid $background-color;
+@keyframes spinner {
+  0% {
+    width: 0;
   }
-  .vdp-datepicker__clear-button {
-    position: absolute;
-    top: 6px;
-    right: 6px;
+  50% {
+    width: 100%;
+    margin-right: 50%;
+  }
+  100% {
+    width: 0;
+    margin-right: 100%;
   }
 }
 </style>

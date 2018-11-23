@@ -1,29 +1,37 @@
 <template>
-  <nav id="sidebar">
+  <transition-group
+    id="sidebar"
+    name="appear"
+    tag="nav"
+    appear>
     <button
-      name="search"
-      aria-label="search"
-      data-intro="new"
+      key="new-column"
+      name="new-column"
+      aria-label="Add new column"
+      class="btn btn-circle btn-icon"
       @click="search">
-      <i class="UI-icon UI-search" />
+      <i class="UI-icon UI-plus" />
     </button>
     <router-link
-      :class="{ success: isAuthenticated, error: !isAuthenticated }"
+      v-if="!isAuthenticated || $route.name === 'tour'"
+      key="authenticate"
       :to="{ name: 'login' }"
       name="authenticate"
-      aria-label="authenticate"
+      aria-label="Authenticate"
       tag="button"
-      data-intro="authenticate">
+      class="btn btn-icon btn-circle danger">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
+      key="about"
       :to="{ name: 'about' }"
       name="about"
       aria-label="about"
+      class="btn btn-circle btn-icon"
       tag="button">
-      <i class="UI-icon UI-heart" />
+      <i class="UI-icon UI-heart icon-small" />
     </router-link>
-  </nav>
+  </transition-group>
 </template>
 
 <script>
@@ -40,16 +48,11 @@ export default {
     ...mapMutations([
       'addColumn'
     ]),
-    async search () {
+    search () {
       if (this.$route.name !== 'deck') {
         this.$router.push({ name: 'deck' })
       }
       this.addColumn()
-      await this.$nextTick()
-      document.querySelector('.column:last-child').scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      })
     }
   }
 }
@@ -59,25 +62,36 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 #sidebar {
-  width: $sidebar-size;
-  z-index: 5;
-  @include breakpoint(mobile) {
-    display: flex;
-    flex-direction: row-reverse;
-    width: auto;
-    height: $sidebar-size;
-  }
-  background-color: $primary-color;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
 
   button {
-    display: block;
-    width: calc(100% - 10px);
-    color: $secondary-color;
-    border: 1px solid $secondary-color;
-    background-color: transparent;
-    padding: 10px 12px;
-    margin: 5px;
+    margin: 4px;
+    i.UI-icon.UI-plus {
+      top: -3px;
+    }
+    i.UI-icon {
+      left: 1px;
+    }
   }
+}
+
+.appear-enter, .appear-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+.appear-enter-active, .appear-leave-active {
+  transition: transform 0.2s;
+}
+.appear-enter-to, .appear-leave {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media print {

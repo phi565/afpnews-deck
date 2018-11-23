@@ -1,18 +1,5 @@
 <template>
   <div class="media-gallery">
-    <div
-      v-if="mediasRatios.length > 1"
-      class="controls">
-      <ul>
-        <li
-          v-for="(m, i) in mediasRatios"
-          :key="m.uno"
-          :class="{ active: i === current }"
-          @click="goTo(i)">
-          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
-        </li>
-      </ul>
-    </div>
     <transition
       name="fade"
       mode="out-in">
@@ -39,6 +26,17 @@
       </figure>
     </transition>
     <p v-if="media.caption">{{ media.caption }}</p>
+    <nav v-if="mediasRatios.length > 1">
+      <ul>
+        <li
+          v-for="(m, i) in mediasRatios"
+          :key="m.uno"
+          :class="{ active: i === current }"
+          @click="goTo(i)">
+          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -114,6 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 .media-gallery {
   figure {
     position: relative;
@@ -126,9 +125,12 @@ export default {
     }
     margin: 0;
   }
-  .controls {
+  nav {
     display: flex;
     justify-content: center;
+    @media print {
+      display: none;
+    }
     ul {
       padding: 0;
       max-width: 80%;
@@ -139,20 +141,22 @@ export default {
       li {
         margin: 0 3px;
         cursor: pointer;
-        transition: transform 0.3s ease;
         &.active {
-          transform: scale(1.2);
+          border-bottom: 4px solid $secondary-color;
           cursor: default;
         }
         img {
-          width: 80px;
+          width: 48px;
         }
       }
     }
   }
   p {
-    margin-top: 10px;
+    margin-top: 18px;
     padding: 0 30px;
+    color: $grey-cold-5;
+    line-height: 1.5rem;
+    font-size: 0.80rem;
   }
 }
 </style>

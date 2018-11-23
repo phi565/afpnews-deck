@@ -20,32 +20,34 @@
         Your browser does not support the video tag.
       </video>
     </figure>
-    <h1>{{ doc.headline }}</h1>
-    <router-link
-      v-if="doc.country && doc.city"
-      :to="`/place/${doc.country}/${doc.city}`"
-      tag="h2">
-      {{ doc.city }} ({{ doc.country }})
-    </router-link>
-    <h3 v-if="doc.creator">
-      <router-link
-        v-for="(creator, i) in doc.creator.split(',')"
-        :key="creator"
-        :to="`/creator/${creator.trim()}`">
-        <span>{{ creator.toLowerCase().trim() }}</span>
-        <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
-      </router-link>
-    </h3>
-    <slugs :slugs="doc.slugs" />
-    <p
-      :key="`date-${locale}`"
-      class="date">
-      {{ $d(new Date(doc.published), 'long') }}
-    </p>
-    <p
-      v-for="(p, i) in doc.news"
-      :key="i"
-      v-html="p"/>
+    <main>
+      <h1>{{ doc.headline }}</h1>
+      <address v-if="doc.country && doc.city">
+        <router-link
+          :to="`/place/${doc.country}/${doc.city}`"
+          class="link">
+          {{ doc.city }} ({{ doc.country }})
+        </router-link>
+      </address>
+      <h2 v-if="doc.creator">
+        <router-link
+          v-for="(creator, i) in doc.creator.split(',')"
+          :key="creator"
+          :to="`/creator/${creator.trim()}`"
+          class="link">
+          <span>{{ creator.toLowerCase().trim() }}</span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+        </router-link>
+      </h2>
+      <slugs :slugs="doc.slugs" />
+      <time :key="`date-${locale}`">
+        {{ $d(new Date(doc.published), 'long') }}
+      </time>
+      <p
+        v-for="(p, i) in doc.news"
+        :key="i"
+        v-html="p"/>
+    </main>
     <slot name="actions" />
   </article>
 </template>
@@ -114,8 +116,45 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+article {
+  h1 {
+    font-size: 50px;
+    line-height: 60px;
+    @include breakpoint(mobile) {
+      font-size: 24px;
+      line-height: 24px;
+    }
+  }
+  address {
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  time {
+    display: block;
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  h2 {
+    cursor: pointer;
+    text-transform: capitalize;
+  }
+  h3 {
+    text-transform: capitalize;
+  }
+}
 @media screen {
-  article.document {
+  article {
     background-color: white;
     padding: 30px;
     z-index: 5;
@@ -135,35 +174,19 @@ export default {
         margin-top: -15px;
       }
     }
-    h1 {
-      font-size: 50px;
-      line-height: 60px;
-      @include breakpoint(mobile) {
-        font-size: 24px;
-        line-height: 24px;
-      }
-    }
 
-    p {
-      font-size: 18px;
-      line-height: 28.44px;
+    main {
+      max-width: 800px;
+      margin: auto;
     }
 
     .actions {
       position: fixed;
+      color: rgba(white, 0.5);
     }
   }
 }
-h2, h3 {
-  cursor: pointer;
-  a {
-    color: black;
-  }
-}
 
-h3 {
-  text-transform: capitalize;
-}
 @media print {
   figure {
     margin: 0;

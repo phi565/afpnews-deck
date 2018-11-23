@@ -5,64 +5,63 @@
       <h3 v-else>{{ $t('auth.not-authenticated.title') }}</h3>
       <router-link
         :to="{ name: 'deck' }"
-        class="close">
-        <i class="UI-icon UI-close" />
+        aria-label="Close"
+        class="btn btn-icon close">
+        <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
     <template slot="body">
       <form
-        v-if="isAuthenticated">
-        <p>{{ $t('auth.success.description') }}</p>
-        <button
-          @click.prevent="reset">
-          {{ $t('auth.logout') }}
-        </button>
-      </form>
-      <form
-        v-else
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
         <div v-if="client === 'other'">
-          <div class="form-group">
-            <label for="client-id">{{ $t('auth.clientId') }}</label>
-            <input
-              id="client-id"
-              v-model="clientId"
-              type="text"
-              name="client-id"
-              autocomplete="client-id">
-          </div>
-          <div class="form-group">
-            <label for="client-secret">{{ $t('auth.clientSecret') }}</label>
-            <input
-              id="client-secret"
-              v-model="clientSecret"
-              type="text"
-              name="client-secret"
-              autocomplete="client-secret">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="client-id">{{ $t('auth.username') }}</label>
           <input
-            id="username"
-            v-model.trim="username"
+            id="client-id"
+            v-model.trim="clientId"
+            :placeholder="$t('auth.clientId')"
+            :aria-label="$t('auth.clientId')"
             type="text"
-            name="username"
-            autocomplete="username">
-        </div>
-        <div class="form-group">
-          <label for="client-id">{{ $t('auth.password') }}</label>
+            name="client-id"
+            autocomplete="client-id"
+            class="inpt inpt-large inpt-bg"
+            required>
           <input
-            id="password"
-            v-model.trim="password"
-            type="password"
-            name="password"
-            autocomplete="password">
+            id="client-secret"
+            v-model.trim="clientSecret"
+            :placeholder="$t('auth.clientSecret')"
+            :aria-label="$t('auth.clientSecret')"
+            type="text"
+            name="client-secret"
+            autocomplete="client-secret"
+            class="inpt inpt-large inpt-bg"
+            required>
         </div>
-        <div class="form-group">
-          <button type="submit">{{ $t('submit') }}</button>
-        </div>
+        <input
+          id="username"
+          v-model.trim="username"
+          :placeholder="$t('auth.username')"
+          :aria-label="$t('auth.username')"
+          type="text"
+          name="username"
+          autocomplete="username"
+          class="inpt inpt-large inpt-bg"
+          required>
+        <input
+          id="password"
+          v-model.trim="password"
+          :placeholder="$t('auth.password')"
+          :aria-label="$t('auth.password')"
+          type="password"
+          name="password"
+          autocomplete="password"
+          class="inpt inpt-large inpt-bg"
+          required>
+        <button
+          aria-label="Submit"
+          class="btn btn-large"
+          type="submit">
+          {{ $t('submit') }}
+        </button>
         <i18n
           :path="client !== 'other' ? 'auth.not-authenticated.external' : 'auth.not-authenticated.afp'"
           tag="p"
@@ -135,8 +134,7 @@ export default {
     ]),
     ...mapActions([
       'authenticate',
-      'refreshAllColumns',
-      'logout'
+      'refreshAllColumns'
     ]),
     async login () {
       if (!this.client) {
@@ -154,9 +152,6 @@ export default {
         this.authError = true
       }
       await this.refreshAllColumns()
-    },
-    async reset () {
-      await this.logout()
     }
   }
 }
@@ -164,23 +159,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-  .close {
+  a.close {
     position: absolute;
-    right: -10px;
-    top: -20px;
-    i {
-      font-size: 24px;
-      color: grey;
-    }
+    right: -20px;
+    top: -30px;
   }
   form {
-    .form-group {
-      margin-bottom: 12px;
-      label {
-        display: inline-block;
-        min-width: 120px;
-      }
-    }
     &.danger {
       input {
         outline: 1px solid red;

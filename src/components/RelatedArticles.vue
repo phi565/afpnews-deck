@@ -1,24 +1,23 @@
 <template>
-  <aside v-if="documents.length > 0">
-    <h2>{{ $t('document.related-articles') }}</h2>
-    <ul>
-      <li
-        v-for="doc in documents"
-        :key="doc.uno">
-        <router-link :to="`/doc/${doc.uno}`">
-          {{ doc.headline }}
-        </router-link>({{ doc.published | fromNow }})
-      </li>
-    </ul>
+  <aside
+    v-if="documents.length > 0"
+    class="related-articles">
+    <h3>{{ $t('document.related-articles') }}</h3>
+    <card
+      v-for="doc in documents"
+      :key="doc.uno"
+      :doc-id="doc.uno" />
   </aside>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import DocumentParser from '@/plugins/DocumentParser'
+import Card from '@/components/Card'
 
 export default {
   name: 'RelatedArticles',
+  components: { Card },
   props: {
     doc: {
       type: Object,
@@ -35,7 +34,7 @@ export default {
     const documents = await this.searchDocuments({
       query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
       langs: [this.doc.lang],
-      products: [this.doc.product],
+      products: [],
       size: 5
     })
     if (documents && Array.isArray(documents)) {
@@ -51,16 +50,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @media print {
-    ul {
+@import "@/assets/scss/variables.scss";
+  aside {
+    margin-top: 68px;
+
+    @media print {
       display: none;
     }
-  }
-  ul {
-    padding-left: 0;
-    list-style-type: none;
-    li {
-      margin-bottom: 8px;
+
+    article {
+      margin-bottom: 24px;
     }
   }
 </style>
