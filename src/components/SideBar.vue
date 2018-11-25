@@ -68,7 +68,7 @@ export default {
   justify-content: center;
   z-index: 4;
   position: absolute;
-  bottom: 16px;
+  bottom: 29px;
   right: 24px;
 
   button {
