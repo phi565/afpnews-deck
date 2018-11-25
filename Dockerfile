@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:alpine
 
 # Set the default working directory
 WORKDIR /usr/src
