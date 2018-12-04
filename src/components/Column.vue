@@ -122,13 +122,11 @@
           {{ $t('column.delete') }}
         </button>
       </transition-group>
-      <div
+      <progress
         :class="{
-          waiting: $wait.is(`column.refreshing.${column.id}`)
+          active: $wait.is(`column.refreshing.${column.id}`)
         }"
-        class="loading-indicator">
-        <div class="bar-horizontal" />
-      </div>
+      />
     </header>
     <recyclist
       ref="recyclist"
@@ -538,24 +536,11 @@ export default {
     }
   }
 
-  .loading-indicator {
+  progress {
     width: 100%;
-    height: 4px;
-    overflow: hidden;
-    .bar-horizontal {
-      width: 0;
-      height: 100%;
-      background-color: $secondary-color;
-    }
-    &.waiting {
-      .bar-horizontal {
-        animation-name: spinner;
-        animation-duration: 750ms;
-        animation-timing-function: ease-in-out;
-        animation-play-state: running;
-        animation-direction: alternate-reverse;
-        animation-iteration-count: infinite;
-      }
+    visibility: hidden;
+    &.active {
+      visibility: visible;
     }
   }
 
@@ -598,20 +583,6 @@ export default {
   }
   100% {
     background-position: 28px 0;
-  }
-}
-
-@keyframes spinner {
-  0% {
-    width: 0;
-  }
-  50% {
-    width: 100%;
-    margin-right: 50%;
-  }
-  100% {
-    width: 0;
-    margin-right: 100%;
   }
 }
 </style>
