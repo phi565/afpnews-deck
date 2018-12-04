@@ -187,6 +187,7 @@ article.document {
     height: 0px;
     margin-left: -30px;
     margin-right: -60px;
+    right: auto;
     @include breakpoint(mobile) {
       margin-right: -30px;
     }
