@@ -134,8 +134,8 @@ export default {
     async loadList () {
       this.items = this.list.map(this.renderItem)
 
-      await this.$nextTick()
       await waitForFonts()
+      await this.$nextTick()
 
       for (let i = 0; i < this.items.length; i++) {
         this.updateItemHeight(i)
