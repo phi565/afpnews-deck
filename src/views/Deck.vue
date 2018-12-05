@@ -1,20 +1,25 @@
 <template>
   <main>
-    <transition-group
-      id="columns"
-      name="list"
-      tag="div">
-      <column
-        v-for="(column, i) in columns"
-        :key="`column-${column.id}`"
-        :column-id="i" />
-    </transition-group>
+    <div id="deck">
+      <transition-group
+        id="columns"
+        name="list"
+        tag="div">
+        <column
+          v-for="(column, i) in columns"
+          :key="`column-${column.id}`"
+          :column-id="i" />
+      </transition-group>
+      <add-column
+        key="add-column" />
+    </div>
     <router-view />
   </main>
 </template>
 
 <script>
 import Column from '@/components/Column'
+import AddColumn from '@/components/AddColumn'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import { mapState, mapActions } from 'vuex'
 
@@ -26,7 +31,8 @@ export default {
     }
   },
   components: {
-    Column
+    Column,
+    AddColumn
   },
   mixins: [
     autoRefreshVisibility
@@ -52,16 +58,23 @@ export default {
 
 main {
   @media screen {
-    flex: 1;
     background-color: $background-color;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     touch-action: auto;
     height: 100%;
+
+    #deck {
+      height: 100%;
+      display: block;
+      white-space: nowrap; // Needed to keep add column button in view
+    }
+
     #columns {
       height: 100%;
-      display: flex;
+      display: inline-flex;
       user-select: none;
+      white-space: normal; // Reset white-space to normal
     }
   }
   @media print {
@@ -72,7 +85,7 @@ main {
 }
 
 .list-leave-to {
-  transform: translate(0% ,-100%);
+  transform: translate(0%, -100%);
 }
 .list-leave-active, .list-move {
   transition: transform 0.5s;
