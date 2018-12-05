@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import waitForFonts from '@/plugins/waitForFonts'
+
 export default {
   name: 'Recyclist',
   props: {
@@ -109,7 +111,7 @@ export default {
       }
     }
   },
-  async mounted () {
+  mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
     this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
@@ -133,6 +135,7 @@ export default {
       this.items = this.list.map(this.renderItem)
 
       await this.$nextTick()
+      await waitForFonts()
 
       for (let i = 0; i < this.items.length; i++) {
         this.updateItemHeight(i)
