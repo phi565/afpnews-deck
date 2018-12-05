@@ -122,11 +122,6 @@
           {{ $t('column.delete') }}
         </button>
       </transition-group>
-      <progress
-        :class="{
-          active: $wait.is(`column.refreshing.${column.id}`)
-        }"
-      />
     </header>
     <recyclist
       ref="recyclist"
@@ -533,14 +528,6 @@ export default {
         top: 14px;
         right: 10px;
       }
-    }
-  }
-
-  progress {
-    width: 100%;
-    visibility: hidden;
-    &.active {
-      visibility: visible;
     }
   }
 
