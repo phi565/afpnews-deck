@@ -1,9 +1,11 @@
 <template>
-  <button
-    class="add-column"
-    @click="search">
-    <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
-  </button>
+  <div> <!-- Wrapper needed for margin to apply -->
+    <button
+      class="add-column"
+      @click="search">
+      <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
+    </button>
+  </div>
 </template>
 
 <script>
@@ -34,7 +36,9 @@ export default {
     align-items: center;
     align-content: center;
 
-    margin: 4px 16px 0 12px;
+    flex-shrink: 0;
+
+    margin: 4px 12px;
     padding: 0 20px;
 
     width: 281px;

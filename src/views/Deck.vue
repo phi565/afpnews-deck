@@ -66,15 +66,13 @@ main {
 
     #deck {
       height: 100%;
-      display: block;
-      white-space: nowrap; // Needed to keep add column button in view
+      display: flex;
     }
 
     #columns {
       height: 100%;
       display: inline-flex;
       user-select: none;
-      white-space: normal; // Reset white-space to normal
     }
   }
   @media print {
