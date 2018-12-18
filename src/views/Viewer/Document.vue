@@ -104,6 +104,7 @@ article.document {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 68px 0px 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     @include breakpoint(mobile) {
       padding: 0px 30px;
     }

@@ -154,7 +154,7 @@ article {
   }
 }
 @media screen {
-  article {
+  article.document {
     background-color: white;
     padding: 30px;
     z-index: 5;
@@ -182,7 +182,8 @@ article {
 
     .actions {
       position: fixed;
-      color: rgba(white, 0.5);
+      color: white;
+      mix-blend-mode: difference;
     }
   }
 }
