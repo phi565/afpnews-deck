@@ -7,6 +7,7 @@
       class="vue-recyclist-items">
       <div
         v-for="(item, index) in visibleItems"
+        v-show="height > 0"
         :key="index"
         :style="{
           transform: `translate3d(0,${item.top}px,0)`
