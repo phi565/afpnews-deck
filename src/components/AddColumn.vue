@@ -1,11 +1,12 @@
 <template>
-  <div> <!-- Wrapper needed for margin to apply -->
-    <button
-      class="add-column"
-      @click="search">
-      <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
-    </button>
-  </div>
+  <button
+    id="new-column"
+    name="new-column"
+    aria-label="Add new column"
+    class="btn"
+    @click="search">
+    <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
+  </button>
 </template>
 
 <script>
@@ -31,41 +32,40 @@ export default {
   @import "@/assets/scss/colors.scss";
   @import "@/assets/scss/variables.scss";
 
-  .add-column {
+  button {
+    @media print {
+      display: none;
+    }
+    @include breakpoint(mobile) {
+      display: none;
+    }
     display: inline-flex;
     align-items: center;
-    align-content: center;
 
     flex-shrink: 0;
 
-    margin: 4px 12px;
+    margin: 4px 17px 0px 12px;
     padding: 0 20px;
 
     width: 281px;
     height: 48px;
 
-    border: none;
-    border-radius: 4px;
-
     background-color: rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
 
     font-size: 0.9rem;
-    text-align: left;
-    color: white;
+    font-weight: normal;
 
-    overflow: hidden;
-    outline: none;
+    text-shadow: none;
 
     &:hover {
-      cursor: pointer;
       background-color: rgba(0, 0, 0, 0.3);
     }
 
     i.UI-icon.UI-plus {
       font-size: 1.2rem;
       position: relative;
-      top: -1px;
+      top: -1.5px;
       margin-right: 3px;
     }
   }

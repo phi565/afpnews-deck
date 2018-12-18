@@ -4,6 +4,14 @@
     name="appear"
     tag="nav"
     appear>
+    <button
+      key="new-column"
+      name="new-column"
+      aria-label="Add new column"
+      class="btn btn-circle btn-icon"
+      @click="search">
+      <i class="UI-icon UI-plus" />
+    </button>
     <router-link
       v-if="!isAuthenticated || $route.name === 'tour'"
       key="authenticate"
@@ -27,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -35,6 +43,17 @@ export default {
     ...mapGetters([
       'isAuthenticated'
     ])
+  },
+  methods: {
+    ...mapMutations([
+      'addColumn'
+    ]),
+    search () {
+      if (this.$route.name !== 'deck') {
+        this.$router.push({ name: 'deck' })
+      }
+      this.addColumn()
+    }
   }
 }
 </script>
@@ -59,6 +78,12 @@ export default {
     }
     i.UI-icon {
       left: 1px;
+    }
+    &[name="new-column"] {
+      display: none;
+      @include breakpoint(mobile) {
+        display: block;
+      }
     }
   }
 }
