@@ -165,9 +165,8 @@ article {
   }
 }
 .actions {
-  i {
-    color: rgba(white, 0.5);
-  }
+  mix-blend-mode: difference;
+  color: white;
 }
 
 @media print {
