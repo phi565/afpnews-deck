@@ -157,7 +157,6 @@ article {
   article.document {
     background-color: white;
     padding: 30px;
-    z-index: 5;
     overflow-y: auto;
     overscroll-behavior-y: contain;
     @include breakpoint(mobile) {

@@ -125,7 +125,6 @@ article {
 }
 @media screen {
   article {
-    z-index: 6;
     background-color: $primary-color;
     overflow: hidden;
     .figure {

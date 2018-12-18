@@ -9,12 +9,14 @@
         :key="`column-${column.id}`"
         :column-id="i" />
     </transition-group>
+    <side-bar />
     <router-view />
   </main>
 </template>
 
 <script>
 import Column from '@/components/Column'
+import SideBar from '@/components/SideBar'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import { mapState, mapActions } from 'vuex'
 
@@ -26,6 +28,7 @@ export default {
     }
   },
   components: {
+    SideBar,
     Column
   },
   mixins: [
