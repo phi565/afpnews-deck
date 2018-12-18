@@ -502,8 +502,6 @@ export default {
     }
 
     .form-group {
-      z-index: 3;
-
       input.search {
         padding-right: 16px;
       }

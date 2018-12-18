@@ -12,6 +12,7 @@
       </transition-group>
       <add-column
         key="add-column" />
+      <side-bar />
     </div>
     <router-view />
   </main>
@@ -20,6 +21,7 @@
 <script>
 import Column from '@/components/Column'
 import AddColumn from '@/components/AddColumn'
+import SideBar from '@/components/SideBar'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import { mapState, mapActions } from 'vuex'
 
@@ -32,7 +34,8 @@ export default {
   },
   components: {
     Column,
-    AddColumn
+    AddColumn,
+    SideBar
   },
   mixins: [
     autoRefreshVisibility

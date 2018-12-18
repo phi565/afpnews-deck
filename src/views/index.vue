@@ -1,18 +1,15 @@
 <template>
   <div id="app">
-    <side-bar />
     <router-view />
     <connectivity />
   </div>
 </template>
 
 <script>
-import SideBar from '@/components/SideBar'
 import Connectivity from '@/components/Connectivity'
 export default {
   name: 'App',
   components: {
-    SideBar,
     Connectivity
   }
 }

@@ -66,7 +66,6 @@ export default {
   flex-direction: column-reverse;
   align-items: center;
   justify-content: center;
-  z-index: 4;
   position: absolute;
   bottom: 29px;
   right: 24px;

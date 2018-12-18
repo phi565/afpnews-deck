@@ -46,7 +46,6 @@ export default {
   bottom: 0px;
   left: 0px;
   width: 100%;
-  z-index: 5;
   background-color: $secondary-color;
   color: white;
   padding: 4px 4px;

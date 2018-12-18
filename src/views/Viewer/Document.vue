@@ -99,7 +99,6 @@ article.document {
   background-color: white;
   @media screen {
     max-width: $max-document-width;
-    z-index: 5;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
