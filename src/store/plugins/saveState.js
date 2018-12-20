@@ -22,10 +22,13 @@ export const initState = async store => {
 }
 
 export const persistState = store => {
+  const idleCallbacks = []
   store.subscribe(({ type, payload }, state) => {
     switch (type) {
       case 'setLocale':
-        userStore.setItem(storageKeys.locale, payload)
+        requestIdleCallback(() => {
+          userStore.setItem(storageKeys.locale, payload)
+        })
         break
       case 'addColumn':
         // falls through
@@ -36,37 +39,58 @@ export const persistState = store => {
       case 'appendDocumentsIdsToCol':
         // falls through
       case 'prependDocumentsIdsToCol':
-        userStore.setItem(storageKeys.columns, state.columns)
+        cancelIdleCallback(idleCallbacks[0] || null)
+        idleCallbacks[0] = requestIdleCallback(() => {
+          userStore.setItem(storageKeys.columns, state.columns)
+        })
         break
       case 'closeColumn':
         // falls through
       case 'resetColumn':
-        const displayedIds = [].concat.apply([], state.columns.map(column => column.documentsIds))
-        documentsStore.iterate((value, key, iterationNumber) => {
-          if (!displayedIds.includes(key)) {
-            documentsStore.removeItem(key)
-          }
+        cancelIdleCallback(idleCallbacks[1] || null)
+        idleCallbacks[1] = requestIdleCallback(() => {
+          const displayedIds = [].concat.apply([], state.columns.map(column => column.documentsIds))
+          documentsStore.iterate((value, key, iterationNumber) => {
+            if (!displayedIds.includes(key)) {
+              documentsStore.removeItem(key)
+            }
+          })
+          userStore.setItem(storageKeys.columns, state.columns)
         })
-        userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'setWantTour':
-        userStore.setItem(storageKeys.wantTour, payload)
+        cancelIdleCallback(idleCallbacks[2] || null)
+        idleCallbacks[2] = requestIdleCallback(() => {
+          userStore.setItem(storageKeys.wantTour, payload)
+        })
         break
       case 'setDocumentViewed':
-        userStore.setItem(storageKeys.viewed, [...new Set(state.viewed)])
+        cancelIdleCallback(idleCallbacks[3] || null)
+        idleCallbacks[3] = requestIdleCallback(() => {
+          userStore.setItem(storageKeys.viewed, [...new Set(state.viewed)])
+        })
         break
       case 'resetState':
-        userStore.clear()
-        documentsStore.clear()
+        cancelIdleCallback(idleCallbacks[4] || null)
+        idleCallbacks[4] = requestIdleCallback(() => {
+          userStore.clear()
+          documentsStore.clear()
+        })
         store.commit('addColumn')
         break
       case 'clearDocuments':
-        documentsStore.clear()
-        userStore.setItem(storageKeys.columns, state.columns)
+        cancelIdleCallback(idleCallbacks[5] || null)
+        idleCallbacks[5] = requestIdleCallback(() => {
+          documentsStore.clear()
+          userStore.setItem(storageKeys.columns, state.columns)
+        })
         break
       case 'addDocuments':
         // if ('serviceWorker' in navigator && navigator.serviceWorker.controller) return
-        Promise.all(payload.map(doc => documentsStore.setItem(doc.uno, doc)))
+        cancelIdleCallback(idleCallbacks[6] || null)
+        idleCallbacks[6] = requestIdleCallback(() => {
+          Promise.all(payload.map(doc => documentsStore.setItem(doc.uno, doc)))
+        })
         break
       default:
     }

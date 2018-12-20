@@ -2,6 +2,11 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'AutoRefreshVisibility',
+  data () {
+    return {
+      lastIdleCallbackId: null
+    }
+  },
   mounted () {
     document.addEventListener('visibilitychange', this.visibilityChanged, false)
   },
@@ -13,8 +18,11 @@ export default {
       'refreshAllColumns'
     ]),
     visibilityChanged () {
+      cancelIdleCallback(this.lastIdleCallbackId)
       if (document.hidden === true || navigator.onLine === false) return
-      this.refreshAllColumns()
+      this.lastIdleCallBackId = requestIdleCallback(() => {
+        this.refreshAllColumns()
+      })
     }
   }
 }

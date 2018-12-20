@@ -3,7 +3,8 @@ export default {
   data () {
     return {
       autoRefreshTimer: null,
-      autoRefreshDelay: 10000
+      autoRefreshDelay: 10000,
+      lastIdleCallbackId: null
     }
   },
   mounted () {
@@ -15,8 +16,11 @@ export default {
   methods: {
     startAutoRefresh () {
       this.autoRefreshTimer = setInterval(() => {
+        cancelIdleCallback(this.lastIdleCallbackId)
         if (document.hidden === true || navigator.onLine === false) return
-        this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+        this.lastIdleCallbackId = requestIdleCallback(() => {
+          this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+        })
       }, this.autoRefreshDelay)
     },
     stopAutoRefresh () {
