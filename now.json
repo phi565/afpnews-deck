@@ -3,5 +3,10 @@
   "name": "afpnews-deck",
   "builds": [
     { "src": "package.json", "use": "@now/static-build" }
-  ]
+  ],
+  "routes": [
+    {"src": "^/sw.min.js", "headers": {"cache-control": "s-maxage=0"}, "dest": "/sw.min.js"},
+    {"src": "^/(doc|document|slug|place|creator|login|browser-warning|about|tour)/(.*)", "dest": "/index.html"},
+    {"src": "^/(.*)", "dest": "/$1"},
+	]
 }

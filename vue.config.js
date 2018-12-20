@@ -1,7 +1,6 @@
 const path = require('path')
 
 module.exports = {
-  baseUrl: '',
   chainWebpack: config => {
     // Fix "babel class constructor cannot be invoked without new" problem
     config.module
@@ -38,7 +37,7 @@ module.exports = {
     themeColor: '#243447',
     msTileColor: '#243447',
     workboxPluginMode: 'InjectManifest',
-    manifestPath: 'manifest.json?version=2',
+    manifestPath: 'manifest.json?version=3',
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
       importWorkboxFrom: 'local',
