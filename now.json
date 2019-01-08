@@ -18,7 +18,8 @@
       "src": "^/(doc|document|slug|place|creator|login|browser-warning|about|tour)(.*)",
       "headers": {
         "X-XSS-Protection": "1; mode=block",
-        "X-Content-Type-Options": "nosniff"
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
       },
       "dest": "/index.html"
     },
@@ -26,7 +27,8 @@
       "src": "^/(.*)",
       "headers": {
         "X-XSS-Protection": "1; mode=block",
-        "X-Content-Type-Options": "nosniff"
+        "X-Content-Type-Options": "nosniff",
+        "Vary": "Accept-Encoding"
       },
       "dest": "/$1"
     }
