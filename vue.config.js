@@ -1,5 +1,5 @@
 const path = require('path')
-const CSPWebpackPlugin = require('csp-webpack-plugin')
+const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
 
 module.exports = {
   chainWebpack: config => {
@@ -29,15 +29,16 @@ module.exports = {
 
   configureWebpack: {
     plugins: [
-      new CSPWebpackPlugin({
+      new CspHtmlWebpackPlugin({
+        'base-uri': '\'self\'',
         'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
         'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
-        'media-src': ['https://api.afp.com'],
+        'media-src': 'https://api.afp.com',
         'style-src': ['\'self\'', '\'unsafe-inline\''],
         'connect-src': ['\'self\'', 'https://api.afp.com', 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'],
-        'object-src': ['\'none\''],
-        'child-src': ['\'none\''],
-        'frame-ancestors': ['\'none\'']
+        'object-src': '\'none\'',
+        'child-src': '\'none\'',
+        'worker-src': '\'self\''
       })
     ]
   },
