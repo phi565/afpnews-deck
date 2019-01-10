@@ -4,7 +4,6 @@ import store from '@/store'
 class AfpNewsAuth extends AfpNews {
   constructor (...params) { // eslint-disable-line no-useless-constructor
     super(...params)
-    this.clients = ['afpdeck', 'other']
   }
 
   get client () {
@@ -16,8 +15,8 @@ class AfpNewsAuth extends AfpNews {
   }
 
   get authUrl () {
-    if (this.client) {
-      return `https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com/${this.client}`
+    if (this.client === 'afpdeck') {
+      return `/auth`
     } else {
       return super.authUrl
     }

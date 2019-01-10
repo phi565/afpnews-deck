@@ -1,0 +1,20 @@
+{
+  "name": "afpnews-deck-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "micro": "^9.3.3"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0"
+  }
+}

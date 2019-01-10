@@ -2,9 +2,15 @@
   "version": 2,
   "name": "afpnews-deck",
   "builds": [
-    { "src": "package.json", "use": "@now/static-build" }
+    { "src": "package.json", "use": "@now/static-build" },
+    { "src": "auth/index.js", "use": "@now/node" }
   ],
   "routes": [
+    {
+      "src": "^/auth",
+      "methods": ["POST"],
+      "dest": "/auth/index.js"
+    },
     {
       "src": "^/sw.min.js",
       "headers": {
@@ -37,5 +43,6 @@
       },
       "dest": "/$1"
     }
-	]
+	],
+  "env": ["AFPNEWS_DECK_AUTHORIZATION"]
 }
