@@ -3,13 +3,7 @@ const axios = require('axios')
 
 const afpNewsDeckAuthorizationKey = process.env.AFPNEWS_DECK_AUTHORIZATION
 
-if (!afpNewsDeckAuthorizationKey) {
-  throw 'The API client key is not available'
-}
-
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') return send(res, 405, { error: 'This auth service allows POST method only' })
-
   try {
     const formData = await text(req)
 
@@ -25,8 +19,9 @@ module.exports = async (req, res) => {
       data: formData
     })
 
-    return data
+    send(res, 200, data)
   } catch (e) {
-    return send(res, 500)
+    console.error(e)
+    send(res, 500)
   }
 }

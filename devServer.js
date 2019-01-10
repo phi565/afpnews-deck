@@ -19,7 +19,7 @@ module.exports = {
     pathname: '/',
     dest: 'localhost',
     method: ['GET'],
-    run: 'npm run serve',
+    run: 'npm run serve:app',
     debug: true,
     startTimeout: 10000
   }]

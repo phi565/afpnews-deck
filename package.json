@@ -15,8 +15,8 @@
   "main": "dist_electron/bundled/background.js",
   "scripts": {
     "prepare": "cd auth && npm install",
-    "dev": "dev-gateway serve devServer.js",
-    "serve": "vue-cli-service serve",
+    "serve": "npx git+ssh://git@github.com/julesbonnard/dev-gateway.git#spawn-child-process serve devServer.js",
+    "serve:app": "vue-cli-service serve",
     "build": "npm run build:app && npm run build:sw",
     "build:app": "vue-cli-service build --modern",
     "build:sw": "webpack --mode production dist/service-worker.js --resolve-alias @=../src --target webworker -o dist/sw.min.js",
@@ -62,7 +62,6 @@
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-standard": "^4.0.0",
-    "dev-gateway": "git+https://git@github.com/julesbonnard/dev-gateway.git#spawn-child-process",
     "dotenv": "^6.2.0",
     "json-loader": "^0.5.7",
     "modernizr-loader": "^1.0.1",
