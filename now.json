@@ -44,5 +44,7 @@
       "dest": "/$1"
     }
 	],
-  "env": ["AFPNEWS_DECK_AUTHORIZATION"]
+  "env": {
+    "AFPNEWS_DECK_AUTHORIZATION": "@afpnews-deck-authorization"
+  }
 }
