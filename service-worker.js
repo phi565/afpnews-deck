@@ -1,6 +1,6 @@
-importScripts("precache-manifest.db52bbe679fd656bb23d739a8cb50283.js", "workbox-v3.6.3/workbox-sw.js");
+importScripts("precache-manifest.c73eb8c8225611f945b8852b849506b5.js", "workbox-v3.6.3/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.3"});
-workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'})
+workbox.core.setCacheNameDetails({ prefix: 'afpnews-deck' })
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {
   ignoreUrlParametersMatching: [/.*/],
@@ -29,11 +29,8 @@ workbox.routing.registerRoute(
 
 workbox.googleAnalytics.initialize()
 
-// const { storageKeys, userStore, documentsStore } = require('@/plugins/database')
-// const DocumentParser = require('@/plugins/DocumentParser').default
-
 self.addEventListener('message', event => {
-  if (!event.data){
+  if (!event.data) {
     return
   }
 
@@ -44,7 +41,7 @@ self.addEventListener('message', event => {
       console.log(command, value)
       break
     case 'skipWaiting':
-      self.skipWaiting()
+      event.waitUntil(self.skipWaiting())
       break
     default:
       // NOOP
@@ -52,66 +49,7 @@ self.addEventListener('message', event => {
   }
 })
 
-// workbox.routing.registerRoute('https://api.afp.com/v1/api/search', searchDocuments, 'POST')
-// workbox.routing.registerRoute(/^https:\/\/api\.afp\.com\/v1\/api\/get\/.*/, getDocument)
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim())
+})
 
-// async function searchDocuments ({ url, event, params }) {
-//   try {
-//     const response = await fetch(event.request)
-//     const data = await response.json()
-//     const { docs, count } = data.response
-
-//     const parsedDocs = docs.map(doc => new DocumentParser(doc).toObject())
-
-//     Promise.all(parsedDocs.map(doc => documentsStore.setItem(doc.uno, doc)))
-
-//     return generateJson({
-//       response: {
-//         docs: parsedDocs,
-//         count
-//       }
-//     })
-//   } catch (e) {
-//     console.error(e)
-//     return generateJson({
-//       response: {
-//         docs: [],
-//         count: 0
-//       }
-//     })
-//   }
-// }
-
-// async function getDocument ({ url, event, params }) {
-//   const urlParts = url.href.split('/')
-//   const uno = urlParts.pop()
-
-//   const doc = await documentsStore.getItem(uno)
-
-//   if (!doc) return searchDocuments({ event })
-
-//   return generateJson({
-//     response: {
-//       docs: [doc],
-//       count: 1
-//     }
-//   })
-// }
-
-// function generateJson (body) {
-//   return new Response(JSON.stringify(body), {
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   })
-// }
-
-// async function broadcastMessage (command, value) {
-//   const clients = await self.clients.matchAll()
-//   clients.forEach(client => {
-//     client.postMessage({
-//       command,
-//       value
-//     })
-//   })
-// }
