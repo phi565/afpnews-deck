@@ -25,6 +25,10 @@ workbox.routing.registerRoute(
   }), 'GET'
 )
 
+workbox.routing.registerNavigationRoute(
+  workbox.precaching.getCacheKeyForURL('/index.html')
+)
+
 workbox.googleAnalytics.initialize()
 
 self.addEventListener('message', event => {

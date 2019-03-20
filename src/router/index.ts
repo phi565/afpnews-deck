@@ -164,5 +164,6 @@ const routes: RouteConfig[] = [
 ]
 
 export default new VueRouter({
+  mode: 'history',
   routes
 })
