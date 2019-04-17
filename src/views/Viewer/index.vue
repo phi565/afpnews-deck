@@ -47,13 +47,44 @@ export default {
   name: 'Viewer',
   metaInfo () {
     if (!this.doc) return
+    const image = this.doc.medias.length > 0 ? this.doc.medias[0].sizes.find(d => d.role === 'Preview') : null
+    let imageMetas = []
+    if (image) {
+      imageMetas = [
+        {
+          property: 'og:image',
+          content: image.href
+        },
+        {
+          property: 'og:image:type',
+          content: 'image/jpeg'
+        },
+        {
+          property: 'og:image:width',
+          content: image.width
+        },
+        {
+          property: 'og:image:height',
+          content: image.height
+        }
+      ]
+    }
     return {
       title: this.doc.headline,
       meta: [
         {
+          vmid: 'description',
+          property: 'description',
+          content: this.doc.summary ? this.doc.summary.join('\n') : this.doc.news[0]
+        },
+        {
           property: 'og:title',
           template: chunk => `${chunk} - AFP Deck`,
           content: this.doc.headline
+        },
+        {
+          property: 'og:description',
+          content: this.doc.summary ? this.doc.summary.join('\n') : this.doc.news[0]
         },
         {
           property: 'og:type',
@@ -61,8 +92,9 @@ export default {
         },
         {
           property: 'og:url',
-          content: window.location.href
-        }
+          content: `${window.location.origin}/#${this.$route.path}`
+        },
+        ...imageMetas
       ]
     }
   },

@@ -80,7 +80,7 @@ export default {
       required: true
     },
     image: {
-      type: String,
+      type: Object,
       required: false,
       default: null
     }
@@ -95,21 +95,20 @@ export default {
   },
   computed: {
     formattedText () {
-      const text = `${this.title}
+      return `${this.title}
 
 ${this.text}
 
 ${this.$t('document.read-more')} ${this.url}`
-      return encodeURIComponent(text)
     },
     whatsapp () {
-      return this.isMobile ? `whatsapp://send?text=${this.title} ${this.url}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(this.image)} ${this.formattedText}`
+      return this.isMobile ? `whatsapp://send?text=${this.title} ${this.url}` : `https://api.whatsapp.com/send?text=${this.encodeUrl(this.formattedText)}`
     },
     messenger () {
-      return this.isMobile ? `fb-messenger://share/?link=${this.encodeUrl(this.url)}&app_id=${fbAppId}` : `http://www.facebook.com/dialog/send?app_id=${fbAppId}&link=${this.encodeUrl(this.url)}&redirect_uri=${this.encodeUrl(this.redirectUri)}`
+      return this.isMobile ? `fb-messenger://share/?link=${this.encodeUrl(this.url)}&app_id=${fbAppId}` : `http://www.facebook.com/dialog/send?app_id=${fbAppId}&link=${this.encodeUrl(this.smartLink)}&redirect_uri=${this.encodeUrl(this.redirectUri)}`
     },
     email () {
-      return `mailto:?subject=${this.title}&body=${this.formattedText}`
+      return `mailto:?subject=${this.title}&body=${this.encodeUrl(this.formattedText)}`
     },
     sms () {
       if (!this.isMobile) return null
@@ -118,6 +117,13 @@ ${this.$t('document.read-more')} ${this.url}`
       } else {
         return `sms:?body=${this.title} ${this.url}`
       }
+    },
+    smartLink () {
+      return `${this.url}?previewData=${btoa(JSON.stringify({
+        title: this.title,
+        text: this.text,
+        image: this.image
+      }))}`
     }
   },
   methods: {

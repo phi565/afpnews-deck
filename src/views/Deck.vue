@@ -27,8 +27,68 @@ import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: 'Deck',
-  metaInfo: {
-    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
+  metaInfo () {
+    if (this.preview) {
+      let imageMetas: Array<any> = []
+      if (this.preview.image) {
+        imageMetas = [
+          {
+            property: 'og:image',
+            content: this.preview.image.href
+          },
+          {
+            property: 'og:image:type',
+            content: 'image/jpeg'
+          },
+          {
+            property: 'og:image:width',
+            content: this.preview.image.width
+          },
+          {
+            property: 'og:image:height',
+            content: this.preview.image.height
+          }
+        ]
+      }
+      return {
+        title: this.preview.title,
+        meta: [
+          {
+            vmid: 'description',
+            property: 'description',
+            content: this.preview.text
+          },
+          {
+            property: 'og:title',
+            content: `${this.preview.title} - AFP Deck`
+          },
+          {
+            property: 'og:description',
+            content: this.preview.text
+          },
+          {
+            property: 'og:type',
+            content: 'article'
+          },
+          {
+            property: 'og:url',
+            content: `${window.location.origin}/#${this.preview.url}`
+          },
+          ...imageMetas
+        ]
+      }
+    }
+
+    return {
+      titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck',
+      meta: [
+        {
+          vmid: 'description',
+          property: 'description',
+          content: 'AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.'
+        }
+      ]
+    }
   },
   components: {
     Column,
@@ -38,6 +98,13 @@ export default Vue.extend({
   mixins: [
     autoRefreshVisibility
   ],
+  props: {
+    preview: {
+      type: Object,
+      required: false,
+      default: null
+    }
+  },
   computed: {
     ...mapState([
       'authType',

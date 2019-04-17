@@ -30,6 +30,18 @@ router.beforeEach(async (to, _, next) => {
       try {
         await store.dispatch('getDocument', to.params.docId)
       } catch (error) {
+        const previewData = Array.isArray(to.query.previewData) ? to.query.previewData[0] : to.query.previewData
+        if (previewData) {
+          return next({
+            name: 'deck',
+            params: {
+              preview: {
+                url: to.path,
+                ...JSON.parse(atob(previewData))
+              }
+            }
+          })
+        }
         if (store.state.authType !== 'credentials') {
           return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
         }
@@ -50,8 +62,7 @@ function init () {
     wait,
     render: h => h(App)
   }).$mount('#app')
-
-  if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated) {
+  if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated && !router.currentRoute.query.previewData) {
     router.replace({
       name: 'login'
     })

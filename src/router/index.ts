@@ -11,6 +11,7 @@ const routes: RouteConfig[] = [
     name: 'deck',
     path: '/',
     component: Deck,
+    props: true,
     meta: {
       analytics: {
         pageviewTemplate (route: Route) {
