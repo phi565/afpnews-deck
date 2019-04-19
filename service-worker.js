@@ -1,4 +1,4 @@
-importScripts("precache-manifest.0dc3f52ce7f6bac9fc368dfb40b6d686.js", "workbox-v3.6.3/workbox-sw.js");
+importScripts("precache-manifest.cfa63a2c5e0fc12e359e8cac50ea8810.js", "workbox-v3.6.3/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "workbox-v3.6.3"});
 workbox.core.setCacheNameDetails({ prefix: 'afpnews-deck' })
 
