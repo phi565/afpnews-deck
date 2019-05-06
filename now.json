@@ -2,14 +2,19 @@
   "version": 2,
   "name": "afpnews-deck",
   "builds": [
-    { "src": "package.json", "use": "@now/static-build" },
-    { "src": "auth/index.js", "use": "@now/node" }
+    {
+      "src": "auth/index.js",
+      "use": "@now/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@now/static-build"
+    }
   ],
   "routes": [
     {
       "src": "^/auth",
-      "methods": ["POST"],
-      "dest": "/auth/index.js"
+      "dest": "auth/index.js"
     },
     {
       "src": "^/sw.min.js",
@@ -21,29 +26,17 @@
       "dest": "/sw.min.js"
     },
     {
-      "src": "^/(doc|document|slug|place|creator|login|browser-warning|about|tour)(.*)",
-      "headers": {
-        "X-XSS-Protection": "1; mode=block",
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Content-Security-Policy": "base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-eval' https://www.google-analytics.com 'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://api.afp.com www.google-analytics.com; media-src https://api.afp.com; connect-src 'self' https://api.afp.com; child-src 'none'; worker-src 'self'",
-        "X-UA-Compatible": "IE=edge,chrome=1"
-      },
-      "dest": "/index.html"
-    },
-    {
-      "src": "^/(.*)",
+      "src": "^(.*)",
       "headers": {
         "X-XSS-Protection": "1; mode=block",
         "X-Content-Type-Options": "nosniff",
         "Vary": "Accept-Encoding",
         "X-Frame-Options": "DENY",
-        "Content-Security-Policy": "base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-eval' https://www.google-analytics.com 'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://api.afp.com www.google-analytics.com; media-src https://api.afp.com; connect-src 'self' https://api.afp.com; child-src 'none'; worker-src 'self'",
         "X-UA-Compatible": "IE=edge,chrome=1"
       },
       "dest": "/$1"
     }
-	],
+  ],
   "env": {
     "AFPNEWS_DECK_AUTHORIZATION": "@afpnews-deck-authorization"
   }

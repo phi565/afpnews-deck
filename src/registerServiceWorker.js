@@ -3,6 +3,7 @@
 import { register } from 'register-service-worker'
 import { event } from 'vue-analytics'
 import store from '@/store'
+import Vue from 'vue'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}sw.min.js`, {
@@ -13,22 +14,33 @@ if (process.env.NODE_ENV === 'production') {
       console.log('Service worker has been registered.')
     },
     cached (registration) {
-      console.log('Content has been cached for offline use.')
+      console.log('version has been cached for offline use.')
     },
     updatefound (registration) {
-      console.log('New content is downloading.')
+      console.log('New version is downloading.')
     },
     updated (registration) {
-      console.log('New content is available; Ask for refresh.')
-      if (window.confirm('New version available! OK to refresh?')) {
-        registration.waiting.postMessage({ command: 'skipWaiting' })
-      }
+      console.log('New version is available; Ask for refresh.')
+      Vue.toasted.show('New version available !', {
+        action: [
+          {
+            text: 'Update',
+            onClick: () => {
+              registration.waiting.postMessage({ command: 'skipWaiting' })
+            }
+          }
+        ],
+        position: 'bottom-right'
+      })
     },
     offline () {
-      console.log('No internet connection found. App is running in offline mode.')
+      Vue.toasted.show('No internet connection found. App is running in offline mode.', {
+        position: 'bottom-center',
+        duration: 1500
+      })
     },
     error (error) {
-      console.error('Error during service worker registration:', error)
+      Vue.toasted.global.error(error)
     }
   })
 }
@@ -56,18 +68,3 @@ function getServiceWorkerSupport () {
 }
 
 event('service-worker', 'support', getServiceWorkerSupport())
-
-async function persistStorage () {
-  if (navigator.storage && navigator.storage.persist && navigator.storage.persisted) {
-    const persisted = await navigator.storage.persisted()
-    event('storage', 'persistent', persisted)
-    if (!persisted) {
-      const granted = await navigator.storage.persist()
-      if (granted) {
-        alert('Storage will persist and not be cleared')
-      }
-    }
-  }
-}
-
-persistStorage()

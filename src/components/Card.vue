@@ -5,33 +5,46 @@
       flash: doc.urgency === 1,
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.product !== 'photo' && doc.urgency === 3,
-      viewed,
-      photo: doc.product === 'photo'
+      photo: doc.product === 'photo',
+      canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
-    tag="article">
+    class="article"
+  >
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
       :style="{
         backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
-      class="img-container">
+      class="img-container"
+    >
       <i
         v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
-        class="UI-icon UI-play-video" />
+        class="UI-icon UI-play-video"
+      />
     </div>
     <div class="cols">
       <p
+        v-if="doc.embargoed && doc.embargoed > new Date()"
         :key="`date-${locale}`"
-        class="published">
+        class="date embargo"
+      >
+        Embargo : {{ doc.embargoed | fromNow }}
+      </p>
+      <p
+        v-else
+        :key="`date-${locale}`"
+        class="date"
+      >
         {{ doc.published | fromNow }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="topshot">
+        class="topshot"
+      >
         Topshot
       </p>
     </div>
@@ -39,8 +52,9 @@
       {{ doc.headline }}
     </h2>
     <p
-      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
-      class="lead">
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0] && doc.status === 'Usable'"
+      class="lead"
+    >
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
   </router-link>
@@ -67,12 +81,8 @@ export default {
       'locale'
     ]),
     ...mapGetters([
-      'getDocumentById',
-      'isDocumentViewed'
+      'getDocumentById'
     ]),
-    viewed () {
-      return this.isDocumentViewed(this.docId)
-    },
     doc () {
       return this.getDocumentById(this.docId)
     }
@@ -82,7 +92,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-article {
+.article {
+  color: unset;
+  text-decoration: unset;
+  display: block;
   background-color: white;
   width: 100%;
   cursor: pointer;
@@ -107,11 +120,17 @@ article {
   &.urgent {
     border-left: $urgency-bar-width solid lighten($yellow-butter-5, 20%);
   }
-  &.viewed {
+  &:visited {
     background-color: mix($white, $background-color, 70);
 
     h2, p {
       color: $grey-cold-3;
+    }
+  }
+
+  &.canceled {
+    & > h2 {
+      text-decoration: line-through;
     }
   }
 
@@ -121,8 +140,11 @@ article {
     color: $grey-cold-4;
     padding: 18px 18px 0px 18px;
     font-size: 0.75rem;
-    p.published {
+    p.date {
       margin: 0px;
+      &.embargo {
+        color: $red_warm_3;
+      }
     }
     p.topshot {
       text-transform: uppercase;
@@ -178,6 +200,10 @@ article {
     word-wrap: break-word;
     overflow: hidden;
   }
-
+  @media screen and (max-device-height: 568px) {
+    p.lead {
+      display: none;
+    }
+  }
 }
 </style>

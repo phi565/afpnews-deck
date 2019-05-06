@@ -1,4 +1,4 @@
-workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'})
+workbox.core.setCacheNameDetails({ prefix: 'afpnews-deck' })
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {
   ignoreUrlParametersMatching: [/.*/],
@@ -28,7 +28,7 @@ workbox.routing.registerRoute(
 workbox.googleAnalytics.initialize()
 
 self.addEventListener('message', event => {
-  if (!event.data){
+  if (!event.data) {
     return
   }
 
@@ -39,10 +39,14 @@ self.addEventListener('message', event => {
       console.log(command, value)
       break
     case 'skipWaiting':
-      self.skipWaiting()
+      event.waitUntil(self.skipWaiting())
       break
     default:
       // NOOP
       break
   }
+})
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim())
 })

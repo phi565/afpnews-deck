@@ -3,26 +3,27 @@
     v-if="docExists"
     :name="type.transition"
     mode="in-out"
-    appear>
+    appear
+  >
     <component
-      v-hammer:swipe.horizontal="swipe"
       :is="type.component"
       :key="type.transition === `slide-${direction}` ? doc.uno : 'fade'"
+      v-hammer:swipe.horizontal="swipe"
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
       :search-terms="columnSearchTerms"
-      class="document">
-      <div
-        slot="actions"
-        class="actions">
+      class="document"
+    >
+      <template v-slot:actions>
         <button
           aria-label="Close the document"
           class="btn btn-icon"
-          @click="close">
+          @click="close"
+        >
           <i class="UI-icon UI-close-alt" />
         </button>
-      </div>
+      </template>
     </component>
   </transition>
 </template>
@@ -32,7 +33,7 @@ import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { parse as queryParser } from 'lucene-query-parser'
+import { parse as queryParser } from 'lucene'
 
 function recursiveSearchTerms (cur) {
   if (cur.term) return [cur.term]
@@ -45,6 +46,7 @@ function recursiveSearchTerms (cur) {
 export default {
   name: 'Viewer',
   metaInfo () {
+    if (!this.doc) return
     return {
       title: this.doc.headline,
       meta: [
@@ -144,40 +146,18 @@ export default {
       }
     }
   },
-  created () {
-    this.startTimeout()
-  },
   mounted () {
     window.addEventListener('keydown', this.keyPress)
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.keyPress)
-    this.clearTimeout()
-  },
-  beforeRouteUpdate (to, from, next) {
-    this.clearTimeout()
-    if (to.name === 'document') {
-      this.startTimeout()
-    }
-    next()
   },
   methods: {
-    ...mapMutations([
-      'setDocumentViewed'
-    ]),
     ...mapActions([
       'refreshColumn'
     ]),
     close () {
       this.$router.push('/')
-    },
-    clearTimeout () {
-      this._newDocumentTimeout && clearTimeout(this._newDocumentTimeout)
-    },
-    startTimeout () {
-      this._newDocumentTimeout = setTimeout(_ => {
-        this.setDocumentViewed(this.docId)
-      }, 3000)
     },
     goTo ({ indexCol, docId, direction }) {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })
