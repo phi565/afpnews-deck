@@ -2,7 +2,7 @@ import AfpNews from 'afpnews-api'
 import store from '@/store'
 
 const afpNews = new AfpNews({
-  customAuthUrl: 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com/afpdeck',
+  customAuthUrl: 'https://u4z1csch7d.execute-api.eu-central-1.amazonaws.com/afpdeck',
   saveToken: token => {
     if (token) {
       store.commit('setToken', token)
