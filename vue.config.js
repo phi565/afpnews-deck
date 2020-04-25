@@ -32,10 +32,10 @@ module.exports = {
         'img-src': [
           '\'self\'',
           'data:',
-          'https://api.afp.com',
+          'https://afp-apicore-prod.afp.com',
           'https://www.google-analytics.com'
         ],
-        'media-src': 'https://api.afp.com',
+        'media-src': 'https://afp-apicore-prod.afp.com',
         'style-src': [
           '\'self\'',
           '\'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\'', // Vuejs Datepicker
@@ -46,7 +46,7 @@ module.exports = {
         ],
         'connect-src': [
           '\'self\'',
-          'https://api.afp.com',
+          'https://afp-apicore-prod.afp.com',
           'https://www.google-analytics.com',
           'https://u4z1csch7d.execute-api.eu-central-1.amazonaws.com'
         ],
