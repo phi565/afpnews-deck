@@ -48,7 +48,7 @@ module.exports = {
           '\'self\'',
           'https://api.afp.com',
           'https://www.google-analytics.com',
-          'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'
+          'https://u4z1csch7d.execute-api.eu-central-1.amazonaws.com'
         ],
         'object-src': '\'none\'',
         'child-src': '\'none\'',
