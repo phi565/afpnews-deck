@@ -10,7 +10,7 @@
         :key="`column-${column.id}`"
         :column-id="i"
       />
-      <add-column key="add-column" />
+      <!-- <add-column key="add-column" /> -->
     </transition-group>
     <side-bar />
     <router-view />

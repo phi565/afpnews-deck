@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div
+    <!-- <div
       v-if="paramsOpen"
       class="actions"
     >
@@ -44,8 +44,25 @@
       >
         <i class="UI-icon UI-expand icon-small" />
       </button>
-    </div>
-    <transition-group
+    </div> -->
+    <select
+        v-show="topics.length > 1"
+        key="topic"
+        v-model="topic"
+        name="topic"
+        class="slct slct-large"
+        aria-label="Select a topic"
+      >
+        <option
+          v-if="!disabled"
+          v-for="{ label, value, disabled } in topics"
+          :key="value.join('|')"
+          :value="value"
+        >
+          {{ label }}
+        </option>
+      </select>
+    <!-- <transition-group
       name="curtain"
       tabindex="-1"
       tag="div"
@@ -122,7 +139,7 @@
           {{ label }}
         </option>
       </select>
-      <!-- <input
+      <input
         v-if="paramsOpen"
         key="datepicker"
         v-model="dateTo"
@@ -131,7 +148,7 @@
         aria-label="Select a date"
         name="date-picker"
         class="inpt inpt-large"
-      > -->
+      >
       <button
         v-if="paramsOpen"
         key="close"
@@ -142,7 +159,7 @@
       >
         {{ $t('column.delete') }}
       </button>
-    </transition-group>
+    </transition-group> -->
   </header>
 </template>
 

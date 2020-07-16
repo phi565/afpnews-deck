@@ -13,14 +13,38 @@ export const initState = async (store: Store<State>) => {
   const documents = await documentsStore.getItems()
   store.commit('addDocuments', Object.values(documents))
 
-  if (Array.isArray(columns) && columns.length > 0) {
-    columns.forEach(column => store.commit('addColumn', {
-      ...column,
-      documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
-    }))
-  } else {
-    store.commit('addColumn')
-  }
+  // if (Array.isArray(columns) && columns.length > 0) {
+  //   columns.forEach(column => store.commit('addColumn', {
+  //     ...column,
+  //     documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
+  //   }))
+  // } else {
+  //   store.commit('addColumn')
+  // }
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Monde']
+  })
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Afrique']
+  })
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Politique']
+  })
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Faits-divers']
+  })
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Economie/Finances', 'service-eco-fr']
+  })
+  store.commit('addColumnWithTopic', {
+    langs: ['fr'],
+    topics: ['Football']
+  })
 }
 
 export const persistState = (store: Store<State>) => {
@@ -38,7 +62,7 @@ export const persistState = (store: Store<State>) => {
       case 'appendDocumentsIdsToCol':
         // falls through
       case 'prependDocumentsIdsToCol':
-        userStore.setItem(storageKeys.columns, state.columns)
+        // userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'closeColumn':
         // falls through
@@ -49,7 +73,7 @@ export const persistState = (store: Store<State>) => {
         storedKeys
           .filter(key => !displayedIds.includes(key))
           .forEach(key => documentsStore.removeItem(key))
-        userStore.setItem(storageKeys.columns, state.columns)
+        // userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'resetState':
         userStore.clear()
@@ -58,7 +82,7 @@ export const persistState = (store: Store<State>) => {
         break
       case 'clearDocuments':
         documentsStore.clear()
-        userStore.setItem(storageKeys.columns, state.columns)
+        // userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'addDocuments':
         documentsStore.setItems(payload.map((doc: Document) => ({

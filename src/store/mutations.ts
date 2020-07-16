@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import DocumentParser from '@/plugins/DocumentParser'
 import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
-import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
+import { AfpDocument, Params, Token, Lang } from 'afpnews-api/dist/types'
 
 export default {
   addColumn (state: State, payload: Column) {
@@ -18,6 +18,21 @@ export default {
     const newColumn = Object.assign({}, defaultColumn, payload)
     if (state.columns.find(column => column.id === newColumn.id)) return
     state.columns.push(newColumn)
+  },
+  addColumnWithTopic (state: State, payload: {
+    langs: Lang,
+    topics: string
+  }) {
+    const column = {
+      id: uuidv4(),
+      params: Object.assign({}, afpNews.defaultSearchParams, {
+        products: ['multimedia'],
+        size: 10,
+        sources: ['afp']
+      }, payload),
+      documentsIds: []
+    }
+    state.columns.push(column)
   },
   moveColumn (state: State, { indexCol, dir }: { indexCol: number, dir: 'left' | 'right' }) {
     const sortingArray = state.columns.map(d => d.id)
