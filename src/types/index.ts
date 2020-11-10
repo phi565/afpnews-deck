@@ -49,7 +49,8 @@ export type Documents = Map<string, Document>
 export interface Column {
   readonly id: string,
   documentsIds: string[],
-  params: Params
+  params: Params,
+  mode: 'search' | 'topic'
 }
 
 export type Locale = 'fr' | 'en'

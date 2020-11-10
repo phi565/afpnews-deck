@@ -9,6 +9,7 @@ export default {
   addColumn (state: State, payload: Column) {
     const defaultColumn = {
       id: uuidv4(),
+      type: 'search',
       params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
       documentsIds: []
     }
@@ -36,6 +37,9 @@ export default {
   },
   updateColumnParams (state: State, { indexCol, params }: { indexCol: number, params: Params }) {
     state.columns[indexCol].params = params
+  },
+  updateColumnMode (state: State, { indexCol, mode }: { indexCol: number, mode: Column['mode'] }) {
+    state.columns[indexCol].mode = mode
   },
   setToken (state: State, token: Token) {
     state.authType = token.authType

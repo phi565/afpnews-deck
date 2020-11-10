@@ -21,6 +21,14 @@
         <i class="UI-icon UI-navigate-right" />
       </button>
       <button
+        name="toggle-mode"
+        class="btn btn-icon margin-left-auto"
+        aria-label="Toggle column mode"
+        @click="$emit('toggle-mode')"
+      >
+        <i class="UI-icon UI-navigate-right" />
+      </button>
+      <button
         name="close-params"
         class="btn btn-icon"
         aria-label="Close column params"
