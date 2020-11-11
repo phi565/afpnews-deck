@@ -21,12 +21,15 @@
         <i class="UI-icon UI-navigate-right" />
       </button>
       <button
-        name="toggle-mode"
-        class="btn btn-icon margin-left-auto"
-        aria-label="Toggle column mode"
-        @click="$emit('toggle-mode')"
+        :class="{
+          'btn-icon': column.type === 'topic'
+        }"
+        name="toggle-type"
+        class="btn margin-left-auto"
+        aria-label="Toggle column type"
+        @click="toggleType"
       >
-        <i class="UI-icon UI-navigate-right" />
+        <i class="UI-icon UI-search" />
       </button>
       <button
         name="close-params"
@@ -38,7 +41,24 @@
       </button>
     </div>
     <div class="form-group inpt-icon">
+      <select
+        v-if="column.type === 'topic'"
+        key="topic"
+        v-model="topic"
+        name="topic"
+        class="slct slct-large"
+        aria-label="Select a topic"
+      >
+        <option
+          v-for="{ label, value } in topics.filter(d => !d.disabled)"
+          :key="value.join('|')"
+          :value="value"
+        >
+          {{ label }}
+        </option>
+      </select>
       <search-input
+        v-else
         :type="paramsOpen === true ? 'search' : 'text'"
         :initial-query="params.query"
         @submit="onQueryChange"
@@ -60,7 +80,7 @@
       class="form"
     >
       <select
-        v-if="paramsOpen"
+        v-if="paramsOpen && column.type === 'search'"
         key="product"
         v-model="product"
         name="product"
@@ -108,23 +128,6 @@
           :key="value.join('|')"
           :value="value"
           :disabled="disabled"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
-        v-show="topics.length > 1"
-        key="topic"
-        v-model="topic"
-        name="topic"
-        class="slct slct-large"
-        aria-label="Select a topic"
-      >
-        <option
-          v-for="{ label, value } in topics.filter(d => !d.disabled)"
-          :key="value.join('|')"
-          :value="value"
         >
           {{ label }}
         </option>
@@ -361,7 +364,7 @@ export default {
       }
     },
     topics () {
-      if ((this.product[0] === 'news' || this.product[0] === 'multimedia') && this.lang[0] === 'fr') {
+      if (this.lang[0] === 'fr') {
         return [
           {
             label: this.$t('topics.all', 'fr'),
@@ -488,7 +491,7 @@ export default {
           }
         ]
       }
-      if (this.product[0] === 'multimedia' && this.lang[0] === 'en') {
+      if (this.lang[0] === 'en') {
         return [
           {
             label: this.$t('topics.all', 'en'),
@@ -623,7 +626,8 @@ export default {
     ...mapMutations([
       'updateColumnParams',
       'openColumnSettings',
-      'closeColumnSettings'
+      'closeColumnSettings',
+      'updateColumnType'
     ]),
     ...mapActions([
       'refreshColumn'
@@ -639,6 +643,14 @@ export default {
     onQueryChange (query) {
       this.$ga.event('search', 'set query', query)
       this.updateParams({ query })
+    },
+    toggleType () {
+      if (this.column.type === 'topic') {
+        this.updateColumnType({ indexCol: this.columnId, type: 'search' })
+      } else {
+        this.updateColumnType({ indexCol: this.columnId, type: 'topic' })
+      }
+      this.refreshColumn({ indexCol: this.columnId, mode: 'reset' })
     }
   }
 }

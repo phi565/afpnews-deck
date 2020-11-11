@@ -50,7 +50,7 @@ export interface Column {
   readonly id: string,
   documentsIds: string[],
   params: Params,
-  mode: 'search' | 'topic'
+  type: 'search' | 'topic'
 }
 
 export type Locale = 'fr' | 'en'

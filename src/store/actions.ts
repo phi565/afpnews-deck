@@ -81,10 +81,13 @@ const actions: ActionTree<State, State> = {
       }
 
       const params = getters.getRefreshParamsByMode(indexCol, mode)
+      const type = getters.getColumnByIndex(indexCol).type || 'search'
 
       dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
-      const { documents, count } = await afpNews.search(params)
+      const { documents, count } = type === 'search' ?
+        await afpNews.search(params) :
+        await afpNews.topicIndex(params.topics[0], params.langs[0])
 
       if (!documents || documents.length === 0) return false
 
