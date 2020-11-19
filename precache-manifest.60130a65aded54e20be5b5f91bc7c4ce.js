@@ -8,12 +8,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "css/about.7a05a70a.css.map"
   },
   {
-    "revision": "fa24711f36a832a72a63",
-    "url": "css/app.7b52cf8d.css"
+    "revision": "9d8925dc2397cfcba53f",
+    "url": "css/app.82fa025f.css"
   },
   {
-    "revision": "fa24711f36a832a72a63",
-    "url": "css/app.7b52cf8d.css.map"
+    "revision": "9d8925dc2397cfcba53f",
+    "url": "css/app.82fa025f.css.map"
   },
   {
     "revision": "621a8d62caba02b7937d",
@@ -80,7 +80,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "img/afp_logo.346ca232.png"
   },
   {
-    "revision": "965d510026b660e3bb52163b430b2511",
+    "revision": "dc9b61314ce22819eeb485234502cd2f",
     "url": "index.html"
   },
   {
@@ -92,12 +92,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "js/about-legacy.c62c6f58.js.map"
   },
   {
-    "revision": "fa24711f36a832a72a63",
-    "url": "js/app-legacy.57168ba3.js"
+    "revision": "9d8925dc2397cfcba53f",
+    "url": "js/app-legacy.d91201ba.js"
   },
   {
-    "revision": "fa24711f36a832a72a63",
-    "url": "js/app-legacy.57168ba3.js.map"
+    "revision": "9d8925dc2397cfcba53f",
+    "url": "js/app-legacy.d91201ba.js.map"
   },
   {
     "revision": "621a8d62caba02b7937d",
