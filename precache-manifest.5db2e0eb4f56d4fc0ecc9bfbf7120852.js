@@ -8,11 +8,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "css/about.7a05a70a.css.map"
   },
   {
-    "revision": "9d8925dc2397cfcba53f",
+    "revision": "68774d499ca2ac64a2af",
     "url": "css/app.82fa025f.css"
   },
   {
-    "revision": "9d8925dc2397cfcba53f",
+    "revision": "68774d499ca2ac64a2af",
     "url": "css/app.82fa025f.css.map"
   },
   {
@@ -24,12 +24,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "css/chunk-vendors.75b76f5e.css.map"
   },
   {
-    "revision": "5d5fef738f878b450474",
-    "url": "css/login.e5fa26fb.css"
+    "revision": "3b9c39d708c23923f001",
+    "url": "css/login.9ddf6d15.css"
   },
   {
-    "revision": "5d5fef738f878b450474",
-    "url": "css/login.e5fa26fb.css.map"
+    "revision": "3b9c39d708c23923f001",
+    "url": "css/login.9ddf6d15.css.map"
   },
   {
     "revision": "a26bec15ef10edf39611",
@@ -80,7 +80,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "img/afp_logo.346ca232.png"
   },
   {
-    "revision": "dc9b61314ce22819eeb485234502cd2f",
+    "revision": "5a6d3839bbd2eb7491f3282d8b8cfb84",
+    "url": "img/background-1.5a6d3839.jpg"
+  },
+  {
+    "revision": "2053c0dbf3176f20044637b8356eb2d3",
     "url": "index.html"
   },
   {
@@ -92,12 +96,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "js/about-legacy.c62c6f58.js.map"
   },
   {
-    "revision": "9d8925dc2397cfcba53f",
-    "url": "js/app-legacy.d91201ba.js"
+    "revision": "68774d499ca2ac64a2af",
+    "url": "js/app-legacy.6b2c81bc.js"
   },
   {
-    "revision": "9d8925dc2397cfcba53f",
-    "url": "js/app-legacy.d91201ba.js.map"
+    "revision": "68774d499ca2ac64a2af",
+    "url": "js/app-legacy.6b2c81bc.js.map"
   },
   {
     "revision": "621a8d62caba02b7937d",
@@ -108,12 +112,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "js/chunk-vendors-legacy.c7e02c96.js.map"
   },
   {
-    "revision": "5d5fef738f878b450474",
-    "url": "js/login-legacy.6647d609.js"
+    "revision": "3b9c39d708c23923f001",
+    "url": "js/login-legacy.a66348e7.js"
   },
   {
-    "revision": "5d5fef738f878b450474",
-    "url": "js/login-legacy.6647d609.js.map"
+    "revision": "3b9c39d708c23923f001",
+    "url": "js/login-legacy.a66348e7.js.map"
   },
   {
     "revision": "a26bec15ef10edf39611",
