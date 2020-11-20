@@ -8,12 +8,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "css/about.7a05a70a.css.map"
   },
   {
-    "revision": "df2c9b8e16b39e33f9ef",
-    "url": "css/app.fa5e1197.css"
+    "revision": "6a250e98cbe11a4d0bff",
+    "url": "css/app.3676a2f6.css"
   },
   {
-    "revision": "df2c9b8e16b39e33f9ef",
-    "url": "css/app.fa5e1197.css.map"
+    "revision": "6a250e98cbe11a4d0bff",
+    "url": "css/app.3676a2f6.css.map"
   },
   {
     "revision": "66cd07383908700b2313",
@@ -84,7 +84,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "img/background-1.5a6d3839.jpg"
   },
   {
-    "revision": "091b12bf4faaadc7d57054946ff7c1bb",
+    "revision": "51f62ee8491570034a9ed32dea204746",
     "url": "index.html"
   },
   {
@@ -96,12 +96,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "js/about-legacy.28deb66c.js.map"
   },
   {
-    "revision": "df2c9b8e16b39e33f9ef",
-    "url": "js/app-legacy.21fe4afe.js"
+    "revision": "6a250e98cbe11a4d0bff",
+    "url": "js/app-legacy.f0498b21.js"
   },
   {
-    "revision": "df2c9b8e16b39e33f9ef",
-    "url": "js/app-legacy.21fe4afe.js.map"
+    "revision": "6a250e98cbe11a4d0bff",
+    "url": "js/app-legacy.f0498b21.js.map"
   },
   {
     "revision": "66cd07383908700b2313",
