@@ -40,10 +40,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "css/viewer.3b72725b.css.map"
   },
   {
-    "revision": "84750690f477d579eb2d1cf2594ceab8",
-    "url": "favicon.png"
-  },
-  {
     "revision": "227710b8b01bc23dc342f01f0c72da5d",
     "url": "fonts/PoppinsFix-400.227710b8.woff"
   },
@@ -84,7 +80,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "img/background-1.5a6d3839.jpg"
   },
   {
-    "revision": "daa134f1a01b4f553b04c66f8330c392",
+    "revision": "84750690f477d579eb2d1cf2594ceab8",
+    "url": "img/icons/favicon.png"
+  },
+  {
+    "revision": "4d3e1bf8824483acae405850a860a2c6",
     "url": "index.html"
   },
   {
