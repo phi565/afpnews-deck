@@ -1,18 +1,18 @@
 <template>
   <main>
-    <navbar/>
-    <shortcuts/>
+    <navbar />
+    <shortcuts />
     <transition-group
+      v-if="isAuthenticated"
       id="columns"
       name="list"
       tag="div"
-      v-if="isAuthenticated"
     >
       <column
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
         :column-id="i"
-        :columnType="column.type"
+        :column-type="column.type"
       />
       <add-column key="add-column" />
     </transition-group>
@@ -20,22 +20,16 @@
   </main>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import Column from '@/components/Column.vue'
 import Navbar from '@/components/Navbar.vue'
 import Shortcuts from '@/components/Shortcuts.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapActions, mapGetters } from 'vuex'
-import Hotjar from 'vue-hotjar'
+import { mapState, mapGetters } from 'vuex'
 
-Vue.use (Hotjar, {
-  id: '1569693'
-})
-
-export default Vue.extend({
+export default {
   name: 'Deck',
   metaInfo: {
     titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Stories` : 'AFP Stories'
@@ -71,7 +65,7 @@ export default Vue.extend({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -104,9 +98,9 @@ main {
   }
 }
 
-.list-leave-to {
-  transform: translate(0%, -100%);
-}
+// .list-leave-to {
+//   transform: translate(0%, -100%);
+// }
 .list-leave-active, .list-move {
   transition: transform 0.5s;
 }

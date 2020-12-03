@@ -3,10 +3,9 @@
     v-if="doc.event && documents.length > 0"
     class="related-documents"
   >
-  <hr>
+    <hr>
     <h3>
-      <router-link
-        :to="`/deck/event/${doc.event.id}`">
+      <router-link :to="`/deck/event/${doc.event.id}`">
         <span>{{ doc.event.name }}</span>
       </router-link>
     </h3>
@@ -44,14 +43,14 @@ export default {
       documents: []
     }
   },
-  created () {
-    this.search()
-  },
   watch: {
     doc () {
       this.documents = []
       this.search()
     }
+  },
+  created () {
+    this.search()
   },
   methods: {
     ...mapActions([

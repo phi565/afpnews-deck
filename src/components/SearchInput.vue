@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import afpNews from '@/plugins/api'
-
 export default {
   name: 'SearchInput',
   components: {},

@@ -1,5 +1,8 @@
 <template>
-  <transition name="panel" appear>
+  <transition
+    name="panel"
+    appear
+  >
     <div class="panel-mask">
       <div class="panel-wrapper">
         <div
@@ -26,11 +29,10 @@
   </transition>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import { mixin as clickaway } from 'vue-clickaway'
 
-export default Vue.extend({
+export default {
   name: 'Panel',
   mixins: [ clickaway ],
   methods: {
@@ -38,7 +40,7 @@ export default Vue.extend({
       this.$emit('close')
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
