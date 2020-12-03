@@ -17,7 +17,9 @@
           muted
         >
           <source
-            :src="media.sizes.find(size => size.type === 'Video').href"
+            v-for="source in media.sizes.filter(size => size.type === 'Video' && size.role[size.role.length - 1] !== 'W').sort((a, b) => b.width - a.width)"
+            :key="source.href"
+            :src="source.href"
             type="video/mp4"
           >
           Your browser does not support the video tag.
@@ -30,8 +32,11 @@
         >
       </figure>
     </transition>
-    <p class='description' v-if="media.caption">
-      {{ media.caption }}
+    <p
+      v-if="media.caption"
+      class="description"
+    >
+      {{ media.caption }}. {{ media.creator }} / {{ media.source.name }}
     </p>
     <nav v-if="mediasRatios.length > 1">
       <ul>

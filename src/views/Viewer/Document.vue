@@ -24,34 +24,52 @@
     <div class="time-address">
       <time
         :key="`date-created-${locale}`"
+        :title="$d(doc.created, 'long')"
         class="date"
       >
-        {{$t('document.published')}} {{ $d(new Date(doc.created), 'long') }}
+        {{ $t('document.published') }} {{ doc.created | calendar($root.$now, $t('calendar')) }}
       </time>
 
       <span v-if="doc.country && doc.city"> • </span>
 
       <time
         :key="`date-updated-${locale}`"
+        :title="$d(doc.published, 'long')"
         class="date"
       >
-        {{$t('document.updated')}} {{ $d(new Date(doc.published), 'long') }}
+        {{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.$now, $t('calendar')) }}
       </time>
     </div>
-    <div class="author" v-if="doc.creator">          
-      <router-link
-            v-for="(creator, i) in doc.creator.split(',')"
-            :key="creator"
+    <div class="dateline-byline">
+      <p>{{ doc.source }}</p>
+      <span
+        v-if="doc.creator"
+        style="user-select: none"
+      > • </span>
+      <p v-if="doc.creator">
+        <span
+          v-for="(creator, i) in doc.creator.split(',')"
+          :key="creator"
+        >
+          <router-link
+            v-if="creator.length < 30"
             :to="`/deck/creator/${creator.trim()}`"
             rel="author"
-            class="link">
+            class="link"
+          >
             <span>{{ creator.trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">
-              <!-- eslint-disable-next-line no-trailing-spaces -->
-              , 
-            </span>
-      </router-link>
-      <span v-if="doc.country && doc.city"> • </span>
+          </router-link>
+          <span v-else>{{ creator.trim() }}</span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">
+            <!-- eslint-disable-next-line no-trailing-spaces -->
+            , 
+          </span>
+        </span>
+      </p>
+      <span
+        v-if="doc.country && doc.city"
+        style="user-select: none"
+      > • </span>
       <address v-if="doc.country && doc.city">
         <router-link
           :to="`/deck/place/${doc.country}/${doc.city}`"
@@ -61,8 +79,16 @@
         </router-link>
       </address>
     </div>
-    <div :class="{'update':true, 'arabic': doc.lang == 'ar'}">
-      <span>{{$t('document.version')}} {{doc.revision}}</span>
+    <div
+      id="update"
+      :class="{ arabic: doc.lang == 'ar' }"
+      class="update"
+    >
+      <router-link
+        :to="{ hash: '#version' }"
+      >
+        {{ $t('document.version') }} {{ doc.revision }}
+      </router-link>
     </div>
     <media-gallery
       v-if="doc.medias.length > 0"
@@ -71,10 +97,29 @@
     />
     <div class="cols">
       <aside class="meta">
-        <p class="subtitle" v-if='doc.topic'>{{$t('document.topics')}}</p>
-        <slugs class='topics' :slugs="doc.topic" type="topic" :lang="doc.lang"/>
-        <p class="subtitle" v-if='doc.slugs'>{{$t('document.related')}}</p>
-        <slugs :slugs="doc.slugs" type="slug" :lang="doc.lang"/>
+        <p
+          v-if="doc.topic"
+          class="subtitle"
+        >
+          {{ $t('document.topics') }}
+        </p>
+        <slugs
+          :slugs="doc.topic"
+          :lang="doc.lang"
+          class="topics"
+          type="topic"
+        />
+        <p
+          v-if="doc.slugs"
+          class="subtitle"
+        >
+          {{ $t('document.related') }}
+        </p>
+        <slugs
+          :slugs="doc.slugs"
+          :lang="doc.lang"
+          type="slug"
+        />
       </aside>
       <main>
         <template v-for="(p, i) in doc.news">
@@ -102,14 +147,22 @@
           </p>
         </template>
         
-        <article class="message advisory" v-if="doc.advisory">
-          <div class="message-header">
-            <p>{{$t('document.version')}}{{doc.revision}}</p>
-          </div>
-          <div class="message-body">
+        <aside
+          v-if="doc.advisory"
+          id="version"
+          class="message advisory"
+        >
+          <h3 class="message-header">
+            <router-link
+              :to="{ hash: 'update' }"
+            >
+              {{ $t('document.version') }} {{ doc.revision }}
+            </router-link>
+          </h3>
+          <p class="message-body">
             {{ doc.advisory }}
-          </div>
-        </article>
+          </p>
+        </aside>
       </main>
     </div>
     
@@ -123,12 +176,11 @@ import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
 import RelatedDocuments from '@/components/RelatedDocuments'
 import VueLinkify from 'vue-linkify'
-import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { WebShare, Slugs, RelatedDocuments, MediaGallery, Highlighter },
+  components: { Slugs, RelatedDocuments, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -197,21 +249,23 @@ article.document {
       line-height: 28px;
     }
   }
-  .author{
-    display: flex;
-    
-    a{
+  .dateline-byline {
+    // display: flex;
+    margin-bottom: 15px;
+    a {
       text-decoration: underline;
     }
-    >span{
+    >* {
       margin: 0 5px;
+      font-size: 1rem;
+      display: inline-block;
     }
     @media screen and (max-width: 640px) {
       margin-bottom: 15px;
     } 
   }
 
-  .update{
+  .update {
     position: absolute;
     right: 0;
     margin-right: 30px;
@@ -223,6 +277,9 @@ article.document {
     &.arabic{
       right: auto;
       left: 0;
+    }
+    a {
+      color: white;
     }
     @media screen and (max-width: 640px) {
       margin: 20px 0;
@@ -265,7 +322,7 @@ article.document {
   }
 
   .media-gallery {
-    margin-top: 50px;
+    // margin-top: 30px;
     margin-left: -30px;
     margin-right: -68px;
     @include breakpoint(mobile) {
@@ -278,14 +335,14 @@ article.document {
     line-height: 28px;
   }
 
-  .advisory{
-    .message-header{
-      max-height: 32px;
+  .advisory {
+    .message-header {
       font-size: 16px;
       font-weight: 600;
+      line-height: 1rem;
       background: $dark;
-      p{
-        margin-bottom: 0;
+      a {
+        text-decoration: none;
       }
     }
   }
@@ -294,7 +351,7 @@ article.document {
     color: $grey-cold-6;
     font-size: 1rem;
     font-weight: 400;
-      margin-bottom: 15px;
+    margin-bottom: 10px;
     address {
       display: inline-block;
       font-style: normal;
@@ -329,6 +386,7 @@ article.document {
       } 
     }
     main {
+      margin-top: 25px;
       width: 75%;
       p{
         margin-bottom: 1rem;
