@@ -1,10 +1,12 @@
 <template>
-  <modal class="on-left header-out">
-    
-    <template v-slot:header>
-      <img src="./../assets/img/afp_logo.png">
+  <modal
+    :background-image="randomBgImage"
+    class="on-left header-out"
+  >
+    <template #header>
+      <img src="@/assets/img/afp_logo.png">
     </template>
-    <template v-slot:body>
+    <template #body>
       <form
         :class="{ danger: authError }"
         @submit.stop.prevent="login"
@@ -31,15 +33,26 @@
           class="inpt inpt-large inpt-bg"
           required
         >
-        <select v-model="lang" required class="inpt inpt-large inpt-bg select">
-          <option value='none' selected disabled>{{$t('auth.language')}}</option>
+        <select
+          id="default-lang"
+          v-model="defaultLangGetter"
+          required
+          name="default-lang"
+          autocomplete="default-lang"
+          class="inpt inpt-large inpt-bg select"
+        >
           <option
-            v-for="{ label, value, disabled } in languages"
-            :key="value.join('|')"
-            :value="value"
-            :disabled="disabled"
-            >
-            {{ label }}
+            selected
+            disabled
+          >
+            {{ $t('auth.language') }}
+          </option>
+          <option
+            v-for="language in languages"
+            :key="language"
+            :value="language"
+          >
+            {{ $t(`languages.${language}`) }}
           </option>
         </select>
         <button
@@ -58,9 +71,6 @@
 import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
-import afpNews from '@/plugins/api'
-import { v4 as uuidv4 } from 'uuid'
-import config from '@/config/topics'
 
 export default Vue.extend({
   name: 'Login',
@@ -70,82 +80,45 @@ export default Vue.extend({
   components: { Modal },
   data () {
     return {
-      username: '',
-      password: '',
-      lang: 'none',
+      username: null,
+      password: null,
+      lang: null,
       authError: false
     }
   },
   computed: {
     ...mapState([
-      'credentials'
+      'credentials',
+      'defaultLang'
     ]),
     ...mapGetters([
       'isAuthenticated'
     ]),
-    languages () {
-        return [
-            {
-            label: this.$t('languages.en'),
-            value: ['en'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.fr'),
-            value: ['fr'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.de'),
-            value: ['de'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.es'),
-            value: ['es'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.pt'),
-            value: ['pt'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.ar'),
-            value: ['ar'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.zh-tw'),
-            value: ['zh-tw'],
-            disabled: false
-            },
-            {
-            label: this.$t('languages.zh-cn'),
-            value: ['zh-cn'],
-            disabled: false
-            }
-        ]
+    defaultLangGetter: {
+      get () {
+        return this.lang || this.defaultLang
+      },
+      set (val) {
+        this.lang = val
       }
+    },
+    languages () {
+      return ['en', 'fr', 'de', 'es', 'pt', 'ar', 'zh-tw', 'zh-cn']
+    },
+    randomBgImage () {
+      return `url('img/background/background-${Math.floor( Math.random() * 5) + 1}.jpg')`
+    }
   },
   methods: {
     ...mapActions([
-      'authenticate'
+      'authenticate',
+      'changeAllContentLanguage'
     ]),
     ...mapMutations([
     'resetAllColumns',
     'addColumn'
     ]),
     async login () {
-      if (this.username.includes('@afp.com')) {
-        this.$toasted.show(this.$t('auth.warning-email').toString(), {
-          position: 'bottom-center',
-          duration: 1500,
-          type: 'error'
-        })
-        this.authError = true
-        return false
-      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.$toasted.show(this.$t('auth.success.title').toString(), {
@@ -155,15 +128,8 @@ export default Vue.extend({
         })
         this.authError = false
 
-        if (this.lang !== 'none') {
-          const topics = config[this.lang]
-
-          for (const topic of topics) {
-            if (topic.default) {
-              const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: this.lang, size: 4, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
-              this.addColumn(column)
-            }
-          }
+        if (this.defaultLangGetter !== this.defaultLang) {
+          await this.changeAllContentLanguage(this.defaultLangGetter)
         }
 
         this.$router.push({ name: 'deck' })
@@ -172,12 +138,6 @@ export default Vue.extend({
         this.authError = true
       }
     }
-  },
-  mounted () {
-    const random = Math.floor( Math.random() * 5) + 1
-    const img = 'background-' + random
-    const modalBg = document.querySelector('.modal-mask')
-    modalBg.style.backgroundImage =  'url(\'img/background/' + img + '.jpg\')'
   }
 })
 </script>
