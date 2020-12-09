@@ -219,7 +219,7 @@ export default {
       }
 
       &:before{
-        background: $dark-hovered !important;
+        background: $primary-color !important;
       }
       &:after{
         box-shadow: none !important;

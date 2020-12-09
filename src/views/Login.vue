@@ -182,7 +182,7 @@ export default Vue.extend({
     }
     &.danger {
       input {
-        outline: 1px solid red;
+        outline: 1px solid $danger-color;
       }
     }
   }

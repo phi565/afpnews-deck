@@ -64,13 +64,10 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 .shortcuts {
-  position: fixed;
-  width: 100%;
   display: flex;
   align-items: stretch;
   flex-grow: 1;
   flex-shrink: 0;
-  top: 7rem;
   padding: 0 2.5rem;
   .shortcuts-start {
     justify-content: flex-start;
@@ -80,7 +77,7 @@ export default {
       transform: translateY(-3px);
       background: transparent;
       border: none;
-      color: $primary;
+      color: $secondary-color;
       outline: none;
       margin-left: 10px;
     }

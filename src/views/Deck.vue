@@ -72,8 +72,6 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 main {
-  padding-top: 4rem;
-
   @media screen {
     background-color: $background-color;
     height: 100%;

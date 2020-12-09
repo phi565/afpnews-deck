@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar is-primary is-fixed-top"
+    class="navbar is-fixed-top"
     role="navigation"
     aria-label="main navigation"
   >
@@ -14,11 +14,14 @@
 
       <a
         role="button"
-        :class="{ 'navbar-burger burger': true, 'is-active': showMobileMenu }"
+        :class="{
+          'is-active': showMobileMenu
+        }"
+        class="navbar-burger burger"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
-        @click="showMobileMenu = showMobileMenu ? false : true"
+        @click="showMobileMenu = !showMobileMenu"
       >
         <span aria-hidden="true" />
         <span aria-hidden="true" />
@@ -26,10 +29,14 @@
       </a>
     </div>
 
-    <div :class="{ 'navbar-menu': true, 'is-active': showMobileMenu }">
+    <div
+      :class="{
+        'is-active': showMobileMenu
+      }"
+      class="navbar-menu"
+    >
       <div
-        class="navbar-end" 
-        click="showMobileMenu = false"
+        class="navbar-end"
       >
         <router-link
           key="about"
@@ -65,7 +72,6 @@
         </router-link>
 
         <a
-          v-if="isAuthenticated"
           class="navbar-item"
           aria-label="Log out"
           @click.prevent="logoutHandler"
@@ -90,54 +96,27 @@
           {{ $t("auth.logout") }}
         </a>
 
-        <router-link
-          v-if="!isAuthenticated"
-          key="authenticate"
-          :to="{ name: 'login' }"
-          name="authenticate"
-          aria-label="Authenticate"
-          class="navbar-item"
-        >
-          <svg
-            id="Calque_1"
-            data-name="Calque 1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 500 500"
-          >
-            <defs />
-            <polygon
-              class="cls-1"
-              points="180.1 350.04 259.02 266.82 53.37 266.82 53.37 232.4 258.77 232.4 180.1 149.95 180.1 100.75 324.51 249.76 180.1 398.78 180.1 350.04"
-            />
-            <polygon
-              class="cls-1"
-              points="440.93 451 215.35 451 215.35 413.1 403.03 413.1 403.03 86.43 215.35 86.43 215.35 48.53 440.93 48.53 440.93 451"
-            />
-          </svg>
-          {{ $t("auth.login") }}
-        </router-link>
-
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
-            {{ currentUILanguage | capitalize }}
+            {{ locale | capitalize }}
           </a>
 
           <div class="navbar-dropdown is-right">
             <a
               :class="{
-                'navbar-item': true,
-                'is-language': currentUILanguage == 'fr',
+                'is-language': locale == 'fr',
               }"
-              @click="changeLanguage('fr')"
+              class="navbar-item"
+              @click="changeLocale('fr')"
             >
               FR
             </a>
             <a
               :class="{
-                'navbar-item': true,
-                'is-language': currentUILanguage == 'en',
+                'is-language': locale == 'en',
               }"
-              @click="changeLanguage('en')"
+              class="navbar-item"
+              @click="changeLocale('en')"
             >
               EN
             </a>
@@ -149,7 +128,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -166,9 +145,9 @@ export default {
     }
   },
   computed: {
-    currentUILanguage () {
-      return this.$store.state.locale
-    },
+    ...mapState([
+      'locale'
+    ]),
     ...mapGetters([
       'isAuthenticated'
     ])
@@ -178,9 +157,6 @@ export default {
       'changeLocale',
       'logout'
     ]),
-    changeLanguage (newLanguage) {
-      this.changeLocale(newLanguage)
-    },
     logoutHandler () {
       this.$toasted.show(this.$t('auth.not-authenticated.toast').toString(), {
         position: 'bottom-center',
@@ -193,115 +169,115 @@ export default {
 }
 </script>
 
+<style lang="css">
+  html > body > #app > main {
+    padding-top: 6rem;
+  }
+</style>
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+
+@import "bulma/sass/utilities/initial-variables";
+@import "bulma/sass/utilities/functions";
+
+$primary: $secondary-color;
+
+@import "bulma/sass/utilities/derived-variables";
+@import "bulma/sass/utilities/mixins";
+
+$navbar-height : 5.4rem;
+$navbar-background-color: $secondary-color;
+$navbar-item-color: $light;
+$navbar-item-hover-color: $light;
+$navbar-item-hover-background-color: $primary-color;
+$navbar-item-active-color: $primary-color;
+$navbar-item-active-background-color: $primary-color;
+$navbar-dropdown-background-color: $primary-color;
+$navbar-dropdown-border-top: 2px solid $primary-color;
+$navbar-dropdown-arrow: $light;
+$navbar-dropdown-item-hover-color: $light;
+$navbar-dropdown-item-hover-background-color: $dark;
+$navbar-breakpoint: 640px;
+
+@import "bulma/sass/components/navbar";
+
 .navbar {
   .navbar-brand {
-    .navbar-item {
-      img {
-        padding-left: 20px;
-        max-height: none;
-        width: 70%;
-      }
-      &:hover {
-        background: $primary-hovered;
-      }
-    }
+    padding-left: 20px;
   }
 
-  .navbar-end {
-    background: $dark;
-    .navbar-item {
-      text-transform: uppercase;
-      padding: 0.5rem 1.75rem;
-
-      svg {
-        fill: $light;
-        height: 24px;
-        margin-right: 5px;
-      }
-
-      &:hover {
-        background-color: $dark-hovered !important;
-      }
-
-      &.is-hoverable {
-        &:hover {
-          .navbar-link {
-            background: $dark-hovered !important;
-          }
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          width: 1px;
-          height: 50%;
-          background: $white;
-          top: 50%;
-          left: 0;
-          transform: translateY(-50%);
-        }
-      }
-
-      .navbar-dropdown {
-        background: $dark-hovered;
-        border: $dark-hovered;
-        .is-language {
-          text-decoration: underline !important;
-          font-weight: 800;
-        }
-
-        a {
-          color: white;
-
-          &:hover {
-            background: $dark !important;
-          }
-        }
-      }
+  .navbar-menu {
+    @include breakpoint(mobile) {
+      padding: 0px;
     }
-  }
 
-  @media screen and (max-width: 1024px) {
-    .navbar-menu {
-      padding: 0;
+    .navbar-end {
+      background: $dark;
 
-      .navbar-end {
-        background: $primary;
-        .navbar-item {
+      @include breakpoint(mobile) {
+        background: $secondary-color;
+
+        > a.navbar-item:hover {
+          background: rgba($dark, 0.05);
+        }
+      }
+      .navbar-item {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.5rem 1.75rem;
+
+        svg {
+          fill: $light;
+          height: 24px;
+          margin-right: 5px;
+        }
+
+        @include breakpoint(mobile) {
           padding-top: 1rem;
           padding-bottom: 1rem;
           color: $light;
           svg {
             transform: translateY(5px);
           }
-          &:hover {
-            background: $primary-hovered !important;
-          }
+        }
 
-          &.has-dropdown {
-            padding: 0;
-            .navbar-link {
-              display: none;
+        &.has-dropdown.is-hoverable {
+            &:hover {
+              background: $primary-color;
             }
-
-            &::after {
-              content: "";
+            .is-language{
+              text-decoration: underline !important;
+              font-weight: 800;
+            }
+            &::before {
+              content: '';
               position: absolute;
-              width: 0px;
-              height: 0px;
+              width: 1px;
+              height: 50%;
+              background: $white;
+              top: 50%;
+              left: 0;
+              transform: translateY(-50%);
+
+              @include breakpoint(mobile) {
+                display: none;
+              }
             }
 
-            .navbar-dropdown {
-              background: $dark !important;
-              .navbar-item {
-                &:hover {
-                  background: $dark-hovered !important;
+            @include breakpoint(mobile) {
+              padding: 0;
+              .navbar-link {
+                display: none;
+              }
+              .navbar-dropdown {
+                background: $dark;
+                .navbar-item {
+                  &:hover {
+                    background: rgba($light, 0.05);
+                  }
                 }
               }
             }
-          }
         }
       }
     }

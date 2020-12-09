@@ -404,7 +404,7 @@ header {
               border-width: 2px;
             }
             select{
-              color: $primary;
+              color: $secondary-color;
               font-weight: 600;
               height: $input-height;
               border-radius: 0;
@@ -421,14 +421,14 @@ header {
       }
       .button{
         height: $input-height;
-        color: $danger;
+        color: $danger-color;
         font-weight: 600;
         justify-content: left;
         border-radius: 0;
         .icon{
           svg{
             height: 22px;
-            fill: $danger;
+            fill: $danger-color;
           }
         }
       }
