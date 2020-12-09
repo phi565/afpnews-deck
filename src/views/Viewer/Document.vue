@@ -88,7 +88,7 @@
         class="update"
       >
         <router-link
-          :to="{ hash: '#version' }"
+          :to="{ hash: 'version' }"
         >
           {{ $t('document.version') }} {{ doc.revision }}
         </router-link>
