@@ -75,13 +75,12 @@ export default {
     mediasRatios () {
       return this.medias
         .filter(media => {
-          return media.sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')
+          return media.sizes.some(size => ['HighDef'].includes(size.role))
         })
         .map(media => {
           try {
             const size = media.sizes
-              .find(mediaSize => ['Preview', 'HighDef']
-              .includes(mediaSize.role) || mediaSize.type === 'Video')
+              .find(mediaSize => ['HighDef'].includes(mediaSize.role) || mediaSize.type === 'Video')
             return { ratio: size.height / size.width, ...media }
           } catch (e) {
             // tslint:disable-next-line no-console
@@ -133,6 +132,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 .media-gallery {
+  margin-top: 12px;
+  
   figure {
     position: relative;
     & > *:not(.placeholder) {
@@ -176,6 +177,10 @@ export default {
     margin-bottom: 10px;
     color: $dark;
     font-size: 14px;
+
+    &.description {
+      margin: 0px;
+    }
   }
 }
 </style>

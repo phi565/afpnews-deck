@@ -113,7 +113,7 @@
     {"label": "Portada", "value": ["ONLINE-NEWS-ES_PORTADA"]},
     {"label": "Economía", "value": ["ONLINE-NEWS-ES_MADRID-ECO"]},
     {"label": "Cultura", "value": ["ONLINE-NEWS-ES_CULTURA"]},
-    {"label": "Gente", "value": ["ONLINE-NEWS-ES_GEN"]},
+    {"label": "Gente", "value": ["ONLINE-NEWS-ES_GENTE"]},
     {"label": "Ciencia y Tecnología Ya !", "value": ["ONLINE-NEWS-ES_CIENCIA-Y-TECNOLOGIA"]},
     {"label": "Nuevas Tecnologías", "value": ["ONLINE-NEWS-ES_NUEVAS-TECNO"]},
     {"label": "Insólito", "value": ["ONLINE-NEWS-ES_INSOLITO"]},

@@ -40,56 +40,60 @@
         {{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.$now, $t('calendar')) }}
       </time>
     </div>
-    <div class="dateline-byline">
-      <p>{{ doc.source }}</p>
-      <span
-        v-if="doc.creator"
-        style="user-select: none"
-      > • </span>
-      <p v-if="doc.creator">
+    <section
+      :class="{ arabic: doc.lang == 'ar' }"
+      class="meta"
+    >
+      <div class="dateline-byline">
+        <p>{{ doc.source }}</p>
         <span
-          v-for="(creator, i) in doc.creator.split(',')"
-          :key="creator"
-        >
+          v-if="doc.creator"
+          style="user-select: none"
+        > • </span>
+        <p v-if="doc.creator">
+          <span
+            v-for="(creator, i) in doc.creator.split(',')"
+            :key="creator"
+          >
+            <router-link
+              v-if="creator.length < 30"
+              :to="`/deck/creator/${creator.trim()}`"
+              rel="author"
+              class="link"
+            >
+              <span>{{ creator.trim() }}</span>
+            </router-link>
+            <span v-else>{{ creator.trim() }}</span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">
+              <!-- eslint-disable-next-line no-trailing-spaces -->
+              , 
+            </span>
+          </span>
+        </p>
+        <span
+          v-if="doc.country && doc.city"
+          style="user-select: none"
+        > • </span>
+        <address v-if="doc.country && doc.city">
           <router-link
-            v-if="creator.length < 30"
-            :to="`/deck/creator/${creator.trim()}`"
-            rel="author"
+            :to="`/deck/place/${doc.country}/${doc.city}`"
             class="link"
           >
-            <span>{{ creator.trim() }}</span>
+            {{ doc.city }} ({{ doc.country }})
           </router-link>
-          <span v-else>{{ creator.trim() }}</span>
-          <span v-if="(i + 1) < doc.creator.split(',').length">
-            <!-- eslint-disable-next-line no-trailing-spaces -->
-            , 
-          </span>
-        </span>
-      </p>
-      <span
-        v-if="doc.country && doc.city"
-        style="user-select: none"
-      > • </span>
-      <address v-if="doc.country && doc.city">
-        <router-link
-          :to="`/deck/place/${doc.country}/${doc.city}`"
-          class="link"
-        >
-          {{ doc.city }} ({{ doc.country }})
-        </router-link>
-      </address>
-    </div>
-    <div
-      id="update"
-      :class="{ arabic: doc.lang == 'ar' }"
-      class="update"
-    >
-      <router-link
-        :to="{ hash: '#version' }"
+        </address>
+      </div>
+      <div
+        id="update"
+        class="update"
       >
-        {{ $t('document.version') }} {{ doc.revision }}
-      </router-link>
-    </div>
+        <router-link
+          :to="{ hash: '#version' }"
+        >
+          {{ $t('document.version') }} {{ doc.revision }}
+        </router-link>
+      </div>
+    </section>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
@@ -205,6 +209,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+
+@import "bulma/sass/utilities/initial-variables";
+@import "bulma/sass/utilities/functions";
+@import "bulma/sass/utilities/derived-variables";
+@import "bulma/sass/utilities/mixins";
+@import "bulma/sass/components/message";
+
 article.document {
   background-color: white;
   color: $dark;
@@ -249,44 +260,39 @@ article.document {
       line-height: 28px;
     }
   }
-  .dateline-byline {
-    // display: flex;
-    margin-bottom: 15px;
-    a {
-      text-decoration: underline;
-    }
-    >* {
-      margin: 0 5px;
-      font-size: 1rem;
-      display: inline-block;
-    }
-    @media screen and (max-width: 640px) {
-      margin-bottom: 15px;
-    } 
-  }
+  section.meta {
+    display: flex;
+    align-items: flex-start;
 
-  .update {
-    position: absolute;
-    right: 0;
-    margin-right: 30px;
-    background: $dark;
-    color: $light;
-    padding: 5px 15px;
-    transform: translateY(-50px);
-    font-weight: 600;
-    &.arabic{
-      right: auto;
-      left: 0;
+    &.arabic {
+      display: flex-reverse;
     }
-    a {
-      color: white;
+
+    .dateline-byline {
+      flex: 1;
+      margin-right: 15px;
+      a {
+        text-decoration: underline;
+      }
+      >* {
+        margin: 0 5px;
+        font-size: 1rem;
+        display: inline-block;
+      }
+      @include breakpoint(mobile) {
+        margin-bottom: 15px;
+      } 
     }
-    @media screen and (max-width: 640px) {
-      margin: 20px 0;
-      position: relative !important;
-      transform: none;
-      display: inline;
-    } 
+
+    .update {
+      background: $dark;
+      color: $light;
+      padding: 8px 16px;
+      font-weight: 600;
+      a {
+        color: white;
+      }
+    }
   }
 
   h2 {
@@ -341,9 +347,13 @@ article.document {
       font-weight: 600;
       line-height: 1rem;
       background: $dark;
+      margin-bottom: 0px;
       a {
         text-decoration: none;
       }
+    }
+    p {
+      margin-top: 0px;
     }
   }
 
