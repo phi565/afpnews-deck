@@ -9,7 +9,10 @@
         class="navbar-item"
         href="#"
       >
-        <img src="@/assets/img/afp_logo.png">
+        <img
+          alt="AFP Stories"
+          src="@/assets/img/afp_logo.png"
+        >
       </a>
 
       <a
@@ -18,9 +21,6 @@
           'is-active': showMobileMenu
         }"
         class="navbar-burger burger"
-        aria-label="menu"
-        aria-expanded="false"
-        data-target="navbarBasicExample"
         @click="showMobileMenu = !showMobileMenu"
       >
         <span aria-hidden="true" />
@@ -173,9 +173,26 @@ $navbar-breakpoint: 640px;
 .navbar {
   .navbar-brand {
     padding-left: 20px;
+    @media print {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      a.navbar-item {
+        line-height: normal;
+      }
+    }
+  }
+
+  .burger {
+    @media print {
+      display: none;
+    }
   }
 
   .navbar-menu {
+    @media print {
+      display: none;
+    }
     @include breakpoint(mobile) {
       padding: 0px;
     }
@@ -184,10 +201,10 @@ $navbar-breakpoint: 640px;
       background: $dark;
 
       @include breakpoint(mobile) {
-        background: $secondary-color;
+        background-color: $secondary-color;
 
-        > a.navbar-item:hover {
-          background: rgba($dark, 0.05);
+        > a.navbar-item:hover, > a.navbar-item.is-active, > a.navbar-item:focus-within {
+          background-color: rgba($dark, 0.05);
         }
       }
       .navbar-item {
@@ -239,6 +256,7 @@ $navbar-breakpoint: 640px;
                 display: none;
               }
               .navbar-dropdown {
+                display: flex;
                 background: $dark;
                 .navbar-item {
                   &:hover {

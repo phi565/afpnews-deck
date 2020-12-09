@@ -14,6 +14,7 @@
         v-for="({ uno }) in documents.slice(0, 3)"
         :key="uno"
         :doc-id="uno"
+        class="article"
       />
     </div>
   </aside>
@@ -78,14 +79,14 @@ export default {
   .related-documents {
     margin: 0 30px;
 
+    @media print {
+      display: none;
+    }
+
     select {
       background-color: transparent;
       border: none;
       font-weight: 600;
-    }
-
-    @media print {
-      display: none;
     }
 
     h3 {
@@ -120,7 +121,7 @@ export default {
       margin-top: 20px;
       @media screen and (max-width: 640px) {
         flex-direction: column;
-      } 
+      }
     }
   }
 </style>

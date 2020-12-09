@@ -148,6 +148,7 @@ export default {
   nav {
     display: flex;
     justify-content: center;
+
     @media print {
       display: none;
     }

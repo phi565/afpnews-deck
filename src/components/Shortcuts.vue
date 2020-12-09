@@ -72,6 +72,10 @@ export default {
     font-size: 13px;
   }
 
+  @media print {
+    display: none;
+  }
+
   .reset {
     background-color: transparent;
     color: $font-color;

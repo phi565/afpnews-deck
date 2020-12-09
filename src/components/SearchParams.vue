@@ -302,6 +302,7 @@ header {
       appearance: none;
       font-weight: 600;
       color: #4a4a4a;
+      background-color: $light;
     }
 
     .input, .select {

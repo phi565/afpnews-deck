@@ -45,12 +45,23 @@
       class="meta"
     >
       <div class="dateline-byline">
-        <p>{{ doc.source }}</p>
+        <span>{{ doc.source }}</span>
         <span
-          v-if="doc.creator"
+          v-if="doc.country && doc.city"
           style="user-select: none"
         > • </span>
-        <p v-if="doc.creator">
+        <address v-if="doc.country && doc.city">
+          <router-link
+            :to="`/deck/place/${doc.country}/${doc.city}`"
+            class="link"
+          >
+            {{ doc.city }} ({{ doc.country }})
+          </router-link>
+        </address>
+        <p
+          v-if="doc.creator"
+          class="creator"
+        >
           <span
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
@@ -70,18 +81,6 @@
             </span>
           </span>
         </p>
-        <span
-          v-if="doc.country && doc.city"
-          style="user-select: none"
-        > • </span>
-        <address v-if="doc.country && doc.city">
-          <router-link
-            :to="`/deck/place/${doc.country}/${doc.city}`"
-            class="link"
-          >
-            {{ doc.city }} ({{ doc.country }})
-          </router-link>
-        </address>
       </div>
       <div
         id="update"
@@ -170,7 +169,10 @@
       </main>
     </div>
     
-    <related-documents :doc="doc" />
+    <related-documents
+      :doc="doc"
+      :size="3"
+    />
   </article>
 </template>
 
@@ -274,10 +276,13 @@ article.document {
       a {
         text-decoration: underline;
       }
-      >* {
-        margin: 0 5px;
-        font-size: 1rem;
+      address {
         display: inline-block;
+        font-style: normal;
+      }
+      > * {
+        margin: 4px 5px;
+        font-size: 1rem;
       }
       @include breakpoint(mobile) {
         margin-bottom: 15px;
@@ -444,6 +449,9 @@ article.document {
       page-break-inside: avoid;
     }
     .actions {
+      display: none;
+    }
+    aside.meta {
       display: none;
     }
   }

@@ -1,14 +1,14 @@
 <template>
   <div
     v-on-clickaway="close"
-    class="addColumn"
+    class="add-column"
   >
     <div
       :class="{
         'is-active': isActive
       }"
       class="dropdown"
-      @click="toggle"
+      @click="isActive = !isActive"
     >
       <div class="dropdown-trigger">
         <button
@@ -62,7 +62,7 @@
     </div>
     <button
       class="btn btn-circle btn-icon mobile-button"
-      @click="active = true"
+      @click="newColumn"
     >
       <i class="UI-icon UI-plus" />
     </button>
@@ -89,15 +89,6 @@ export default {
       'defaultLang'
     ])
   },
-  watch: {
-    async isActive () {
-      await this.$nextTick()
-      this.$el.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end'
-      })
-    }
-  },
   methods: {
     ...mapMutations([
       'addColumn'
@@ -114,12 +105,16 @@ export default {
       })
     },
 
-    toggle () {
-      this.isActive = !this.isActive
-    },
-
     close () {
       this.isActive = false
+    },
+
+    newColumn () {
+      this.$el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+      })
+      this.isActive = true
     }
   }
 }
@@ -141,7 +136,9 @@ export default {
   @import "bulma/sass/form/_all";
   @import "bulma/sass/components/dropdown";
 
-  .addColumn{
+  .add-column{
+    min-width: 310px;
+    scroll-snap-align: start;
     .dropdown{
       &.is-active{
         .button{
@@ -196,7 +193,7 @@ export default {
       }
     }
     .mobile-button{
-      display: none;
+      display: block;
       position: absolute !important;
       bottom: 29px;
       right: 24px;
@@ -205,10 +202,6 @@ export default {
 
       i {
         top: -3px;
-      }
-
-      @media screen and (max-width: 800px) {
-        display: block;
       }
 
       &:before{
