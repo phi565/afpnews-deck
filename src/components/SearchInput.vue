@@ -5,7 +5,7 @@
     :aria-label="$t('column.search')"
     :type="type"
     :value="initialQuery"
-    class="search inpt inpt-large"
+    class="search"
     autocomplete="off"
     name="query"
     @change="onQueryChange"

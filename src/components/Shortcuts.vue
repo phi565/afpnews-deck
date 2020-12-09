@@ -1,36 +1,38 @@
 <template>
-  <div class="shortcuts">
-    <div class="shortcuts-start">
-      <p>{{ $t("shortcuts.change-contents") }}</p>
-      <select v-model="lang">
-        <option
-          disabled
-          selected
-        >
-          {{ $t("shortcuts.select-language") }}
-        </option>
-        <option
-          v-for="language in languages"
-          :key="language"
-          :value="language"
-        >
-          {{ $t(`languages.${language}`) }}
-        </option>
-      </select>
-    </div>
-    <div class="shortcuts-end">
-      <a
-        class="reset"
-        @click="resetAllColumns()"
+  <form class="shortcuts">
+    <label for="default-language">
+      {{ $t("shortcuts.change-contents") }}
+    </label>
+    <select
+      id="default-language"
+      v-model="lang"
+    >
+      <option
+        disabled
+        selected
+        :value="null"
       >
-        {{ $t("shortcuts.reset-contents") }}
-      </a>
-    </div>
-  </div>
+        {{ $t("shortcuts.select-language") }}
+      </option>
+      <option
+        v-for="language in languages"
+        :key="language"
+        :value="language"
+      >
+        {{ $t(`languages.${language}`) }}
+      </option>
+    </select>
+    <button
+      class="reset btn"
+      @click="resetDefaultLanguage()"
+    >
+      {{ $t("shortcuts.reset-contents") }}
+    </button>
+  </form>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Shortcuts',
@@ -52,10 +54,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changeAllContentLanguage'
-    ]),
-    ...mapMutations([
-      'resetAllColumns'
+      'changeAllContentLanguage',
+      'resetDefaultLanguage'
     ])
   }
 }
@@ -65,49 +65,32 @@ export default {
 @import "@/assets/scss/variables.scss";
 .shortcuts {
   display: flex;
-  align-items: stretch;
-  flex-grow: 1;
-  flex-shrink: 0;
-  padding: 0 2.5rem;
-  .shortcuts-start {
-    justify-content: flex-start;
-    display: flex;
+  align-items: center;
+  padding: 0.6rem 2.5rem;
 
-    select {
-      transform: translateY(-3px);
-      background: transparent;
-      border: none;
-      color: $secondary-color;
-      outline: none;
-      margin-left: 10px;
-    }
+  @include breakpoint(mobile) {
+    font-size: 13px;
+  }
 
-    @media screen and (max-width: 600px) {
-      font-size: 13px;
-      font-weight: 600 !important;
+  .reset {
+    background-color: transparent;
+    color: $font-color;
+    text-shadow: none;
+    font-weight: 400;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    margin-left: auto;
 
-      select {
-        transform: translateY(0px);
-      }
+    @include breakpoint(mobile) {
+      display: none;
     }
   }
-  .shortcuts-end {
-    margin-left: auto;
-    justify-content: flex-end;
-    display: flex;
 
-    .reset {
-      color: $dark;
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
-    @media screen and (max-width: 800px) {
-      display: none !important;
-    }
+  select {
+    background: transparent;
+    border: none;
+    color: $secondary-color;
+    margin-left: 10px;
+    outline: none;
   }
 }
 </style>

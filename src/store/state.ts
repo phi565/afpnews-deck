@@ -7,7 +7,7 @@ export default class State {
   public authType: 'credentials' | 'anonymous' | 'unknown'
   public isOnline: boolean
   public locale: Locale
-  public defaultLang: Lang
+  public defaultLang: Lang | null
 
   constructor () {
     this.columns = []
@@ -15,6 +15,6 @@ export default class State {
     this.authType = 'unknown'
     this.isOnline = true
     this.locale = process.env.VUE_APP_I18N_LOCALE === 'fr' ? 'fr' : 'en'
-    this.defaultLang = this.locale
+    this.defaultLang = null
   }
 }

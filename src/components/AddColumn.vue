@@ -17,16 +17,8 @@
           aria-controls="dropdown-menu2"
         >
           <span class="icon">
-            <svg
-              id="PICTOGRAMMES"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 300 300"
-            >
-              <title>plus-blue</title>
-              <polygon
-                class="cls-1"
-                points="138.5 246.16 161.5 246.16 161.5 161.5 246.159 161.5 246.159 138.5 161.5 138.5 161.5 53.84 138.5 53.84 138.5 138.5 53.841 138.5 53.841 161.5 138.5 161.5 138.5 246.16"
-              />
+            <svg viewBox="0 0 300 300">
+              <polygon points="138.5 246.16 161.5 246.16 161.5 161.5 246.159 161.5 246.159 138.5 161.5 138.5 161.5 53.84 138.5 53.84 138.5 138.5 53.841 138.5 53.841 161.5 138.5 161.5 138.5 246.16" />
             </svg>
           </span>
           <span>{{ $t('deck.add-column') }}</span>
@@ -43,16 +35,8 @@
             @click="search('search')"
           >
             <p>
-              <svg
-                id="PICTOGRAMMES"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 300 300"
-              >
-                <title>search-blue</title>
-                <path
-                  class="cls-1"
-                  d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z"
-                />
+              <svg viewBox="0 0 300 300">
+                <path d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z" />
               </svg>
               {{ $t('deck.add-column-search-title') }}
             </p>
@@ -64,25 +48,10 @@
             @click="search('topic')"
           >
             <p>
-              <svg
-                id="Calque_1"
-                data-name="Calque 1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 500 500"
-              >
-                <title>rubrique</title>
-                <path
-                  class="cls-1"
-                  d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"
-                />
-                <path
-                  class="cls-1"
-                  d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"
-                />
-                <path
-                  class="cls-1"
-                  d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"
-                />
+              <svg viewBox="0 0 500 500">
+                <path d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z" />
+                <path d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z" />
+                <path d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z" />
               </svg>
               {{ $t('deck.add-column-topic-title') }}
             </p>
@@ -93,7 +62,7 @@
     </div>
     <button
       class="btn btn-circle btn-icon mobile-button"
-      @click="toggle"
+      @click="active = true"
     >
       <i class="UI-icon UI-plus" />
     </button>
@@ -116,6 +85,7 @@ export default {
   },
   computed: {
     ...mapState([
+      'locale',
       'defaultLang'
     ])
   },
@@ -135,7 +105,13 @@ export default {
 
     search (type) {
       if (this.$route.name !== 'deck') this.$router.push({ name: 'deck' })
-      this.addColumn({ type, params: { langs: [this.defaultLang] } })
+      this.addColumn({
+        type,
+        params: {
+          langs: this.defaultLang ? [this.defaultLang] : [this.locale],
+          products: type === 'topic' ? ['multimedia'] : []
+        }
+      })
     },
 
     toggle () {
@@ -150,8 +126,21 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "@/assets/scss/colors.scss";
   @import "@/assets/scss/variables.scss";
+
+  @import "bulma/sass/utilities/initial-variables";
+
+  $size-large: 1.2rem;
+
+  @import "bulma/sass/utilities/functions";
+  @import "bulma/sass/utilities/derived-variables";
+  @import "bulma/sass/utilities/mixins";
+  @import "bulma/sass/utilities/controls";
+  @import "bulma/sass/elements/icon";
+  @import "bulma/sass/elements/button";
+  @import "bulma/sass/form/_all";
+  @import "bulma/sass/components/dropdown";
+
   .addColumn{
     .dropdown{
       &.is-active{
@@ -213,6 +202,10 @@ export default {
       right: 24px;
       margin: 4px;
       background: $dark !important;
+
+      i {
+        top: -3px;
+      }
 
       @media screen and (max-width: 800px) {
         display: block;

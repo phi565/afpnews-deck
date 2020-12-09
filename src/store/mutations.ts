@@ -9,9 +9,9 @@ import { Lang } from 'afpnews-api/dist/types'
 function generateDefaultColumn () {
   return {
     id: uuidv4(),
-    type: 'topic',
+    type: 'search',
     displayed: false,
-    params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
+    params: Object.assign({}, afpNews.defaultSearchParams, { size: 10 }),
     documentsIds: []
   }
 }
@@ -103,7 +103,7 @@ export default {
   resetAllTopicsColumns (state: State): void {
     state.columns = state.columns.filter(d => d.type !== 'topic')
   },
-  changeDefaultLang (state: State, value: Lang): void {
+  changeDefaultLang (state: State, value: Lang | null): void {
     state.defaultLang = value
   }
 }

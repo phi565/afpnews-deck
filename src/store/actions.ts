@@ -162,6 +162,10 @@ const actions: ActionTree<State, State> = {
     commit('insertColumns', { columns: topics })
     
     commit('changeDefaultLang', lang)
+  },
+  resetDefaultLanguage ({ commit }: ActionContext<State, State>): void {
+    commit('resetAllColumns')
+    commit('changeDefaultLang', null)
   }
 }
 

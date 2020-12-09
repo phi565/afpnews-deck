@@ -22,9 +22,9 @@
 
 <script>
 import Column from '@/components/Column.vue'
+import AddColumn from '@/components/AddColumn.vue'
 import Navbar from '@/components/Navbar.vue'
 import Shortcuts from '@/components/Shortcuts.vue'
-import AddColumn from '@/components/AddColumn.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 import { mapState, mapGetters } from 'vuex'
@@ -74,19 +74,21 @@ export default {
 main {
   @media screen {
     background-color: $background-color;
+    display: flex;
     height: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    flex-direction: column;
 
     #columns {
       -webkit-overflow-scrolling: touch;
       touch-action: auto;
-      height: 100%;
+      flex-grow: 1;
       padding-left: 2rem;
       padding-right: 2rem;
       display: flex;
       user-select: none;
       scroll-snap-type: x mandatory;
+      overflow-x: scroll;
+      overflow-y: hidden;
     }
   }
   @media print {

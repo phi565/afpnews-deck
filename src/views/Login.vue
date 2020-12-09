@@ -44,6 +44,7 @@
           <option
             selected
             disabled
+            :value="null"
           >
             {{ $t('auth.language') }}
           </option>
