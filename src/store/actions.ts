@@ -15,11 +15,8 @@ const actions: ActionTree<State, State> = {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  logout ({ commit, dispatch }: ActionContext<State, State>): Promise<void> {
+  logout ({ commit }: ActionContext<State, State>): void {
     commit('unsetToken')
-    commit('clearDocuments')
-    commit('resetAllColumns')
-    return dispatch('refreshAllColumns')
   },
   async authenticate (
     {

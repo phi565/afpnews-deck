@@ -12,13 +12,18 @@ export const initState = async (store: Store<State>): Promise<void> => {
   if (defaultLang !== null && store.state.defaultLang !== defaultLang) store.commit('changeDefaultLang', defaultLang)
 
   const documents = await documentsStore.getItems()
-  store.commit('addDocuments', Object.values(documents))
+  if (documents) {
+    store.commit('addDocuments', Object.values(documents))
+  }
 
   if (Array.isArray(columns) && columns.length > 0) {
-    columns.forEach(column => store.commit('addColumn', {
-      ...column,
-      documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
-    }))
+    store.commit('insertColumns', {
+      columns: columns.map(column => ({
+        ...column,
+        documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
+        })
+      )
+    })
   }
 }
 
@@ -30,6 +35,8 @@ export const persistState = (store: Store<State>): void => {
         break
       case 'addColumn':
         // falls through
+      case 'insertColumns':
+        // falls through
       case 'moveColumn':
         // falls through
       case 'updateColumnParams':
@@ -37,6 +44,11 @@ export const persistState = (store: Store<State>): void => {
       case 'appendDocumentsIdsToCol':
         // falls through
       case 'prependDocumentsIdsToCol':
+        // falls through
+      case 'resetAllColumns':
+        // falls through
+      case 'resetAllTopicsColumns':
+        // falls through
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'closeColumn':
