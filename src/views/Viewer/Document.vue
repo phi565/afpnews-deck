@@ -30,9 +30,10 @@
         {{ $t('document.published') }} {{ doc.created | calendar($root.$now, $t('calendar')) }}
       </time>
 
-      <span v-if="doc.country && doc.city"> • </span>
+      <span v-if="doc.created.toString() !== doc.published.toString()"> • </span>
 
       <time
+        v-if="doc.created.toString() !== doc.published.toString()"
         :key="`date-updated-${locale}`"
         :title="$d(doc.published, 'long')"
         class="date"
@@ -67,14 +68,12 @@
             :key="creator"
           >
             <router-link
-              v-if="creator.length < 30"
               :to="`/deck/creator/${creator.trim()}`"
               rel="author"
               class="link"
             >
               <span>{{ creator.trim() }}</span>
             </router-link>
-            <span v-else>{{ creator.trim() }}</span>
             <span v-if="(i + 1) < doc.creator.split(',').length">
               <!-- eslint-disable-next-line no-trailing-spaces -->
               , 
@@ -87,10 +86,12 @@
         class="update"
       >
         <router-link
+          v-if="doc.advisory"
           :to="{ hash: 'version' }"
         >
           {{ $t('document.version') }} {{ doc.revision }}
         </router-link>
+        <span v-else>{{ $t('document.version') }} {{ doc.revision }}</span>
       </div>
     </section>
     <media-gallery
