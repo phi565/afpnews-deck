@@ -45,13 +45,13 @@ export const persistState = (store: Store<State>): void => {
         // falls through
       case 'prependDocumentsIdsToCol':
         // falls through
-      case 'resetAllColumns':
-        // falls through
-      case 'resetAllTopicsColumns':
-        // falls through
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'closeColumn':
+        // falls through
+      case 'resetAllColumns':
+        // falls through
+      case 'resetAllTopicsColumns':
         // falls through
       case 'resetColumn':
         // eslint-disable-next-line no-case-declarations

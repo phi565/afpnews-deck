@@ -35,7 +35,7 @@
         >
         <select
           id="default-lang"
-          v-model="defaultLangGetter"
+          v-model="lang"
           required
           name="default-lang"
           autocomplete="default-lang"
@@ -71,7 +71,7 @@
 <script>
 import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'Login',
@@ -83,7 +83,6 @@ export default Vue.extend({
     return {
       username: null,
       password: null,
-      lang: null,
       authError: false
     }
   },
@@ -95,12 +94,12 @@ export default Vue.extend({
     ...mapGetters([
       'isAuthenticated'
     ]),
-    defaultLangGetter: {
+    lang: {
       get () {
-        return this.lang || this.defaultLang
+        return this.defaultLang
       },
       set (val) {
-        this.lang = val
+        this.changeAllContentLanguage(val)
       }
     },
     languages () {
@@ -115,10 +114,6 @@ export default Vue.extend({
       'authenticate',
       'changeAllContentLanguage'
     ]),
-    ...mapMutations([
-    'resetAllColumns',
-    'addColumn'
-    ]),
     async login () {
       try {
         await this.authenticate({ username: this.username, password: this.password })
@@ -128,10 +123,6 @@ export default Vue.extend({
           type: 'success'
         })
         this.authError = false
-
-        if (this.defaultLangGetter !== this.defaultLang) {
-          await this.changeAllContentLanguage(this.defaultLangGetter)
-        }
 
         this.$router.push({ name: 'deck' })
 
