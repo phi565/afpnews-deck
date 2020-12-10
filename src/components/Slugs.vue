@@ -68,7 +68,7 @@ nav {
   margin-bottom: 2rem;
   &.topics{
     a{
-      background: #7DFAAF;
+      background: $secondary-color;
     }
   }
   .slug{
