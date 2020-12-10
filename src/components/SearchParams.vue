@@ -303,6 +303,10 @@ header {
       font-weight: 600;
       color: #4a4a4a;
       background-color: $light;
+      padding-right: 30px;
+      overflow:hidden; 
+      white-space:nowrap; 
+      text-overflow:ellipsis;
     }
 
     .input, .select {
