@@ -6,11 +6,12 @@
           <select
             v-if="column.type === 'topic'"
             v-model="topics"
+            :disabled="!directSelect"
             class="select is-large is-fullwidth"
           >
             <option
               v-for="{ label, value } in topicsByLang"
-              :key="value.join('|')"
+              :key="value ? value.join('|') : 'null'"
               :value="value"
             >
               {{ label }}
@@ -65,7 +66,7 @@
             <select v-model="lang">
               <option
                 v-for="{ label, value } in languages"
-                :key="value || 'all'"
+                :key="value"
                 :value="value"
               >
                 {{ label }}
@@ -73,8 +74,41 @@
             </select>
           </div>
           <span class="icon is-large is-left">
-            <icon-base icon-name="languages">
+            <icon-base
+              icon-name="languages"
+              width="22"
+              height="22"
+            >
               <icon-languages />
+            </icon-base>
+          </span>
+        </div>
+      </div>
+
+      <div
+        v-if="!directSelect"
+        key="topics"
+        class="field"
+      >
+        <div class="control has-icons-left">
+          <div class="select is-large is-fullwidth">
+            <select v-model="topics">
+              <option
+                v-for="{ label, value } in topicsByLang"
+                :key="value ? value.join('|') : 'null'"
+                :value="value"
+              >
+                {{ label }}
+              </option>
+            </select>
+          </div>
+          <span class="icon is-large is-left">
+            <icon-base
+              icon-name="topic"
+              width="22"
+              height="22"
+            >
+              <icon-topic />
             </icon-base>
           </span>
         </div>
@@ -168,6 +202,7 @@ export default {
   },
   data () {
     return {
+      directSelect: false,
       paramsOpen: false
     }
   },
@@ -304,11 +339,6 @@ $size-large: 1.2rem;
 header {
   padding: 0px 17px 0px 12px;
 
-  svg {
-    height: 22px;
-    color: $dark;
-  }
-
   .header {
     select {
       padding-left: 50px;
@@ -320,6 +350,9 @@ header {
       overflow:hidden; 
       white-space:nowrap; 
       text-overflow:ellipsis;
+      &:disabled {
+        opacity: 1;
+      }
     }
 
     .input, .select {
@@ -330,6 +363,12 @@ header {
     .icon.is-right {
       pointer-events: all !important;
       cursor: pointer;
+    }
+
+    .icon svg {
+      width: 24px;
+      height: 24px;
+      color: $dark;
     }
   }
 
