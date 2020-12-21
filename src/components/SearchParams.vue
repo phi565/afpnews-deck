@@ -24,29 +24,26 @@
             @submit="onQueryChange"
           />
           <span class="icon is-left">
-            <svg
+            <icon-base
               v-if="column.type === 'search'"
-              viewBox="0 0 300 300"
+              icon-name="search"
             >
-              <path d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z" />
-            </svg>
-            <svg
+              <icon-search />
+            </icon-base>
+            <icon-base
               v-if="column.type === 'topic'"
-              viewBox="0 0 500 500"
+              icon-name="topic"
             >
-              <path d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z" />
-              <path d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z" />
-              <path d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z" />
-            </svg>
+              <icon-topic />
+            </icon-base>
           </span>
           <span
             class="icon is-right"
             @click="toggleFilters"
           >
-            <svg viewBox="0 0 300 300">
-              <path d="M109.547,47.059a49.378,49.378,0,0,0-47.878,37.57H30.824v23H61.563a49.286,49.286,0,0,0,96.021-.234H269.315v-23H157.37A49.38,49.38,0,0,0,109.547,47.059Zm0,74.6a25.3,25.3,0,1,1,25.3-25.3A25.328,25.328,0,0,1,109.547,121.657Z" />
-              <path d="M176.7,252.941a49.38,49.38,0,0,0,47.875-37.557h44.372v-23H224.681a49.287,49.287,0,0,0-95.973,0H30.685v23H128.82A49.378,49.378,0,0,0,176.7,252.941Zm0-74.6a25.3,25.3,0,1,1-25.3,25.3A25.328,25.328,0,0,1,176.7,178.343Z" />
-            </svg>
+            <icon-base icon-name="filters">
+              <icon-filters />
+            </icon-base>
           </span>
         </div>
       </div>
@@ -76,9 +73,9 @@
             </select>
           </div>
           <span class="icon is-large is-left">
-            <svg viewBox="0 0 300 300">
-              <path d="M76.938,38.423v-.011h-23V262.144h23V161.5H244.264L191.842,97.413l54.409-58.99ZM195.735,138.5H76.938V61.423h116.81L161.387,96.509Z" />
-            </svg>
+            <icon-base icon-name="languages">
+              <icon-languages />
+            </icon-base>
           </span>
         </div>
       </div>
@@ -95,10 +92,9 @@
           @click="$emit('close')"
         >
           <span class="icon is-large is-left">
-            <svg viewBox="0 0 300 300">
-              <path d="M200,269.231,223,84.615H77l23,184.616Zm-3.043-161.616L179.688,246.231H120.312L103.043,107.615Z" />
-              <polygon points="122.996 15.346 122.996 38.423 77 38.423 77 61.423 223 61.423 223 38.423 176.846 38.423 176.846 15.346 122.996 15.346" />
-            </svg>
+            <icon-base icon-name="delete">
+              <icon-delete />
+            </icon-base>
           </span>
           <span>{{ $t('column.delete') }}</span>
         </button>
@@ -115,9 +111,9 @@
           @click="$emit('move', 'left')"
         >
           <span>
-            <svg viewBox="0 0 300 300">
-              <polygon points="146.308 236.646 63.687 150.055 146.297 62.936 146.319 30.769 30.769 150.01 146.308 269.231 146.308 236.646" />
-            </svg>
+            <icon-base icon-name="move-left">
+              <icon-move-left />
+            </icon-base>
           </span>
         </button>
 
@@ -128,9 +124,9 @@
           @click="$emit('move', 'right')"
         >
           <span>
-            <svg viewBox="0 0 300 300">
-              <polygon points="153.78 63.354 236.402 149.945 153.791 237.064 153.77 269.231 269.319 149.99 153.78 30.769 153.78 63.354" />
-            </svg>
+            <icon-base icon-name="move-right">
+              <icon-move-right />
+            </icon-base>
           </span>
         </button>
       </div>
@@ -142,10 +138,27 @@
 import topicsConfig from '@/config/topics.json'
 import SearchInput from '@/components/SearchInput'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import IconBase from '@/components/IconBase'
+import IconTopic from '@/components/icons/IconTopic'
+import IconSearch from '@/components/icons/IconSearch'
+import IconFilters from '@/components/icons/IconFilters'
+import IconLanguages from '@/components/icons/IconLanguages'
+import IconMoveLeft from '@/components/icons/IconMoveLeft'
+import IconMoveRight from '@/components/icons/IconMoveRight'
+import IconDelete from '@/components/icons/IconDelete'
+
 export default {
   name: 'SearchParams',
   components: {
-    SearchInput
+    SearchInput,
+    IconBase,
+    IconTopic,
+    IconSearch,
+    IconFilters,
+    IconLanguages,
+    IconMoveLeft,
+    IconMoveRight,
+    IconDelete
   },
   props: {
     columnId: {
@@ -293,7 +306,7 @@ header {
 
   svg {
     height: 22px;
-    fill: $dark;
+    color: $dark;
   }
 
   .header {
@@ -363,14 +376,14 @@ header {
           margin-left: calc(-0.4em);
           margin-right: 0.4em;
           svg {
-            fill: $danger-color;
+            color: $danger-color;
           }
         }
       }
 
       .icon {
         svg {
-          fill: $grey_neutral_5;
+          color: $grey_neutral_5;
         }
       }
       &.move-column {
@@ -383,7 +396,7 @@ header {
 
         svg {
           height: 22px;
-          fill: #757575;
+          color: #757575;
         }
       }
     }

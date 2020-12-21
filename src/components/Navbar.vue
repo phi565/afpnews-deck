@@ -45,16 +45,13 @@
           name="about"
           aria-label="about"
         >
-          <svg viewBox="0 0 300 300">
-            <path d="M150,30.769A119.231,119.231,0,1,0,269.231,150,119.232,119.232,0,0,0,150,30.769Zm0,215.462A96.231,96.231,0,1,1,246.231,150,96.34,96.34,0,0,1,150,246.231Z" />
-            <rect
-              x="138.488"
-              y="192.393"
-              width="23"
-              height="22.992"
-            />
-            <path d="M150,76.962c-25.329,0-42.347,15.41-42.347,38.346h23c0-12.684,10.521-15.346,19.347-15.346,9.343,0,19.347,5.9,19.347,14.692,0,10.511-4.035,13.623-11.359,19.275-8.238,6.354-19.519,15.058-19.519,35.3h23c0-8.938,3.532-11.663,10.568-17.091,8.571-6.613,20.31-15.669,20.31-37.485C192.347,93.871,173.35,76.962,150,76.962Z" />
-          </svg>
+          <icon-base
+            icon-name="about"
+            :width="24"
+            :height="24"
+          >
+            <icon-about />
+          </icon-base>
           {{ $t("about.name") }}
         </router-link>
 
@@ -63,10 +60,11 @@
           aria-label="Log out"
           @click.prevent="logoutHandler"
         >
-          <svg viewBox="0 0 500 500">
-            <polygon points="313.72 345.03 388.74 265.92 167.23 265.92 167.23 233.21 388.5 233.21 313.72 154.82 313.72 108.06 451 249.71 313.72 391.37 313.72 345.03" />
-            <polygon points="282.81 450.95 57.24 450.95 57.24 48.48 282.81 48.48 282.81 86.38 95.14 86.38 95.14 413.05 282.81 413.05 282.81 450.95" />
-          </svg>
+          <icon-base
+            icon-name="logout"
+          >
+            <icon-logout />
+          </icon-base>
           {{ $t("auth.logout") }}
         </a>
 
@@ -103,6 +101,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import IconBase from '@/components/IconBase'
+import IconAbout from '@/components/icons/IconAbout'
+import IconLogout from '@/components/icons/IconLogout'
 
 export default {
   name: 'Navbar',
@@ -112,6 +113,11 @@ export default {
       value = value.toString()
       return value.toUpperCase()
     }
+  },
+  components: {
+    IconBase,
+    IconAbout,
+    IconLogout
   },
   data () {
     return{
@@ -213,8 +219,6 @@ $navbar-breakpoint: 640px;
         padding: 0.5rem 1.75rem;
 
         svg {
-          fill: $light;
-          height: 24px;
           margin-right: 5px;
         }
 
@@ -222,9 +226,6 @@ $navbar-breakpoint: 640px;
           padding-top: 1rem;
           padding-bottom: 1rem;
           color: $light;
-          svg {
-            transform: translateY(5px);
-          }
         }
 
         &.has-dropdown.is-hoverable {
