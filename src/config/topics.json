@@ -1,6 +1,7 @@
 {
   "fr": [
     {"label": "Toutes les rubriques", "value": []},
+    {"label": "Jeux Olympiques de Tokyo", "value": ["ONLINE-NEWS-FR_JO-HIVER"]},
     {"label": "A la une", "value": ["ONLINE-NEWS-FR_LA-UNE"]},
     {"label": "Monde", "value": ["ONLINE-NEWS-FR_MONDE"]},
     {"label": "France", "value": ["ONLINE-NEWS-FR_FRANCE"]},
@@ -21,8 +22,8 @@
     {"label": "Galeries Photos", "value": ["ONLINE-NEWS-FR_PHO-GAL"]}
   ],
   "en": [
-    {"label": "Olympics", "value": ["ONLINE-NEWS-EN_OLYMPICS"]},
     {"label": "All categories", "value": []},
+    {"label": "Olympics", "value": ["ONLINE-NEWS-EN_OLYMPICS"]},
     {"label": "Top Stories", "value": ["ONLINE-NEWS-EN_TOP-STORIES-INT"]},
     {"label": "International News", "value": ["ONLINE-NEWS-EN_INTERNATIONAL"]},
     {"label": "Business and Tech", "value": ["ONLINE-NEWS-EN_BUSINESS-TECH"]},
