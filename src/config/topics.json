@@ -21,6 +21,7 @@
     {"label": "Galeries Photos", "value": ["ONLINE-NEWS-FR_PHO-GAL"]}
   ],
   "en": [
+    {"label": "Olympics", "value": ["ONLINE-NEWS-EN_OLYMPICS"]},
     {"label": "All categories", "value": []},
     {"label": "Top Stories", "value": ["ONLINE-NEWS-EN_TOP-STORIES-INT"]},
     {"label": "International News", "value": ["ONLINE-NEWS-EN_INTERNATIONAL"]},
