@@ -139,23 +139,5 @@
     {"label": "عاجل", "value": ["ONLINE-NEWS-AR_URGENTS"]},
     {"label": "من الدنيا", "value": ["ONLINE-NEWS-AR_MINAL-DOUNIA"]},
     {"label": "معرض الصور", "value": ["ONLINE-NEWS-AR_PHO-GAL"]}
-  ],
-  "zh-tw": [
-    {"label": "全部分類", "value": []},
-    {"label": "焦點新聞", "value": ["焦點新聞"]},
-    {"label": "國際報導", "value": ["國際報導"]},
-    {"label": "科學新知", "value": ["科學新知"]},
-    {"label": "繽紛世界", "value": ["繽紛世界"]},
-    {"label": "財經快訊", "value": ["財經快訊"]},
-    {"label": "運動天地", "value": ["運動天地"]}
-  ],
-  "zh-cn":[
-    {"label": "全部分类", "value": []},
-    {"label": "焦点新闻", "value": ["焦点新闻"]},
-    {"label": "国际报道", "value": ["国际报道"]},
-    {"label": "科学新知", "value": ["科学新知"]},
-    {"label": "缤纷世界", "value": ["缤纷世界"]},
-    {"label": "财经快讯", "value": ["财经快讯"]},
-    {"label": "运动天地", "value": ["运动天地"]}
   ]
 }
